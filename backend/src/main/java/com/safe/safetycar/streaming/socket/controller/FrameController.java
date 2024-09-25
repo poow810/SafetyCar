@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class FrameController {
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "https://j11b209.p.ssafy.io/")
     @GetMapping("/test2")
     public ResponseEntity<String> test() {
         System.out.println("TEST");
         return ResponseEntity.ok("Success");
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "https://j11b209.p.ssafy.io/")
     @GetMapping(
             value = "/{cameraId}",
             produces = MediaType.IMAGE_JPEG_VALUE
