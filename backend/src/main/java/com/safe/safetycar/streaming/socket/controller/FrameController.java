@@ -1,12 +1,17 @@
 package com.safe.safetycar.streaming.socket.controller;
 
 import com.safe.safetycar.streaming.udp.UdpInboundMessageHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class FrameController {
+
+    @Value("${react.server.address}")
+    private String reactServerAddress;
+
 
     @CrossOrigin(origins = "https://j11b209.p.ssafy.io/")
     @GetMapping("/test2")
