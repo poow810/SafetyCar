@@ -10,6 +10,23 @@ WebSocketSender::WebSocketSender()
 	ZeroMemory(&m_ClientAddr, sizeof(m_ClientAddr));
 	m_ClientAddr.sin_family = AF_INET;
 	m_ClientAddr.sin_addr.S_un.S_addr = inet_addr(SERVER_IP);
+	//DOMAIN TEST
+	/*ADDRINFO hints;
+	ZeroMemory(&hints, sizeof(hints));
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+
+	if (!getaddrinfo(SERVER_DOMAIN, PORT, hints, host_domainAddr)) {
+		std::cerr << "ERROR\n";
+		exit(-1);
+		return;
+	}
+
+	SOCKADDR_IN* inAddr = (LPSOCKADDR_IN)host_domainAddr->ai_addr;
+	m_ClientAddr.sin_addr = inAddr->sin_addr;
+
+	std::cout << inAddr->sin_addr.S_un.S_addr << std::endl;*/
+	// TEST END
 	m_ClientAddr.sin_port = htons(PORT);
 
 	connected = true;
@@ -21,6 +38,7 @@ WebSocketSender::~WebSocketSender()
 {
 	connected = false;
 	//家南 皋葛府 沥府
+	freeaddrinfo(host_domainAddr);
 	WSACleanup();
 }
 
