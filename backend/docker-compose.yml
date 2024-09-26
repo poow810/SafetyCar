@@ -7,7 +7,7 @@ services:
     # restart: unless-stopped
     expose:
       - "8080"
-      - "5432" # udp
+      - "5432/udp" # udp
 
 networks:
   backend-network:
