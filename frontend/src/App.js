@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // UUID를 가져옵니다.
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import NewPage from './Newpage';
 import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/MainPage";
+import LibraryPage from "./pages/LibraryPage";
+import "./styles/global.css";
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -40,28 +45,12 @@ function App() {
   }, []);
 
   return (
-    <Router> {/* Router로 감싸기 */}
-        <header className="App-header">
-          <h1>알림</h1>
-          <p>수신한 메시지 수: {messageCount}</p> {/* 메시지 수 표시 */}
-          <ul>
-            {messages.map((msg, index) => (
-              <li key={index} style={{ color: msg.includes("경고") ? 'red' : 'black' }}>
-                {msg}
-              </li>             
-            ))}
-          </ul>
-          <nav>
-            <Link to="/">홈</Link>
-            <Link to="/new">새로운 페이지</Link>
-          </nav>
-        </header>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<h2>홈 페이지</h2>} />
-          <Route path="/new" element={<NewPage />} /> {/* NewPage 컴포넌트 */}
-        </Routes>
-      </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/library" element={<LibraryPage />} />
+      </Routes>
     </Router>
   );
 }
