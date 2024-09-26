@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom/client';
-import './index.css';
+// import './index.css';
 import App from './App';
 // import Frame from './ReadFrame';
-import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 import { io } from 'socket.io-client'
 import React, { useState, useEffect } from 'react';
