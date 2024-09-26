@@ -46,7 +46,7 @@ import { Manager } from "socket.io-client";
 //   );
 // }
 
-const ws = new WebSocket("ws://j11b209.p.ssafy.io/api/socket");
+const ws = new WebSocket("wss://j11b209.p.ssafy.io/api/socket");
 function ShowCCTV() {
   const [frameSrc, setFrameSrc] = useState(null);
  
