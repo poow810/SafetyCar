@@ -30,8 +30,9 @@ WebSocketSender::WebSocketSender()
 	m_ClientAddr.sin_port = htons(PORT);
 
 	connected = true;
-
+	set_cameraId();
 	std::cout << "UDP WebSocket Connected. \n";
+	
 }
 
 WebSocketSender::~WebSocketSender()
@@ -52,7 +53,7 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 
 	int img_packet_size = bytes.size();
 	int total_bytes_sent = 0, sent_bytes, chunk_size;
-	BYTE cameraid = 0, num = 0;
+	BYTE num = 0;
 	BYTE buffer[IMG_SEG_SIZE + (sizeof(BYTE) * INFO_SIZE)] = {};
 
 	//전송할때 데이터 맨 앞 3바이트에 패킷 정보를 함께 전송
@@ -62,7 +63,7 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 		
 		memset(buffer, 0, sizeof(buffer));	//0으로 초기화
 		buffer[0] = total_bytes_sent + chunk_size < img_packet_size ? 0 : 255;	//마지막 패킷인지 검사
-		buffer[1] = cameraid;
+		buffer[1] = camera_id;
 		buffer[2] = num++;
 		memcpy(buffer + (sizeof(BYTE) * INFO_SIZE), bytes.data() + total_bytes_sent, chunk_size);
 		sent_bytes = sendto(m_clientSock, reinterpret_cast<char*>(buffer), chunk_size + (sizeof(BYTE) * INFO_SIZE), 0, (SOCKADDR*)&m_ClientAddr, sizeof(m_ClientAddr));
@@ -88,4 +89,12 @@ std::vector<BYTE> WebSocketSender::mat2jpg(cv::InputArray mat)
 	std::vector<BYTE> buff;
 	cv::imencode(".jpg", mat, buff, encode_param);
 	return buff;
+}
+
+void WebSocketSender::set_cameraId()
+{
+	int id;
+	std::cout << "Please, Enter Camera ID : ";
+	std::cin >> id;
+	camera_id = (BYTE)id;
 }
