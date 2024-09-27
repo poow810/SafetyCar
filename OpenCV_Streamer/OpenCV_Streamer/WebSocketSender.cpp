@@ -1,5 +1,8 @@
 #include "WebSocketSender.h"
 
+/// <summary>
+/// udp정보를 생성합니다.
+/// </summary>
 WebSocketSender::WebSocketSender()
 {
 	//WebSocket 라이브러리 설정하기 2.2 버전
@@ -35,6 +38,9 @@ WebSocketSender::WebSocketSender()
 	
 }
 
+/// <summary>
+/// 메모리를 반환합니다.
+/// </summary>
 WebSocketSender::~WebSocketSender()
 {
 	connected = false;
@@ -43,6 +49,10 @@ WebSocketSender::~WebSocketSender()
 	WSACleanup();
 }
 
+/// <summary>
+/// 인자로 받은 프레임을 JPEG형식으로 변환한 뒤 서버로 전송합니다.
+/// </summary>
+/// <param name="frame">MAT (any color)</param>
 void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 {
 	if (!isconnected()) {
@@ -84,6 +94,11 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 	//std::cout << "(%) : " << (float)total_bytes_sent / (float)IMG_FULL_SIZE << "\n";
 }
 
+/// <summary>
+/// JPEG 형식으로 변환
+/// </summary>
+/// <param name="mat">MAT</param>
+/// <returns>JPEG Binary</returns>
 std::vector<BYTE> WebSocketSender::mat2jpg(cv::InputArray mat)
 {
 	std::vector<BYTE> buff;
@@ -91,6 +106,9 @@ std::vector<BYTE> WebSocketSender::mat2jpg(cv::InputArray mat)
 	return buff;
 }
 
+/// <summary>
+/// 카메라 번호를 입력받습니다.
+/// </summary>
 void WebSocketSender::set_cameraId()
 {
 	int id;
