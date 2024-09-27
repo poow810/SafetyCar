@@ -1,0 +1,5 @@
+  File "C:\Users\SSAFY\Desktop\catkin_ws\install\my_package\Lib\site-packages\my_package\run_mapping.py", line 99
+    self.map[avail_y[:-1], avail_x[:-1]] = line_iter[]
+                                                     ^
+SyntaxError: invalid syntax
+

@@ -1,0 +1,46 @@
+[0.797s] Invoking command in 'C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs': CL=/MP installDir=%installDir%
+IntelliJ IDEA=C:\Program Files\JetBrains\IntelliJ IDEA 2024.1.4\bin;
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.1.4\bin; C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.EXE --build C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs --config Release
+[0.922s] .NET Framework¿ë Microsoft (R) Build Engine ¹öÀü 16.11.2+f32259642
+[0.922s] Copyright (C) Microsoft Corporation. All rights reserved.
+[0.922s] 
+[1.297s]   Checking Build System
+[1.531s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[1.672s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[1.781s]   ssafy_msgs__rosidl_generator_c.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_generator_c.dll
+[1.859s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[1.922s]   ssafy_msgs__rosidl_typesupport_c.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_c.dll
+[2.062s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[2.203s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[2.297s]   ssafy_msgs__rosidl_typesupport_connext_cpp.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_connext_cpp.dll
+[2.359s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[2.453s]   ssafy_msgs__rosidl_typesupport_connext_c.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_connext_c.dll
+[2.562s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[2.625s]   ssafy_msgs__rosidl_typesupport_cpp.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_cpp.dll
+[2.719s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[2.781s]   ssafy_msgs__rosidl_typesupport_fastrtps_cpp.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_fastrtps_cpp.dll
+[2.828s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[2.891s]   ssafy_msgs__rosidl_typesupport_fastrtps_c.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_fastrtps_c.dll
+[2.969s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[3.031s]   ssafy_msgs__rosidl_typesupport_introspection_c.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_introspection_c.dll
+[3.109s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[3.172s]   ssafy_msgs__rosidl_typesupport_introspection_cpp.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_introspection_cpp.dll
+[3.344s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[3.437s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[3.531s]   ssafy_msgs__rosidl_typesupport_opensplice_cpp.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_opensplice_cpp.dll
+[3.594s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[3.672s]   ssafy_msgs__rosidl_typesupport_opensplice_c.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\Release\ssafy_msgs__rosidl_typesupport_opensplice_c.dll
+[3.781s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[3.984s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[4.047s]   ssafy_msgs__python.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs__python.dll
+[4.141s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[4.203s]   ssafy_msgs__rosidl_typesupport_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_c.pyd
+[4.281s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[4.344s]   ssafy_msgs__rosidl_typesupport_connext_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_connext_c.pyd
+[4.437s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[4.484s]   ssafy_msgs__rosidl_typesupport_fastrtps_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_fastrtps_c.pyd
+[4.562s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[4.625s]   ssafy_msgs__rosidl_typesupport_introspection_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_introspection_c.pyd
+[4.703s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
+[4.766s]   ssafy_msgs__rosidl_typesupport_opensplice_c__pyext.vcxproj -> C:\Users\SSAFY\Desktop\catkin_ws\build\ssafy_msgs\rosidl_generator_py\ssafy_msgs\ssafy_msgs_s__rosidl_typesupport_opensplice_c.pyd
+[4.828s]   Building Custom Rule C:/Users/SSAFY/Desktop/catkin_ws/src/ssafy_msgs/CMakeLists.txt
