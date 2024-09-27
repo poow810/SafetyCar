@@ -26,7 +26,9 @@ public class UdpInboundMessageHandler {
     final static short MAX_CAMERA_NUM = 8;
     final static short MAX_SEG_NUM = 90;
     public static byte[][][] camera_datas = new byte[MAX_CAMERA_NUM][MAX_SEG_NUM][IMG_SEG_SIZE];
-    public static byte[][] camera_data_assembled = new byte[MAX_CAMERA_NUM][];
+    public static byte[][] camera_data_assembled2 = new byte[MAX_CAMERA_NUM][];
+
+    public static byte[][] camera_data_assembled = new byte[MAX_CAMERA_NUM][MAX_SEG_NUM * IMG_SEG_SIZE];
 
     @ServiceActivator(inputChannel = "inboundChannel")
     public void handeMessage(Message message, @Headers Map<String, Object> headerMap) throws IOException {
@@ -35,23 +37,29 @@ public class UdpInboundMessageHandler {
         int endflag = bis.read();
         int cameraId = bis.read();
         int segNum = bis.read();
-        bis.read(camera_datas[cameraId][segNum]);
+//        bis.read(camera_datas[cameraId][segNum]);
+//
+////        LOGGER.info("seg received : " + segNum);
+//        if(endflag > 0) {
+//            byte[] img_bytes = new byte[IMG_SEG_SIZE * (segNum + 1)];
+//
+//            for(int i = 0; i <= segNum; i++) {
+//                System.arraycopy(camera_datas[cameraId][i], 0, img_bytes, i * IMG_SEG_SIZE, IMG_SEG_SIZE);
+//            }
+//
+//            camera_data_assembled[cameraId] = img_bytes;
+////
+//            LOGGER.info("JPG received");
+//            wsm.sendFrame(cameraId);
+//        }
 
-//        LOGGER.info("seg received : " + segNum);
-        if(endflag > 0) {
-            byte[] img_bytes = new byte[IMG_SEG_SIZE * (segNum + 1)];
-
-            for(int i = 0; i <= segNum; i++) {
-                System.arraycopy(camera_datas[cameraId][i], 0, img_bytes, i * IMG_SEG_SIZE, IMG_SEG_SIZE);
-            }
-
-            camera_data_assembled[cameraId] = img_bytes;
-//            ByteArrayInputStream img_bis = new ByteArrayInputStream(img_bytes);
-//            BufferedImage image = ImageIO.read(img_bis);
-//            ImageIO.write(image, "jpg", new java.io.File("received_image.jpg"));
-            LOGGER.info("JPG received");
+        if(segNum >= MAX_SEG_NUM) {
+            LOGGER.warn("segNum is greater than MAX_SEG_NUM");
+            return;
+        }
+        bis.read(camera_data_assembled[cameraId], segNum * IMG_SEG_SIZE, IMG_SEG_SIZE);
+        if(endflag > 0){
             wsm.sendFrame(cameraId);
         }
-
     }
 }
