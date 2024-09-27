@@ -124,6 +124,7 @@ def is_falling_func(width, height, keypoint_data, is_falling):
 async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
     
     center_x, center_y = None, None
+    start_x, start_y, end_x, end_y = None, None, None, None
 
     # 바운딩 박스 좌표 추출
     if results[0].boxes is not None and len(results[0].boxes) > 0:
@@ -135,7 +136,6 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
             x1, y1, x2, y2 = box.xyxy[0]
             width = box.xywh[0][2].item()
             height = box.xywh[0][3].item()
-
 
             if keypoints is not None and len(keypoints) > i:
                 keypoint_data = keypoints[i].data
@@ -158,6 +158,7 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
                                 status_type = 0
                                 center_x = (x1 + x2) / 2
                                 center_y = (y1 + y2) / 2
+                                start_x, start_y, end_x, end_y = x1, y1, x2, y2
                                 if not tracking_data[tracking_id]['sent']:
                                     await send_coordinate(float(center_x), float(center_y))
                                     tracking_data[tracking_id]['sent'] = True
@@ -168,16 +169,20 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
                         tracking_data.pop(tracking_id, None)
                         status_type = 2
 
-
-                    status_list = [{'text': 'Falling', 'color' : (0, 0, 255)}, {'text': 'Falling (not confirmed)', 'color' : (0, 255, 255)}
-                                    ,{'text': 'standing', 'color' : (255, 0, 0)}]
+                    status_list = [{'text': 'Falling', 'color': (0, 0, 255)},
+                                   {'text': 'Falling (not confirmed)', 'color': (0, 255, 255)},
+                                   {'text': 'standing', 'color': (255, 0, 0)}]
                     status = status_list[status_type]
 
-                    # 현재 상태를 이미지에 표시
-                    cv2.putText(annotated_frame, status['text'], (int(x1), int(y1) - 10),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, status['color'], 2)
+                    # 쓰러진 상태일 때만 현재 상태를 이미지에 표시
+                    if status_type == 0:
+                        cv2.putText(annotated_frame, status['text'], (int(x1), int(y1) - 10),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, status['color'], 2)
+    lst = []
+    if start_x is not None:
+        lst.append((int(start_x), int(start_y), int(end_x), int(end_y)))
+    return (annotated_frame, lst)
 
-    return (annotated_frame, center_x, center_y)
 
             
 
@@ -213,11 +218,15 @@ async def process_video(udp_sender):
         # 스켈레톤 데이터 추출
         keypoints = results[0].keypoints
 
-        annotated_frame, *bounding_box = await pose_estimation(keypoints, results, tracking_data, annotated_frame)
+        annotated_frame, bounding_box = await pose_estimation(keypoints, results, tracking_data, annotated_frame)
         
-        
+
+        if bounding_box:
+            for (x1, y1, x2, y2) in bounding_box:
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+
         # 이미지 출력
-        cv2.imshow('Pose Estimation', annotated_frame)
+        cv2.imshow('Pose Estimation', frame)
 
         udp_sender.send_frame(frame)
 
