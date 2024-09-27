@@ -24,7 +24,7 @@ public class UdpInboundMessageHandler {
     //최악의 경우를 가정해서 넉넉하게 공간을 만들어놓기
     final static short IMG_SEG_SIZE = 1469;
     final static short MAX_CAMERA_NUM = 8;
-    final static short MAX_SEG_NUM = 70;
+    final static short MAX_SEG_NUM = 90;
     public static byte[][][] camera_datas = new byte[MAX_CAMERA_NUM][MAX_SEG_NUM][IMG_SEG_SIZE];
     public static byte[][] camera_data_assembled = new byte[MAX_CAMERA_NUM][];
 
