@@ -5,7 +5,7 @@ import numpy as np
 import base64
 import json
 
-app = FastAPI()
+app = FastAPI(root_path="/pyapi")
 
 # CORS 설정
 app.add_middleware(
