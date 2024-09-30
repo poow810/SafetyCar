@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid"; // UUID를 가져옵니다.
-import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/MainPage";
@@ -48,7 +47,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/library" element={<LibraryPage />} />
       </Routes>
     </Router>
