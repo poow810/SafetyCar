@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
+from socketHandler import socket_app, sio
 import cv2
 import numpy as np
 import base64
@@ -15,6 +16,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount('/', socket_app)
 
 # 전역 변수 및 상태 초기화
 state = {
