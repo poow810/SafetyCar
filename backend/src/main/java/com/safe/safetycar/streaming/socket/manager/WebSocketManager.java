@@ -1,5 +1,6 @@
 package com.safe.safetycar.streaming.socket.manager;
 
+import com.safe.safetycar.log.LogManager;
 import com.safe.safetycar.streaming.udp.UdpInboundMessageHandler;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnOpen;
@@ -18,26 +19,27 @@ import java.util.Set;
 @ServerEndpoint(value = "/socket")
 @Service
 public class WebSocketManager {
-    private final static Logger LOGGER = LoggerFactory.getLogger(UdpInboundMessageHandler.class);
+//    private final static Logger LOGGER = LoggerFactory.getLogger(UdpInboundMessageHandler.class);
+    private final static LogManager LOGGER = new LogManager(WebSocketManager.class);
     private static Set<Session> CLIENTS = Collections.synchronizedSet(new HashSet<>());
 
 
     @OnOpen
     public void onOpen(Session session) {
-        LOGGER.info(session.toString());
+        LOGGER.sendLog(session.toString(), LogManager.LOG_TYPE.INFO);
 
         if(CLIENTS.contains(session)) {
-            LOGGER.info("already connected");
+            LOGGER.sendLog("already connected", LogManager.LOG_TYPE.INFO);
         } else {
             CLIENTS.add(session);
-            LOGGER.info("new Session");
+            LOGGER.sendLog("new Session", LogManager.LOG_TYPE.INFO);
         }
     }
 
     @OnClose
     public void onClose(Session session) throws Exception {
         CLIENTS.remove(session);
-        System.out.println("Closed : " + session);
+        LOGGER.sendLog("Closed : " + session, LogManager.LOG_TYPE.INFO);
     }
 
     public void sendFrame(int cameraId) throws IOException {
