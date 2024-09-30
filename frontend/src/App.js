@@ -6,6 +6,8 @@ import HomePage from "./pages/MainPage";
 import LibraryPage from "./pages/LibraryPage";
 import "./styles/global.css";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function App() {
   const [messages, setMessages] = useState([]);
   const [messageCount, setMessageCount] = useState(0); // 메시지 수 상태 추가
@@ -16,7 +18,7 @@ function App() {
 
     const connectEventSource = () => {
       eventSource = new EventSource(
-        `http://localhost:8080/api/sse?clientId=${clientId}`
+        API_URL + `/sse?clientId=${clientId}`
       ); // 클라이언트 ID 포함
 
       eventSource.onmessage = (event) => {

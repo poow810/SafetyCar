@@ -6,6 +6,8 @@ import App from "./App";
 // import axios from 'axios';
 // import { io } from 'socket.io-client'
 import React, { useState, useEffect } from "react";
+
+const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 // import { Manager } from "socket.io-client";
 // function Axios() {
 //   const instance = axios.create({
@@ -46,7 +48,7 @@ import React, { useState, useEffect } from "react";
 //   );
 // }
 
-const ws = new WebSocket("wss://j11b209.p.ssafy.io/api/socket");
+const ws = new WebSocket(WEBSOCKET_URL);
 
 function ShowCCTV() {
   const [frameSrc, setFrameSrc] = useState(null);
