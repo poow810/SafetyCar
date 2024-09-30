@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // UUID를 가져옵니다.
 import NewPage from './Newpage';
 import './App.css';
-import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/MainPage";
