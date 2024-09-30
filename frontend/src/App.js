@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid'; // UUID를 가져옵니다.
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid"; // UUID를 가져옵니다.
+import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/MainPage";
@@ -16,7 +16,9 @@ function App() {
     let eventSource;
 
     const connectEventSource = () => {
-      eventSource = new EventSource(`http://localhost:8080/api/sse?clientId=${clientId}`); // 클라이언트 ID 포함
+      eventSource = new EventSource(
+        `http://localhost:8080/api/sse?clientId=${clientId}`
+      ); // 클라이언트 ID 포함
 
       eventSource.onmessage = (event) => {
         const newMessage = event.data;
@@ -26,7 +28,7 @@ function App() {
       };
 
       eventSource.onerror = (error) => {
-        console.error('SSE error:', error);
+        console.error("SSE error:", error);
         eventSource.close();
         // 재연결 시도
         setTimeout(connectEventSource, 1000); // 1초 후 재연결
