@@ -68,10 +68,10 @@ function ShowCCTV() {
 function ShowCCTV2() {
   const [frameSrcArr, setFrameSrcArr] = useState([null,null,null,null]);
   
-  ws.onmessage = function(msg) {
+  ws.onmessage = async function(msg) {
     let newArr = [...frameSrcArr];
     // const idx = msg.data.slice(0,1).arrayBuffer().getInt8(0);
-    const int8Array = new Int8Array(msg.data.slice(0,1).arrayBuffer());
+    const int8Array = new Int8Array(await msg.data.slice(0,1).arrayBuffer());
     console.log(int8Array);
     const idx = int8Array[0];
     console.log(idx);
