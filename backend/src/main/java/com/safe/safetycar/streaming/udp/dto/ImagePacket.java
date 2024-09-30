@@ -8,6 +8,8 @@ public class ImagePacket {
     private byte counter;
     private byte full_seg_num;
     private boolean end_flag;
+
+    //영상 cache
     private byte beginIdx;
 
     void flush() {

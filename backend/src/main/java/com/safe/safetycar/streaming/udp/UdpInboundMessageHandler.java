@@ -1,5 +1,6 @@
 package com.safe.safetycar.streaming.udp;
 
+import com.safe.safetycar.log.LogManager;
 import com.safe.safetycar.streaming.socket.manager.WebSocketManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,9 @@ public class UdpInboundMessageHandler {
 
     @Autowired
     private WebSocketManager wsm;
-    private final static Logger LOGGER = LoggerFactory.getLogger(UdpInboundMessageHandler.class);
-    
+//    private final static Logger LOGGER = LoggerFactory.getLogger(UdpInboundMessageHandler.class);
+    private final static LogManager logManager = new LogManager(UdpInboundMessageHandler.class);
+
     //미리 공간을 열어놓기 640*480 크기의 jpg를 테스트해본결과 약 60000 바이트가 나올때가 있고 20000만 바이트가 될때가 있다.
     //최악의 경우를 가정해서 넉넉하게 공간을 만들어놓기
     final static short IMG_SEG_SIZE = 1469;
@@ -29,6 +31,10 @@ public class UdpInboundMessageHandler {
     public static byte[][] camera_data_assembled2 = new byte[MAX_CAMERA_NUM][];
 
     public static byte[][] camera_data_assembled = new byte[MAX_CAMERA_NUM][MAX_SEG_NUM * IMG_SEG_SIZE];
+
+    public UdpInboundMessageHandler() {
+        logManager.setInterval(LogManager.LOG_TYPE.INFO, 100, "image received");
+    }
 
     @ServiceActivator(inputChannel = "inboundChannel")
     public void handeMessage(Message message, @Headers Map<String, Object> headerMap) throws IOException {
@@ -53,12 +59,15 @@ public class UdpInboundMessageHandler {
 //            wsm.sendFrame(cameraId);
 //        }
 
+
         if(segNum >= MAX_SEG_NUM) {
-            LOGGER.warn("segNum is greater than MAX_SEG_NUM");
+//            LOGGER.warn("segNum is greater than MAX_SEG_NUM");
+            logManager.sendLog("segNum is greater than MAX_SEG_NUM", LogManager.LOG_TYPE.ERROR);
             return;
         }
         bis.read(camera_data_assembled[cameraId], segNum * IMG_SEG_SIZE, IMG_SEG_SIZE);
         if(endflag > 0){
+            logManager.sendInterval();
             wsm.sendFrame(cameraId);
         }
     }
