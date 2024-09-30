@@ -5,6 +5,7 @@ import asyncio
 from main import send_coordinate
 from udp import UdpSender
 
+
 # 수평으로 쓰러졌을 때
 def is_aligned_nose(nose_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y, slope_threshold=40):
     if nose_y is None or left_ankle_y is None or right_ankle_y is None or left_knee_y is None or right_knee_y is None:
@@ -28,12 +29,10 @@ def is_aligned_nose(nose_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee
     return False
 
 
-
 def is_aligned_ear(left_ear_y, right_ear_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y, slope_threshold=40):
     valid_ears = [y for y in [left_ear_y, right_ear_y] if y is not None and y > 0]
     average_ears_y = sum(valid_ears) / len(valid_ears) if valid_ears else None
 
-    # Check if any of the required values are None
     if average_ears_y is None or left_ankle_y is None or right_ankle_y is None or left_knee_y is None or right_knee_y is None:
         return False
 
@@ -46,7 +45,6 @@ def is_aligned_ear(left_ear_y, right_ear_y, left_ankle_y, right_ankle_y, left_kn
     valid_knees = [y for y in [left_knee_y, right_knee_y] if y is not None and y > 0]
     average_knee_y = sum(valid_knees) / len(valid_knees) if valid_knees else None
 
-    # Check if averages are valid
     if average_ears_y is not None and average_ankle_y is not None and average_knee_y is not None:
         y_diff_ankle = abs(average_ears_y - average_ankle_y)
         y_diff_knee = abs(average_ankle_y - average_knee_y)
@@ -57,12 +55,10 @@ def is_aligned_ear(left_ear_y, right_ear_y, left_ankle_y, right_ankle_y, left_kn
     return False
 
 
-
 def is_aligned_eye(left_eye_y, right_eye_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y, slope_threshold=40):
     valid_eyes = [y for y in [left_eye_y, right_eye_y] if y is not None and y > 0]
     average_eyes_y = sum(valid_eyes) / len(valid_eyes) if valid_eyes else None
 
-    # None 체크
     if average_eyes_y is None or left_ankle_y is None or right_ankle_y is None or left_knee_y is None or right_knee_y is None:
         return False
 
@@ -75,16 +71,14 @@ def is_aligned_eye(left_eye_y, right_eye_y, left_ankle_y, right_ankle_y, left_kn
     valid_knees = [y for y in [left_knee_y, right_knee_y] if y is not None and y > 0]
     average_knee_y = sum(valid_knees) / len(valid_knees) if valid_knees else None
 
-    # Check if averages are valid
     if average_eyes_y is not None and average_ankle_y is not None and average_knee_y is not None:
         y_diff_ankle = abs(average_eyes_y - average_ankle_y)
         y_diff_knee = abs(average_ankle_y - average_knee_y)
 
         if y_diff_ankle < slope_threshold and y_diff_knee < slope_threshold:
             return True
-
+        
     return False
-
 
 
 def is_falling_func(width, height, keypoint_data, is_falling):
@@ -123,7 +117,7 @@ def is_falling_func(width, height, keypoint_data, is_falling):
 
 async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
     
-    center_x, center_y = None, None
+    send_x, send_y = None, None
     start_x, start_y, end_x, end_y = None, None, None, None
 
     # 바운딩 박스 좌표 추출
@@ -156,11 +150,16 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
                             elapsed_time = current_time - tracking_data[tracking_id]['start_time']
                             if elapsed_time >= 5:
                                 status_type = 0
-                                center_x = (x1 + x2) / 2
-                                center_y = (y1 + y2) / 2
+                                
+                                # 객체 정중앙 좌표
+                                # center_x = (x1 + x2) / 2
+                                # center_y = (y1 + y2) / 2
+
+                                # 객체 발 밑 좌표
+                                send_x, send_y = (x1 + x2) / 2, y2
                                 start_x, start_y, end_x, end_y = x1, y1, x2, y2
                                 if not tracking_data[tracking_id]['sent']:
-                                    await send_coordinate(float(center_x), float(center_y))
+                                    await send_coordinate(float(send_x), float(send_y))
                                     tracking_data[tracking_id]['sent'] = True
                             else:
                                 status_type = 1
@@ -175,22 +174,19 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
                     status = status_list[status_type]
 
                     # 쓰러진 상태일 때만 현재 상태를 이미지에 표시
-                    if status_type == 0:
-                        cv2.putText(annotated_frame, status['text'], (int(x1), int(y1) - 10),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, status['color'], 2)
+                    cv2.putText(annotated_frame, status['text'], (int(x1), int(y1) - 10),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, status['color'], 2)
     lst = []
     if start_x is not None:
         lst.append((int(start_x), int(start_y), int(end_x), int(end_y)))
     return (annotated_frame, lst)
-
-
             
 
 async def process_video(udp_sender):
     model = YOLO("model/yolov8s-pose.pt").to('cuda')
 
     # 동영상 파일 열기
-    video_path = "falling2.mp4"
+    video_path = "falling.mp4"
     cap = cv2.VideoCapture(0)
 
     # 객체 상태 추적
@@ -226,9 +222,9 @@ async def process_video(udp_sender):
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
         # 이미지 출력
-        cv2.imshow('Pose Estimation', frame)
+        cv2.imshow('Pose Estimation', annotated_frame)
 
-        udp_sender.send_frame(frame)
+        udp_sender.send_frame(annotated_frame)
 
         # 'q' 키를 눌러 종료
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -238,11 +234,14 @@ async def process_video(udp_sender):
     cap.release()
     cv2.destroyAllWindows()
 
+
 if __name__ == "__main__":
     SERVER_IP = "43.202.61.242"
     PORT = 5432
     camera_id = 0
     udp_sender = UdpSender(SERVER_IP, PORT, camera_id)
-
     
-    asyncio.run(process_video(udp_sender))
+    try:
+        asyncio.run(process_video(udp_sender))
+    finally:
+        udp_sender.close()
