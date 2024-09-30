@@ -70,10 +70,9 @@ function ShowCCTV2() {
   
   ws.onmessage = function(msg) {
     let newArr = [...frameSrcArr];
-    const idx = msg.data.slice(0,1);
-    console.log(idx);
-    console.log(msg.data);
-    newArr[0] = URL.createObjectURL(msg.data.slice(1));
+    const idx = msg.data.slice(0,1).arrayBuffer().getInt8(0);
+    
+    newArr[idx] = URL.createObjectURL(msg.data.slice(1));
     setFrameSrcArr(newArr);
   };
   
