@@ -47,6 +47,7 @@ import React, { useState, useEffect } from "react";
 // }
 
 const ws = new WebSocket("wss://j11b209.p.ssafy.io/api/socket");
+
 function ShowCCTV() {
   const [frameSrc, setFrameSrc] = useState(null);
 
@@ -62,13 +63,31 @@ function ShowCCTV() {
   return <img src={frameSrc} alt="CCTV" />;
 }
 
+function ShowCCTV2() {
+  const [frameSrcArr, setFrameSrcArr] = useState([null,null,null,null]);
+  
+  ws.onmessage = function(msg) {
+    let newArr = [...frameSrcArr];
+    newArr[msg.data[0]] = URL.createObjectURL(msg.data).slice(1);
+    setFrameSrcArr(newArr);
+  };
+  
+
+  return <div>
+    <img src={frameSrcArr[0]} alt="CCTV 0"></img>
+    <img src={frameSrcArr[1]} alt="CCTV 1"></img>
+    </div> 
+
+}
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />
     {/* <button onClick={readFrame}>frame</button> */}
     {/* <InfiniteFrameRenderer/> */}
-    <ShowCCTV />
+    {/* <ShowCCTV /> */}
+    <ShowCCTV2/>
   </React.StrictMode>
 );
 
