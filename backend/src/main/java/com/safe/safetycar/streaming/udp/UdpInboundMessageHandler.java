@@ -31,7 +31,7 @@ public class UdpInboundMessageHandler {
     public static byte[][][] camera_datas = new byte[MAX_CAMERA_NUM][MAX_SEG_NUM][IMG_SEG_SIZE];
     public static byte[][] camera_data_assembled2 = new byte[MAX_CAMERA_NUM][];
 
-    public static byte[][] camera_data_assembled = new byte[MAX_CAMERA_NUM][MAX_SEG_NUM * IMG_SEG_SIZE + HEADER_SIZE];
+    public static byte[][] camera_data_assembled = new byte[MAX_CAMERA_NUM][(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
 
     public UdpInboundMessageHandler() {
         logManager.setInterval(LogManager.LOG_TYPE.INFO, 100, "image received");
@@ -66,15 +66,15 @@ public class UdpInboundMessageHandler {
 //            wsm.sendFrame(cameraId);
 //        }
 
-
         if(segNum >= MAX_SEG_NUM) {
 //            LOGGER.warn("segNum is greater than MAX_SEG_NUM");
             logManager.sendLog("segNum is greater than MAX_SEG_NUM", LogManager.LOG_TYPE.ERROR);
             return;
         }
-        bis.read(camera_data_assembled[cameraId], segNum * IMG_SEG_SIZE + HEADER_SIZE, IMG_SEG_SIZE);
+        bis.read(camera_data_assembled[cameraId], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
         if(endflag > 0){
-            logManager.sendInterval();
+//            logManager.sendInterval();
+            logManager.sendLog("image Received", LogManager.LOG_TYPE.INFO);
             wsm.sendFrame(cameraId);
         }
     }
