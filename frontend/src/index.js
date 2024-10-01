@@ -1,12 +1,12 @@
-import ReactDOM from "react-dom/client";
-// import './index.css';
-import App from "./App";
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
 // import Frame from './ReadFrame';
-// import reportWebVitals from './reportWebVitals';
-// import axios from 'axios';
-// import { io } from 'socket.io-client'
-import React, { useState, useEffect } from "react";
-// import { Manager } from "socket.io-client";
+import reportWebVitals from './reportWebVitals';
+import axios from 'axios';
+import { io } from 'socket.io-client'
+import React, { useState, useEffect } from 'react';
+import { Manager } from "socket.io-client";
 // function Axios() {
 //   const instance = axios.create({
 //     baseURL: "http://localhost:8080",
@@ -49,26 +49,29 @@ import React, { useState, useEffect } from "react";
 const ws = new WebSocket("wss://j11b209.p.ssafy.io/api/socket");
 function ShowCCTV() {
   const [frameSrc, setFrameSrc] = useState(null);
-
-  ws.onmessage = function (msg) {
+ 
+  ws.onmessage = function(msg) {
     setFrameSrc(URL.createObjectURL(msg.data));
     // console.log(imageSrc);
-  };
+  }
 
   // useEffect(() => {
   //   return <img src={frameSrc} alt="CCTV" />
   // })
 
-  return <img src={frameSrc} alt="CCTV" />;
+  return (
+    <img src={frameSrc} alt="CCTV" />
+  );
 }
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
     {/* <button onClick={readFrame}>frame</button> */}
     {/* <InfiniteFrameRenderer/> */}
-    <ShowCCTV />
+    <ShowCCTV/>
   </React.StrictMode>
 );
 
