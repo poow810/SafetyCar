@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/MainPage";
 import LibraryPage from "./pages/LibraryPage";
+import Testpage from "./pages/TestPage";
 import "./styles/global.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -46,13 +47,16 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<HomePage />} />
-        <Route path="/library" element={<LibraryPage />} />
-      </Routes>
-    </Router>
+    <div className="app-background">
+      <Router>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/library" element={<LibraryPage />} />
+          <Route path="/test" element={<Testpage />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
