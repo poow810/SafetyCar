@@ -6,7 +6,6 @@ socket_app = socketio.ASGIApp(sio)
 @sio.event(namespace='/socketio')
 async def connect(sid, env) :
     print(str(sid), ' : connect')
-    await sio.emit('gridmake', data=[1, 2], namespace='/socketio')
 
 @sio.event(namespace='/socketio')
 async def disconnect(sid) :
