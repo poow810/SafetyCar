@@ -1,0 +1,62 @@
+running develop
+running egg_info
+writing my_package.egg-info\PKG-INFO
+writing dependency_links to my_package.egg-info\dependency_links.txt
+writing entry points to my_package.egg-info\entry_points.txt
+writing requirements to my_package.egg-info\requires.txt
+writing top-level names to my_package.egg-info\top_level.txt
+reading manifest file 'my_package.egg-info\SOURCES.txt'
+writing manifest file 'my_package.egg-info\SOURCES.txt'
+running build_ext
+Creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package\Lib\site-packages\my-package.egg-link (link to .)
+Installing a_star_global-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing a_star_global.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing a_star_local-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing a_star_local.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing dwa-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing dwa.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing ftc-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing ftc.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing listner-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing listner.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing load_map-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing load_map.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing mapping-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing mapping.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing my_node-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing my_node.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing odom-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing odom.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing talker-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+Installing talker.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+
+Installed c:\users\ssafy\desktop\git_clone\s11p21b209\ros2\build\my_package
+running symlink_data
+c:\python37\lib\site-packages\setuptools\dist.py:745: SetuptoolsDeprecationWarning: Invalid dash-separated options
+!!
+
+        ********************************************************************************
+        Usage of dash-separated 'script-dir' will not be supported in future
+        versions. Please use the underscore name 'script_dir' instead.
+
+        This deprecation is overdue, please update your project and remove deprecated
+        calls to avoid build errors in the future.
+
+        See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+        ********************************************************************************
+
+!!
+  opt = self.warn_dash_deprecation(opt, section)
+c:\python37\lib\site-packages\setuptools\command\develop.py:40: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)

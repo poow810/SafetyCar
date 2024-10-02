@@ -7,6 +7,7 @@ for %%p in ("%~dp0..\..") do set "COLCON_CURRENT_PREFIX=%%~fp"
 
 call:call_file "%%COLCON_CURRENT_PREFIX%%\share\my_package\hook\pythonpath.bat"
 call:call_file "%%COLCON_CURRENT_PREFIX%%\share\my_package\hook\ament_prefix_path.bat"
+call:call_file "%%COLCON_CURRENT_PREFIX%%\..\..\build\my_package\share\my_package\hook\pythonpath_develop.bat"
 
 set COLCON_CURRENT_PREFIX=
 

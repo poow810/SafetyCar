@@ -681,7 +681,7 @@ class Localizer(Node):
             self.odom_msg.pose.pose.orientation.z = amcl_q.z
             self.odom_msg.pose.pose.orientation.w = amcl_q.w
 
-            self.odom_publisher.publish(self.odom_msg)        
+            self.odom_publisher.publish(self.odom_msg)  
             self.prev_amcl_pose=amcl_pose
         
 def main(args=None):

@@ -68,7 +68,7 @@ class loadMap(Node):
         # 로직 2. 맵 데이터 읽고, 2차원 행렬로 변환
 
         pkg_path = os.getcwd()
-        back_floder = '..'
+        back_floder = 'src\\my_package\\'
         folder_name = 'map'
 
         file_name = 'map.txt'

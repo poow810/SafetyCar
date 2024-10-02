@@ -4,4 +4,3 @@ sub_to_udp = ssafy_bridge.sub_to_udp:main
 udp_to_cam = ssafy_bridge.udp_to_cam:main
 udp_to_laser = ssafy_bridge.udp_to_laser:main
 udp_to_pub = ssafy_bridge.udp_to_pub:main
-

@@ -13,7 +13,7 @@ import numpy as np
 class followTheCarrot(Node):
 
     def __init__(self):
-        super().__init__('path_tracking')
+        super().__init__('ftc')
         self.cmd_publisher = self.create_publisher(Twist, 'cmd_vel', 10)
         self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
         self.turtlebot_status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.status_callback, 10)
@@ -59,7 +59,7 @@ class followTheCarrot(Node):
                     self.lfd = self.min_lfd
                 if self.lfd > self.max_lfd :
                     self.lfd = self.max_lfd
-                print(self.lfd)
+                # print(self.lfd)
 
                 min_dis = float('inf')
 
@@ -86,47 +86,46 @@ class followTheCarrot(Node):
                     local_forward_point = det_trans_matrix.dot(global_forward_point)
                     theta = -atan2(local_forward_point[1], local_forward_point[0])
 
-                    if self.is_start :
-                        
-                        if -0.15 < theta < 0.15 :
-                            self.cmd_msg.angular.z = 0.02
-                            self.is_start = False
-
-                        else :
-                            self.cmd_msg.angular.z = 0.2
-
-                        
+                    if len(self.path_msg.poses) > 20 :
+                        self.cmd_msg.linear.x = 1.0
+                        # self.cmd_msg.angular.z = 2.0
+                        self.cmd_msg.angular.z = theta*2/self.omega_max
+                        #11.7
+                    elif len(self.path_msg.poses) > 10 :
+                        self.cmd_msg.linear.x = 0.8
+                        # self.cmd_msg.angular.z = 2.0
+                        self.cmd_msg.angular.z = theta/self.omega_max
+                    
                     else :
-                        if len(self.path_msg.poses) > 20 :
-                            self.cmd_msg.linear.x = 1.0
-                            # self.cmd_msg.angular.z = 2.0
-                            self.cmd_msg.angular.z = theta*2/self.omega_max
-                            #11.7
-                        elif len(self.path_msg.poses) > 10 :
-                            self.cmd_msg.linear.x = 0.8
-                            # self.cmd_msg.angular.z = 2.0
-                            self.cmd_msg.angular.z = theta/self.omega_max
-                        
-                        else :
-                            self.cmd_msg.linear.x = 0.3
-                            # self.cmd_msg.angular.z = 2.0
-                            self.cmd_msg.angular.z = theta/self.omega_max
+                        self.cmd_msg.linear.x = 0.3
+                        # self.cmd_msg.angular.z = 2.0
+                        self.cmd_msg.angular.z = theta/self.omega_max
 
-                        # 충동 했을 때
-                        if self.collision == True :
-                            self.is_start = False
-                            self.cmd_msg.linear.x = 0.0
-                            self.cmd_msg.angular.z = 0.0
-
+                    # 충동 했을 때
+                    # lidar 값을 불러 들어온 후, 가장 먼 거리로 조향각을 설정한 뒤 이동
+                    if self.collision == True :
+                        # self.cmd_msg.linear.x = 0.0
+                        # self.cmd_msg.angular.z = 0.0
+                        self.avoid_collision()
 
 
             else :
-                print("no found forward point")
+                # print("no found forward point")
                 self.is_start = True
                 self.cmd_msg.linear.x = 0.0
                 self.cmd_msg.angular.z = 0.0
 
         self.cmd_publisher.publish(self.cmd_msg)
+
+    def avoid_collision(self):
+        max_dis = max(self.lidar_msg.ranges)
+        max_index = self.lidar_msg.ranges.index(max_dis)
+        angle = max_index * (pi/180.0)
+
+        self.cmd_msg.linear.x = 0.2
+        self.cmd_msg.angular.z = angle
+
+        print(f"avoid collision: angle = {angle*180 / pi}" )
 
     def odom_callback(self, msg) :
         self.is_odom = True
@@ -177,9 +176,10 @@ class followTheCarrot(Node):
             for waypoint in self.path_msg.poses :
                 for lidar_point in pcd_msg.points :
                     distance = sqrt(pow(waypoint.pose.position.x - lidar_point.x, 2) + pow(waypoint.pose.position.y - lidar_point.y, 2))
-                    if distance < 0.2 :
+                    if distance < 0.01 :
                         self.collision = True
-                        print('collision')
+                        print(f"distance: {distance}")
+                        # print(f'collision')
             
             self.is_lidar = True
 

@@ -1,0 +1,1 @@
+CMake Error: The current CMakeCache.txt directory C:/Users/SSAFY/Desktop/git_clone/S11P21B209/ROS2/build/ssafy_msgs/CMakeCache.txt is different than the directory c:/Users/SSAFY/Desktop/catkin_ws/build/ssafy_msgs where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt

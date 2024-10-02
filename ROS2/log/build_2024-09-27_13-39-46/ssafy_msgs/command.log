@@ -1,0 +1,4 @@
+Invoking command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs': CL=/MP installDir=%installDir%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; C:\Program Files\CMake\bin\cmake.EXE --build C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs --config Release
+Invoked command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs' returned '1': CL=/MP installDir=%installDir%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; C:\Program Files\CMake\bin\cmake.EXE --build C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs --config Release

@@ -1,0 +1,34 @@
+[0.360s] Invoking command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs': INCLUDE=%INCLUDE%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; C:\Program Files\CMake\bin\cmake.EXE C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\src\ssafy_msgs -DCMAKE_INSTALL_PREFIX=C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\ssafy_msgs -G Visual Studio 16 2019
+[0.391s] -- Selecting Windows SDK version 10.0.19041.0 to target Windows 10.0.19045.
+[1.719s] -- The C compiler identification is MSVC 19.29.30154.0
+[2.407s] -- The CXX compiler identification is MSVC 19.29.30154.0
+[2.438s] -- Detecting C compiler ABI info
+[3.079s] -- Detecting C compiler ABI info - done
+[3.079s] -- Check for working C compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64/cl.exe - skipped
+[3.079s] -- Detecting C compile features
+[3.079s] -- Detecting C compile features - done
+[3.094s] -- Detecting CXX compiler ABI info
+[3.657s] -- Detecting CXX compiler ABI info - done
+[3.672s] -- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64/cl.exe - skipped
+[3.672s] -- Detecting CXX compile features
+[3.672s] -- Detecting CXX compile features - done
+[3.766s] CMake Error at CMakeLists.txt:19 (find_package):
+[3.766s]   By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project
+[3.766s]   has asked CMake to find a package configuration file provided by
+[3.766s]   "ament_cmake", but CMake did not find one.
+[3.766s] 
+[3.766s]   Could not find a package configuration file provided by "ament_cmake" with
+[3.766s]   any of the following names:
+[3.766s] 
+[3.766s]     ament_cmakeConfig.cmake
+[3.766s]     ament_cmake-config.cmake
+[3.766s] 
+[3.766s]   Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set
+[3.766s]   "ament_cmake_DIR" to a directory containing one of the above files.  If
+[3.766s]   "ament_cmake" provides a separate development package or SDK, be sure it
+[3.766s]   has been installed.
+[3.766s] 
+[3.766s] 
+[3.766s] -- Configuring incomplete, errors occurred!
+[3.766s] See also "C:/Users/SSAFY/Desktop/git_clone/S11P21B209/ROS2/build/ssafy_msgs/CMakeFiles/CMakeOutput.log".

@@ -1,0 +1,64 @@
+[3.000s] Invoking command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package': PYTHONPATH=C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package\Lib\site-packages;%PYTHONPATH% installDir=%installDir%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; c:\python37\python.exe -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package\build --no-deps symlink_data
+[3.844s] running develop
+[4.594s] running egg_info
+[4.656s] writing my_package.egg-info\PKG-INFO
+[4.656s] writing dependency_links to my_package.egg-info\dependency_links.txt
+[4.656s] writing entry points to my_package.egg-info\entry_points.txt
+[4.656s] writing requirements to my_package.egg-info\requires.txt
+[4.656s] writing top-level names to my_package.egg-info\top_level.txt
+[4.813s] reading manifest file 'my_package.egg-info\SOURCES.txt'
+[4.828s] writing manifest file 'my_package.egg-info\SOURCES.txt'
+[4.875s] running build_ext
+[4.875s] Creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package\Lib\site-packages\my-package.egg-link (link to .)
+[4.891s] Installing a_star_global-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.891s] Installing a_star_global.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.891s] Installing a_star_local-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.891s] Installing a_star_local.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.906s] Installing ftc-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.906s] Installing ftc.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.906s] Installing listner-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.906s] Installing listner.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.906s] Installing load_map-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.922s] Installing load_map.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.922s] Installing mapping-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.922s] Installing mapping.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.922s] Installing my_node-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.922s] Installing my_node.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.922s] Installing odom-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.922s] Installing odom.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.938s] Installing talker-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.938s] Installing talker.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[4.938s] 
+[4.938s] Installed c:\users\ssafy\desktop\git_clone\s11p21b209\ros2\build\my_package
+[4.938s] running symlink_data
+[4.938s] c:\python37\lib\site-packages\setuptools\dist.py:745: SetuptoolsDeprecationWarning: Invalid dash-separated options
+[4.938s] !!
+[4.938s] 
+[4.953s]         ********************************************************************************
+[4.953s]         Usage of dash-separated 'script-dir' will not be supported in future
+[4.953s]         versions. Please use the underscore name 'script_dir' instead.
+[4.953s] 
+[4.953s]         This deprecation is overdue, please update your project and remove deprecated
+[4.953s]         calls to avoid build errors in the future.
+[4.953s] 
+[4.953s]         See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+[4.953s]         ********************************************************************************
+[4.953s] 
+[4.953s] !!
+[4.953s]   opt = self.warn_dash_deprecation(opt, section)
+[4.953s] c:\python37\lib\site-packages\setuptools\command\develop.py:40: EasyInstallDeprecationWarning: easy_install command is deprecated.
+[4.953s] !!
+[4.953s] 
+[4.953s]         ********************************************************************************
+[4.953s]         Please avoid running ``setup.py`` and ``easy_install``.
+[4.953s]         Instead, use pypa/build, pypa/installer or other
+[4.953s]         standards-based tools.
+[4.953s] 
+[4.953s]         See https://github.com/pypa/setuptools/issues/917 for details.
+[4.953s]         ********************************************************************************
+[4.953s] 
+[4.953s] !!
+[4.953s]   easy_install.initialize_options(self)
+[5.000s] Invoked command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package' returned '0': PYTHONPATH=C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package\Lib\site-packages;%PYTHONPATH% installDir=%installDir%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; c:\python37\python.exe -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package\build --no-deps symlink_data

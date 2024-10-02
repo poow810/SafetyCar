@@ -5,11 +5,6 @@
 :: paths which were sourced when this file was generated as well as all
 :: packages contained in this prefix path.
 
-:: source chained prefixes
-call:_colcon_prefix_chain_bat_call_script "C:\dev\ros2-windows\local_setup.bat"
-call:_colcon_prefix_chain_bat_call_script "C:\dev\ros2-windows\\local_setup.bat"
-call:_colcon_prefix_chain_bat_call_script "C:\Users\SSAFY\Desktop\catkin_ws\install\\local_setup.bat"
-
 :: source this prefix
 call:_colcon_prefix_chain_bat_call_script "%%~dp0local_setup.bat"
 

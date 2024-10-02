@@ -174,7 +174,6 @@ class a_star(Node):
                                 self.path[next[0]][next[1]] = current
                                 self.cost[next[0]][next[1]] = self.cost[current[0]][current[1]] + self.dCost[i] + heuristic
 
-
                             
                             if next == self.goal :
                                 print('found')

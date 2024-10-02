@@ -1,0 +1,46 @@
+[1.015s] Invoking command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package': PYTHONPATH=C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package\Lib\site-packages;%PYTHONPATH% installDir=%installDir%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; c:\python37\python.exe -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package\build --no-deps symlink_data
+[1.390s] running develop
+[1.578s] running egg_info
+[1.593s] writing my_package.egg-info\PKG-INFO
+[1.593s] writing dependency_links to my_package.egg-info\dependency_links.txt
+[1.593s] writing entry points to my_package.egg-info\entry_points.txt
+[1.593s] writing requirements to my_package.egg-info\requires.txt
+[1.593s] writing top-level names to my_package.egg-info\top_level.txt
+[1.625s] reading manifest file 'my_package.egg-info\SOURCES.txt'
+[1.640s] writing manifest file 'my_package.egg-info\SOURCES.txt'
+[1.656s] running build_ext
+[1.656s] Creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package\Lib\site-packages\my-package.egg-link (link to .)
+[1.656s] Installing a_star_global-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[1.656s] Installing a_star_global.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package/lib/my_package
+[1.656s] c:\python37\lib\site-packages\setuptools\dist.py:745: SetuptoolsDeprecationWarning: Invalid dash-separated options
+[1.656s] !!
+[1.656s] 
+[1.656s]         ********************************************************************************
+[1.656s]         Usage of dash-separated 'script-dir' will not be supported in future
+[1.656s]         versions. Please use the underscore name 'script_dir' instead.
+[1.656s] 
+[1.656s]         This deprecation is overdue, please update your project and remove deprecated
+[1.656s]         calls to avoid build errors in the future.
+[1.656s] 
+[1.656s]         See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+[1.656s]         ********************************************************************************
+[1.656s] 
+[1.656s] !!
+[1.656s]   opt = self.warn_dash_deprecation(opt, section)
+[1.656s] c:\python37\lib\site-packages\setuptools\command\develop.py:40: EasyInstallDeprecationWarning: easy_install command is deprecated.
+[1.656s] !!
+[1.656s] 
+[1.656s]         ********************************************************************************
+[1.656s]         Please avoid running ``setup.py`` and ``easy_install``.
+[1.656s]         Instead, use pypa/build, pypa/installer or other
+[1.656s]         standards-based tools.
+[1.656s] 
+[1.656s]         See https://github.com/pypa/setuptools/issues/917 for details.
+[1.656s]         ********************************************************************************
+[1.656s] 
+[1.656s] !!
+[1.656s]   easy_install.initialize_options(self)
+[1.656s] error: [WinError 32] 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다: 'C:\\Users\\SSAFY\\Desktop\\git_clone\\S11P21B209\\ROS2\\install\\my_package/lib/my_package\\a_star_global.exe'
+[1.672s] Invoked command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package' returned '1': PYTHONPATH=C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\my_package\Lib\site-packages;%PYTHONPATH% installDir=%installDir%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; c:\python37\python.exe -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\my_package\build --no-deps symlink_data

@@ -11,6 +11,9 @@ setup.py
 my_package/__init__.py
 my_package/a_star.py
 my_package/a_star_local_path.py
+my_package/data_socket.py
+my_package/dwa_local_path.py
+my_package/dynamic_window_approach.py
 my_package/follow_the_carrot.py
 my_package/load_map.py
 my_package/my_node.py
@@ -21,7 +24,11 @@ my_package/run_localization.py
 my_package/run_mapping.py
 my_package/subscriber_member_function.py
 my_package/utils.py
+my_package.egg-info/PKG-INFO
+my_package.egg-info/SOURCES.txt
+my_package.egg-info/dependency_links.txt
+my_package.egg-info/entry_points.txt
+my_package.egg-info/requires.txt
+my_package.egg-info/top_level.txt
+my_package.egg-info/zip-safe
 resource/my_package
-test/test_copyright.py
-test/test_flake8.py
-test/test_pep257.py

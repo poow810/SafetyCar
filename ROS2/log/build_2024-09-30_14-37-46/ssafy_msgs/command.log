@@ -1,0 +1,2 @@
+Invoking command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs': INCLUDE=%INCLUDE%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; C:\Program Files\CMake\bin\cmake.EXE C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\src\ssafy_msgs -DCMAKE_INSTALL_PREFIX=C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\ssafy_msgs -G Visual Studio 16 2019
