@@ -32,6 +32,7 @@ setup(
             'a_star_local = my_package.a_star_local_path:main',
             'mapping = my_package.run_mapping:main',
             'dwa_local = my_package.dwa_local_path:main',
+            'test = my_package.data_socket:main',
             # 'dwa = my_package.dynamic_window_approach:main',
         ],
     },
