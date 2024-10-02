@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/MainPage";
 import LibraryPage from "./pages/LibraryPage";
 import Testpage from "./pages/TestPage";
+import StreamingPage from "./pages/StreamingPage";
 import "./styles/global.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -54,6 +55,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/test" element={<Testpage />} />
+          <Route path="/streamingTest" element={<StreamingPage />} />
         </Routes>
       </Router>
     </div>
