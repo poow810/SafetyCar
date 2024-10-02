@@ -3,7 +3,7 @@ import httpx
 
 app = FastAPI()
 
-SPRING_BOOT_URL = 'http://localhost:8080/api'
+SPRING_BOOT_URL = 'http://localhost:8080/pyapi'
 
 
 async def send_coordinate(x, y):

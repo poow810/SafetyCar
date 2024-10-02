@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
+from socketHandler import socket_app, sio
 import cv2
 import numpy as np
 import base64
@@ -18,16 +19,21 @@ app.add_middleware(
 
 # 전역 변수 및 상태 초기화
 state = {
-    'step': 1,
-    'pts1_floor': [],
+    'step': 1, # 현재 단계
+
+    'pts1_floor': [], # 처음 점 4개
     'pts2_floor': [],
-    'pts1_tile': [],
+
+    'pts1_tile': [], # 타일 4개
     'pts2_tile': [],
-    'pts1_align': [],
+
+    'pts1_align': [], # 합쳐질 4개
     'pts2_align': [],
-    'H1_total': None,
-    'H2_total': None,
-    'M1_adjust': np.eye(3, dtype=np.float32),
+
+    'H1_total': None, # 각 이미지에 적용된 전체 변환(호모그래피) 행렬
+    'H2_total': None, # 질문: 이걸로 행렬 보내나?
+
+    'M1_adjust': np.eye(3, dtype=np.float32), # 회전 및 반전을 위한 조정 행렬
     'M2_adjust': np.eye(3, dtype=np.float32),
 }
 
@@ -43,11 +49,16 @@ images = {
 }
 
 # 유틸리티 함수들
+
+# 이미지를 Base64 문자열로 인코딩
+# HTTP를 통해 이미지를 JSON 응답으로 전송할 때 유용합니다
 def encode_image_to_base64(image):
     _, buffer = cv2.imencode('.jpg', image)
     img_str = base64.b64encode(buffer).decode('utf-8')
     return img_str
 
+
+#이미지를 각도만큼 화면 돌림
 def rotate_image(image, angle):
     (h, w) = image.shape[:2]
     center = (w / 2, h / 2)
@@ -63,6 +74,7 @@ def rotate_image(image, angle):
     M_full[:2, :] = M
     return rotated_image, M_full
 
+# 좌우, 상하반전
 def flip_image(image, flip_code):
     flipped_image = cv2.flip(image, flip_code)
     h, w = image.shape[:2]
@@ -83,6 +95,8 @@ def flip_image(image, flip_code):
                       [0, 0, 1]], dtype=np.float32)
     return flipped_image, M
 
+
+# 선택한 바닥 점들을 기반으로 호모그래피 행렬을 계산하여 각 이미지를 변환
 def compute_homography_floor():
     # 클릭한 4개의 점을 좌표 배열로 변환
     pts1_floor = np.array(state['pts1_floor'], dtype=np.float32)
@@ -122,6 +136,9 @@ def compute_homography_floor():
     images['warped1_floor'] = warped1_floor
     images['warped2_floor'] = warped2_floor
 
+#첫 번째 이미지의 타일 크기에 맞추기 위해 두 번째 이미지의 스케일링을 조정
+# 타일 크기측정 -> 각 이미지 정사각형화 -> 스케일링 후 타일 크기 계산
+# ->스케일링 행렬 생성-> 전체 호모그래피 행렬 업데이트 -> 이미지 크기 조정
 def measure_tile_size_and_update_scale():
     # 타일 크기 측정
     width1, height1 = get_tile_size(state['pts1_tile'])
@@ -180,6 +197,7 @@ def measure_tile_size_and_update_scale():
     images['warped1_floor'] = cv2.resize(images['warped1_floor'], (new_w1, new_h1), interpolation=cv2.INTER_LINEAR)
     images['warped2_floor'] = cv2.resize(images['warped2_floor'], (new_w2, new_h2), interpolation=cv2.INTER_LINEAR)
 
+# 선택한 타일의 코너 점들을 기반으로 타일의 가로와 세로 길이를 계산
 def get_tile_size(pts_tile):
     # 바운딩 박스 크기 계산
     pts_tile = np.array(pts_tile)
@@ -189,6 +207,11 @@ def get_tile_size(pts_tile):
     height = y_max - y_min
     return width, height
 
+# 선택한 정렬 점들을 기반으로 두 이미지를 정렬
+# 정렬 호모그래피를 전체 호모그래피 행렬에 적용
+# 두 이미지가 동일한 프레임에 맞도록 평행 이동을 계산
+# 미리 정의된 바닥 크기(500x1300 픽셀)에 맞추기 위해 이미지를 스케일링
+# 최대 픽셀 값을 사용하여 이미지를 합성
 def align_images():
     # 좌표 배열로 변환
     pts1_align = np.array(state['pts1_align'], dtype=np.float32)
@@ -265,6 +288,8 @@ def align_images():
     images['final_warped2'] = final_warped2
     images['merged_image'] = merged_image
 
+# 호모그래피 행렬을 사용하여 이미지의 코너 점들을 변환
+# 이거로 바뀐 화면 주면 그거 클릭시 현재 변환된 호모 고려하여 위치 계산
 def get_transformed_corners(image, H):
     h, w = image.shape[:2]
     corners = np.array([
@@ -276,10 +301,28 @@ def get_transformed_corners(image, H):
     transformed_corners = cv2.perspectiveTransform(corners, H)
     return transformed_corners.reshape(-1, 2)
 
+# 전체 호모그래피 행렬을 사용하여 원본 이미지의 포인트를 바닥 좌표로 매핑
 def map_point_to_floor_coordinates(x, y, H_total):
     point = np.array([[[x, y]]], dtype=np.float32)
     transformed_point = cv2.perspectiveTransform(point, H_total)
     return transformed_point[0][0]
+
+@app.post("/receive_frame/")
+async def receive_frame(image: UploadFile = File(...)):
+    # 이미지 읽기
+    contents = await image.read()
+    nparr = np.frombuffer(contents, np.uint8)
+    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    # 받은 프레임 처리 (1, 2, 3, 4, 5단계)
+    images['original_frame1'] = frame.copy()
+
+    # 다음 단계로 이동
+    # 필요에 따라 compute_homography_floor() 같은 함수를 호출하여 처리
+
+    # 응답으로 처리된 이미지를 반환하거나, 좌표 등 필요한 데이터를 반환
+    return {"status": "frame received"}
+
 
 # 1. 클라이언트로부터 이미지와 바닥의 네 끝점 좌표를 받는 엔드포인트
 @app.post("/upload_images/")
@@ -307,7 +350,7 @@ async def upload_images(
     state['pts1_floor'] = pts1_floor_list
     state['pts2_floor'] = pts2_floor_list
 
-    # 단계 진행
+    # 단계 진행 전역변수라서 그냥 저거 써버림
     compute_homography_floor()
     state['step'] = 2
 
@@ -320,6 +363,7 @@ async def upload_images(
         'image1': image1_str,
         'image2': image2_str
     }
+
 
 # 2. 클라이언트로부터 회전/반전 명령을 받는 엔드포인트
 @app.post("/adjust_images/")
@@ -372,6 +416,7 @@ async def adjust_images(
         'image1': image1_str,
         'image2': image2_str
     }
+
 
 # 3. 클라이언트로부터 타일 모서리 좌표를 받는 엔드포인트
 @app.post("/upload_tile_points/")
@@ -432,7 +477,7 @@ async def get_floor_coordinates(
     y: float = Form(...),
     img_id: int = Form(...)
 ):
-    H_total = state['H1_total'] if img_id == 1 else state['H2_total']
+    H_total = state['H1_total'] if img_id == 1 else state['H2_total'] # 여기서 몇번 카메라인지 인식
     x_floor, y_floor = map_point_to_floor_coordinates(x, y, H_total)
 
     # 합성된 이미지에서의 좌표를 최종 바닥 크기에 맞게 스케일링
@@ -446,6 +491,8 @@ async def get_floor_coordinates(
     # numpy.float32 타입을 Python의 float 타입으로 변환
     x_floor = float(x_floor)
     y_floor = float(y_floor)
+
+    await sio.emit('gridmake', data=[x_floor, y_floor], namespace='/socketio')
 
     return {
         'x_floor': x_floor,
