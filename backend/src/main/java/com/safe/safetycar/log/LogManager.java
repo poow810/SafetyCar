@@ -28,9 +28,11 @@ public class LogManager {
      * 빈도 로그 출력
      */
     public void sendInterval() {
-        if(interval == null) return;
-        this.interval.send();
+        if(this.interval == null) return;
+        this.interval.send(LOGGER);
+
     }
+
 
     /**
      * 로그를 생성합니다.
@@ -47,6 +49,9 @@ public class LogManager {
      * 로그 타입을 정의합니다.
      */
     public enum LOG_TYPE {
+        WARN {
+            void log(Logger logger, String log) { logger.warn(log); }
+        },
         ERROR {
             void log(Logger logger, String log) { logger.error(log); }
         },
@@ -75,9 +80,10 @@ class IntervalData {
      * 만약 로그 발생 시점이라면 true 반환 후 관련 변수를 초기화한다.
      * @return 발생 시점 여부
      */
-    boolean send() {
+    boolean send(Logger logger) {
         if(isLogger_Available()) {
             count = 0;
+            type.log(logger, log_msg);
             return true;
         } else {
             count++;

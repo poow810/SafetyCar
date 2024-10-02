@@ -22,14 +22,14 @@ public class UdpInboundMessageHandler {
 //    private final static Logger LOGGER = LoggerFactory.getLogger(UdpInboundMessageHandler.class);
     private final static LogManager logManager = new LogManager(UdpInboundMessageHandler.class);
 
-    //미리 공간을 열어놓기 640*480 크기의 jpg를 테스트해본결과 약 60000 바이트가 나올때가 있고 20000만 바이트가 될때가 있다.
+    //미리 공간을 열어놓기 640*480 크기의 jpg를 테스트해본결과 약 60000 바이트가 나올때가 있고 20000 바이트가 될때가 있다.
     //최악의 경우를 가정해서 넉넉하게 공간을 만들어놓기
     final static short IMG_SEG_SIZE = 1469;
     final static short MAX_CAMERA_NUM = 8;
-    final static short MAX_SEG_NUM = 100;
+    final static short MAX_SEG_NUM = 150;
     final static short HEADER_SIZE = 1;     //카메라 정보를 담을 커스텀 헤더 크기
-    public static byte[][][] camera_datas = new byte[MAX_CAMERA_NUM][MAX_SEG_NUM][IMG_SEG_SIZE];
-    public static byte[][] camera_data_assembled2 = new byte[MAX_CAMERA_NUM][];
+//    public static byte[][][] camera_datas = new byte[MAX_CAMERA_NUM][MAX_SEG_NUM][IMG_SEG_SIZE];
+//    public static byte[][] camera_data_assembled2 = new byte[MAX_CAMERA_NUM][];
 
     public static byte[][] camera_data_assembled = new byte[MAX_CAMERA_NUM][(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
 
@@ -67,14 +67,13 @@ public class UdpInboundMessageHandler {
 //        }
 
         if(segNum >= MAX_SEG_NUM) {
-//            LOGGER.warn("segNum is greater than MAX_SEG_NUM");
             logManager.sendLog("segNum is greater than MAX_SEG_NUM", LogManager.LOG_TYPE.ERROR);
             return;
         }
         bis.read(camera_data_assembled[cameraId], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
         if(endflag > 0){
-//            logManager.sendInterval();
-            logManager.sendLog("image Received", LogManager.LOG_TYPE.INFO);
+            logManager.sendInterval();
+//            logManager.sendLog("image Received", LogManager.LOG_TYPE.INFO);
             wsm.sendFrame(cameraId);
         }
     }
