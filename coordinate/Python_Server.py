@@ -17,6 +17,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount('/', socket_app)
+
 # 전역 변수 및 상태 초기화
 state = {
     'step': 1, # 현재 단계
@@ -492,7 +494,9 @@ async def get_floor_coordinates(
     x_floor = float(x_floor)
     y_floor = float(y_floor)
 
+
     await sio.emit('gridmake', data=[x_floor, y_floor], namespace='/socketio')
+
 
     return {
         'x_floor': x_floor,
