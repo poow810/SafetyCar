@@ -9,5 +9,4 @@ async def connect(sid, env) :
 
 @sio.event(namespace='/socketio')
 async def disconnect(sid) :
-    await sio.emit('gridmake', data="asd")
     print(str(sid), ' : disconnect')
