@@ -41,9 +41,11 @@ public class UdpInboundMessageHandler {
         }
     }
 
+    //headerMap 내용 example
+    //{ip_packetAddress=/127.0.0.1:58011, ip_address=127.0.0.1, id=6626e9b4-fac2-e7d2-d2a0-afd7ce5fa366, ip_port=58011, ip_hostname=127.0.0.1, timestamp=1727833051957}
     @ServiceActivator(inputChannel = "inboundChannel")
     public void handleMessage(Message message, @Headers Map<String, Object> headerMap) throws IOException {
-
+        System.out.println(headerMap.toString());
         ByteArrayInputStream bis = new ByteArrayInputStream((byte[])message.getPayload());
         int endflag = bis.read();
         int cameraId = bis.read();
