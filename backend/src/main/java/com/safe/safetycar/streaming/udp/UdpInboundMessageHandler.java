@@ -2,8 +2,6 @@ package com.safe.safetycar.streaming.udp;
 
 import com.safe.safetycar.log.LogManager;
 import com.safe.safetycar.streaming.socket.manager.WebSocketManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -44,7 +42,7 @@ public class UdpInboundMessageHandler {
     }
 
     @ServiceActivator(inputChannel = "inboundChannel")
-    public void handeMessage(Message message, @Headers Map<String, Object> headerMap) throws IOException {
+    public void handleMessage(Message message, @Headers Map<String, Object> headerMap) throws IOException {
 
         ByteArrayInputStream bis = new ByteArrayInputStream((byte[])message.getPayload());
         int endflag = bis.read();
