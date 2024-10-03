@@ -4,8 +4,10 @@ import cv2
 import numpy as np
 import base64
 import json
+from socketHandler import socket_app, sio
 
 app = FastAPI(root_path="/pyapi")
+app.mount('/', socket_app)
 
 # CORS 설정
 app.add_middleware(
@@ -29,6 +31,8 @@ state = {
     'H2_total': None,
     'M1_adjust': np.eye(3, dtype=np.float32),
     'M2_adjust': np.eye(3, dtype=np.float32),
+    'floor_width': None,  # 바닥 너비 추가
+    'floor_height': None  # 바닥 높이 추가
 }
 
 # 이미지 데이터를 저장하기 위한 변수
@@ -233,9 +237,14 @@ def align_images():
     merged_width = x_max - x_min
     merged_height = y_max - y_min
 
-    # 원하는 최종 바닥 크기 설정 (가로=500, 세로=1300)
-    floor_width = 500
-    floor_height = 1300
+    # # 원하는 최종 바닥 크기 설정 (가로=500, 세로=1300)
+    # floor_width = 500
+    # floor_height = 1300
+
+    # state에서 바닥 크기 값을 가져옴
+    floor_width = state.get('floor_width')
+    floor_height = state.get('floor_height')
+
 
     # 스케일 팩터 계산
     scale_x = floor_width / merged_width
@@ -255,7 +264,8 @@ def align_images():
     state['H2_total'] = scaling_matrix @ state['H2_total']
 
     # 출력 이미지 크기 설정
-    output_size_final_adjusted = (floor_width, floor_height)
+    output_size_final_adjusted = (int(floor_width), int(floor_height))
+    print(f"최종 출력 이미지 크기: {output_size_final_adjusted}")
 
     # 최종 변환된 이미지 생성
     final_warped1 = cv2.warpPerspective(images['original_frame1'], state['H1_total'], output_size_final_adjusted, borderValue=(0, 0, 0))
@@ -290,7 +300,9 @@ async def upload_images(
     image1: UploadFile = File(...),
     image2: UploadFile = File(...),
     pts1_floor: str = Form(...),
-    pts2_floor: str = Form(...)
+    pts2_floor: str = Form(...),
+    floor_width: float = Form(...),
+    floor_height: float = Form(...)
 ):
     # 이미지 읽기
     contents1 = await image1.read()
@@ -310,6 +322,10 @@ async def upload_images(
     state['pts1_floor'] = pts1_floor_list
     state['pts2_floor'] = pts2_floor_list
 
+    state['floor_width'] = floor_width
+    state['floor_height'] = floor_height
+
+    print(state['floor_width'])
     # 단계 진행
     compute_homography_floor()
     state['step'] = 2
@@ -439,8 +455,10 @@ async def get_floor_coordinates(
     x_floor, y_floor = map_point_to_floor_coordinates(x, y, H_total)
 
     # 합성된 이미지에서의 좌표를 최종 바닥 크기에 맞게 스케일링
-    floor_width = 500
-    floor_height = 1300
+    # floor_width = 500
+    # floor_height = 1300
+    floor_width = state['floor_width']
+    floor_height = state['floor_height']
 
     # 좌표를 바닥 크기에 맞게 제한
     x_floor = max(0, min(floor_width, x_floor))
@@ -457,39 +475,15 @@ async def get_floor_coordinates(
 
 
 # 6. 변환 행렬을 저장하는 엔드포인트
-# @app.post("/save_transformations/")
-# async def save_transformations(
-#         room_id: str = Form(...),
-#         camera_id: str = Form(...)
-# ):
-#     # 현재 카메라에 해당하는 변환 행렬을 state에서 가져옴
-#     if camera_id == '1':
-#         H_total = state['H1_total']
-#     elif camera_id == '2':
-#         H_total = state['H2_total']
-#     else:
-#         return {'error': f'지원되지 않는 카메라 ID: {camera_id}'}
-#
-#     if H_total is None:
-#         return {'error': f'카메라 {camera_id}에 대한 변환 행렬이 설정되지 않았습니다.'}
-#
-#     # 변환 행렬을 transformations 딕셔너리에 저장합니다.
-#     transformations[camera_id] = {
-#         'room_id': room_id,
-#         'H_total': H_total.tolist()
-#     }
-#
-#     return {
-#         'message': f'변환 행렬이 카메라 {camera_id}에 대해 저장되었습니다.'
-#     }
-
 @app.post("/save_transformations/")
 async def save_transformations(
     room_id: str = Form(...),
-    camera_id: str = Form(...)
+    camera_id: str = Form(...),
+    scaleX: float = Form(...),
+    scaleY: float = Form(...),
 ):
     # 받은 데이터를 확인하는 로그 추가
-    print(f"받은 room_id: {room_id}, camera_id: {camera_id}")
+    print(f"받은 room_id: {room_id}, camera_id: {camera_id}, scaleX: {scaleX}, scaleY: {scaleY}")
 
     # camera_id에 따라 변환 행렬을 가져오는 로직
     if camera_id == '1':
@@ -505,7 +499,11 @@ async def save_transformations(
     # 변환 행렬을 딕셔너리에 저장
     transformations[camera_id] = {
         'room_id': room_id,
-        'H_total': H_total.tolist()
+        'H_total': H_total.tolist(),
+        'scaleX': float(scaleX),  # 문자열을 float로 변환
+        'scaleY': float(scaleY),  # 문자열을 float로 변환
+        'floor_width':state['floor_width'],
+        'floor_height':state['floor_height']
     }
 
     return {
@@ -515,7 +513,57 @@ async def save_transformations(
 
 
 # 7. 카메라 번호와 x, y 좌표를 받아 변환된 좌표를 반환하는 엔드포인트
+@app.post("/transform_point/")
+async def transform_point(
+    camera_id: str = Form(...),
+    x: float = Form(...),
+    y: float = Form(...)
+):
+    # camera_id에 따라 변환 행렬을 가져옴
+    if camera_id in transformations:
+        transformation_data = transformations[camera_id]
+        H_total = np.array(transformation_data['H_total'], dtype=np.float32)
+        scaleX = float(transformation_data['scaleX'])
+        scaleY = float(transformation_data['scaleY'])
+        floor_width = float(transformation_data['floor_width'])
+        floor_height = float(transformation_data['floor_height'])
+        room_id = transformation_data['room_id']  # room_id 가져오기
+    else:
+        return {'error': f'카메라 {camera_id}에 대한 변환 행렬이 존재하지 않습니다.'}
 
+    # 스케일 적용
+    x_scaled = x * scaleX
+    y_scaled = y * scaleY
+
+    # 좌표 변환
+    transformed_point = map_point_to_floor_coordinates(x_scaled, y_scaled, H_total)
+
+    # 바닥 크기에 맞게 스케일링
+
+    # 스케일링된 좌표
+    x_transformed = max(0, min(floor_width, transformed_point[0]))
+    y_transformed = max(0, min(floor_height, transformed_point[1]))
+
+    # numpy.float32 타입을 Python의 float 타입으로 변환
+    x_transformed = float(x_transformed)
+    y_transformed = float(y_transformed)
+
+
+    # 시뮬레이터로 주소 주기
+    await sio.emit('gridmake', data=[x_transformed+200, y_transformed], namespace='/socketio')
+
+
+    # 여기부터는 아마 이럴 거 같다!
+    # if room_id in rooms_to_sid:
+    #     await send_to_room(room_id, 'gridmake', [x_transformed + 200, y_transformed])
+    # else:
+    #     return {'error': f'방 {room_id}이 존재하지 않습니다.'}
+
+
+    return {
+        'x_transformed': x_transformed,
+        'y_transformed': y_transformed
+    }
 
 # 서버 실행
 if __name__ == '__main__':
