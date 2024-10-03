@@ -7,7 +7,7 @@ import json
 from socketHandler import socket_app, sio
 
 app = FastAPI(root_path="/pyapi")
-app.mount('/', socket_app)
+# app.mount('/', socket_app)
 
 # CORS 설정
 app.add_middleware(
