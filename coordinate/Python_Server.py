@@ -7,7 +7,7 @@ import json
 from socketHandler import socket_app, sio
 
 app = FastAPI(root_path="/pyapi")
-app.mount('/', socket_app)
+# app.mount('/', socket_app)
 
 # CORS 설정
 app.add_middleware(
@@ -485,30 +485,54 @@ async def save_transformations(
     # 받은 데이터를 확인하는 로그 추가
     print(f"받은 room_id: {room_id}, camera_id: {camera_id}, scaleX: {scaleX}, scaleY: {scaleY}")
 
-    # camera_id에 따라 변환 행렬을 가져오는 로직
-    if camera_id == '1':
-        H_total = state['H1_total']
-    elif camera_id == '2':
-        H_total = state['H2_total']
-    else:
-        return {'error': f'지원되지 않는 카메라 ID: {camera_id}'}
-
-    if H_total is None:
-        return {'error': f'카메라 {camera_id}에 대한 변환 행렬이 설정되지 않았습니다.'}
-
-    # 변환 행렬을 딕셔너리에 저장
+    # 변환 행렬을 딕셔너리에 덮어쓰기
     transformations[camera_id] = {
         'room_id': room_id,
-        'H_total': H_total.tolist(),
+        'H_total': state[f'H{camera_id}_total'].tolist(),  # camera_id에 해당하는 H_total을 가져옴
         'scaleX': float(scaleX),  # 문자열을 float로 변환
         'scaleY': float(scaleY),  # 문자열을 float로 변환
-        'floor_width':state['floor_width'],
-        'floor_height':state['floor_height']
+        'floor_width': state.get('floor_width', None),  # 없을 경우 None 처리
+        'floor_height': state.get('floor_height', None)  # 없을 경우 None 처리
     }
 
     return {
-        'message': f'변환 행렬이 카메라 {camera_id}에 대해 저장되었습니다.'
+        'message': f'변환 행렬이 카메라 {camera_id}에 대해 성공적으로 저장되었습니다.'
     }
+
+# @app.post("/save_transformations/")
+# async def save_transformations(
+#     room_id: str = Form(...),
+#     camera_id: str = Form(...),
+#     scaleX: float = Form(...),
+#     scaleY: float = Form(...),
+# ):
+#     # 받은 데이터를 확인하는 로그 추가
+#     print(f"받은 room_id: {room_id}, camera_id: {camera_id}, scaleX: {scaleX}, scaleY: {scaleY}")
+#
+#     # camera_id에 따라 변환 행렬을 가져오는 로직
+#     if camera_id == '1':
+#         H_total = state['H1_total']
+#     elif camera_id == '2':
+#         H_total = state['H2_total']
+#     else:
+#         return {'error': f'지원되지 않는 카메라 ID: {camera_id}'}
+#
+#     if H_total is None:
+#         return {'error': f'카메라 {camera_id}에 대한 변환 행렬이 설정되지 않았습니다.'}
+#
+#     # 변환 행렬을 딕셔너리에 저장
+#     transformations[camera_id] = {
+#         'room_id': room_id,
+#         'H_total': H_total.tolist(),
+#         'scaleX': float(scaleX),  # 문자열을 float로 변환
+#         'scaleY': float(scaleY),  # 문자열을 float로 변환
+#         'floor_width':state['floor_width'],
+#         'floor_height':state['floor_height']
+#     }
+#
+#     return {
+#         'message': f'변환 행렬이 카메라 {camera_id}에 대해 저장되었습니다.'
+#     }
 
 
 
