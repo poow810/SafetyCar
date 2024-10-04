@@ -41,12 +41,12 @@ public class UdpConfig {
         return new DirectChannel();
     }
 
-    @Bean
-    public MessageFilter registerFilter() {
-        logManager.sendLog("registerFilter", LogManager.LOG_TYPE.INFO);
-
-         return new MessageFilter(new UDPFilter());
-    }
+//    @Bean
+//    public MessageFilter registerFilter() {
+//        logManager.sendLog("registerFilter", LogManager.LOG_TYPE.INFO);
+//
+//         return new MessageFilter(new UDPFilter());
+//    }
 
     @Bean(name = "udpReceivingAdapter")
     public UnicastReceivingChannelAdapter udpReceivingAdapter() {
