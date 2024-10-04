@@ -159,7 +159,7 @@ void WebSocketSender::set_connection()
 	ssl = SSL_new(ctx);
 	SSL_set_fd(ssl, clientSocket);
 	SSL_connect(ssl);
-	std::string body = "{\"Access_token\":\"1234\"}"; // JSON 데이터
+	std::string body = "{\"Access_Token\":\"1234\"}"; // JSON 데이터
 	size_t body_length = strlen(body.c_str());
 	std::string request = "POST /api/connect HTTP/1.1\r\nHost: j11b209.p.ssafy.io\r\nConnection: close\r\nContent-Type: application/json\r\nContent-Length: " + std::to_string(body_length) + "\r\n\r\n" + body;
 	
