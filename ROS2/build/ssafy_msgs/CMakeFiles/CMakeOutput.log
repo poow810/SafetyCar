@@ -9,7 +9,7 @@ The output was:
 .NET Framework용 Microsoft (R) Build Engine 버전 16.11.2+f32259642
 Copyright (C) Microsoft Corporation. All rights reserved.
 
-빌드 시작: 2024-09-30 오후 2:37:47
+빌드 시작: 2024-10-04 오전 9:28:16
 1 노드의 "C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs\CMakeFiles\3.19.3\CompilerIdC\CompilerIdC.vcxproj" 프로젝트(기본 대상)입니다.
 PrepareForBuild:
   "Debug\" 디렉터리를 만들고 있습니다.
@@ -35,7 +35,7 @@ FinalizeBuildStatus:
     경고 0개
     오류 0개
 
-경과 시간: 00:00:00.79
+경과 시간: 00:00:03.01
 
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -54,7 +54,7 @@ The output was:
 .NET Framework용 Microsoft (R) Build Engine 버전 16.11.2+f32259642
 Copyright (C) Microsoft Corporation. All rights reserved.
 
-빌드 시작: 2024-09-30 오후 2:37:48
+빌드 시작: 2024-10-04 오전 9:28:20
 1 노드의 "C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs\CMakeFiles\3.19.3\CompilerIdCXX\CompilerIdCXX.vcxproj" 프로젝트(기본 대상)입니다.
 PrepareForBuild:
   "Debug\" 디렉터리를 만들고 있습니다.
@@ -80,7 +80,7 @@ FinalizeBuildStatus:
     경고 0개
     오류 0개
 
-경과 시간: 00:00:00.51
+경과 시간: 00:00:01.78
 
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -92,28 +92,28 @@ The CXX compiler identification is MSVC, found in "C:/Users/SSAFY/Desktop/git_cl
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: C:/Users/SSAFY/Desktop/git_clone/S11P21B209/ROS2/build/ssafy_msgs/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe cmTC_abe4f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m && .NET Framework용 Microsoft (R) Build Engine 버전 16.11.2+f32259642
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe cmTC_b2f27.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m && .NET Framework용 Microsoft (R) Build Engine 버전 16.11.2+f32259642
 Copyright (C) Microsoft Corporation. All rights reserved.
 
   Microsoft (R) C/C++ 최적화 컴파일러 버전 19.29.30154(x64)
   Copyright (c) Microsoft Corporation. All rights reserved.
   CMakeCCompilerABI.c
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_abe4f.dir\Debug\\" /Fd"cmTC_abe4f.dir\Debug\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\Program Files\CMake\share\cmake-3.19\Modules\CMakeCCompilerABI.c"
-  cmTC_abe4f.vcxproj -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs\CMakeFiles\CMakeTmp\Debug\cmTC_abe4f.exe
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b2f27.dir\Debug\\" /Fd"cmTC_b2f27.dir\Debug\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\Program Files\CMake\share\cmake-3.19\Modules\CMakeCCompilerABI.c"
+  cmTC_b2f27.vcxproj -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs\CMakeFiles\CMakeTmp\Debug\cmTC_b2f27.exe
 
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: C:/Users/SSAFY/Desktop/git_clone/S11P21B209/ROS2/build/ssafy_msgs/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe cmTC_46a42.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m && .NET Framework용 Microsoft (R) Build Engine 버전 16.11.2+f32259642
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe cmTC_e0320.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m && .NET Framework용 Microsoft (R) Build Engine 버전 16.11.2+f32259642
 Copyright (C) Microsoft Corporation. All rights reserved.
 
   Microsoft (R) C/C++ 최적화 컴파일러 버전 19.29.30154(x64)
   Copyright (c) Microsoft Corporation. All rights reserved.
   CMakeCXXCompilerABI.cpp
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_46a42.dir\Debug\\" /Fd"cmTC_46a42.dir\Debug\vc142.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\Program Files\CMake\share\cmake-3.19\Modules\CMakeCXXCompilerABI.cpp"
-  cmTC_46a42.vcxproj -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs\CMakeFiles\CMakeTmp\Debug\cmTC_46a42.exe
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_e0320.dir\Debug\\" /Fd"cmTC_e0320.dir\Debug\vc142.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\Program Files\CMake\share\cmake-3.19\Modules\CMakeCXXCompilerABI.cpp"
+  cmTC_e0320.vcxproj -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\ssafy_msgs\CMakeFiles\CMakeTmp\Debug\cmTC_e0320.exe
 
 
 

@@ -1,0 +1,128 @@
+[5.250s] Invoking command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\src\safety_package': PYTHONPATH=C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages;%PYTHONPATH% installDir=%installDir%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; c:\python37\python.exe -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ..\..\build\safety_package build --build-base C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build install --record C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\install.log --install-scripts $base/lib/safety_package --single-version-externally-managed install_data
+[7.031s] running egg_info
+[7.031s] creating ..\..\build\safety_package\safety_package.egg-info
+[7.156s] writing ..\..\build\safety_package\safety_package.egg-info\PKG-INFO
+[7.156s] writing dependency_links to ..\..\build\safety_package\safety_package.egg-info\dependency_links.txt
+[7.156s] writing entry points to ..\..\build\safety_package\safety_package.egg-info\entry_points.txt
+[7.172s] writing requirements to ..\..\build\safety_package\safety_package.egg-info\requires.txt
+[7.172s] writing top-level names to ..\..\build\safety_package\safety_package.egg-info\top_level.txt
+[7.172s] writing manifest file '..\..\build\safety_package\safety_package.egg-info\SOURCES.txt'
+[7.406s] reading manifest file '..\..\build\safety_package\safety_package.egg-info\SOURCES.txt'
+[7.422s] writing manifest file '..\..\build\safety_package\safety_package.egg-info\SOURCES.txt'
+[7.422s] running build
+[7.422s] running build_py
+[7.422s] creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build
+[7.422s] creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib
+[7.422s] creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.422s] copying safety_package\__init__.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.422s] copying safety_package\dynamic_window_approach.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.437s] copying safety_package\a_star.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.437s] copying safety_package\a_star_local_path.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.437s] copying safety_package\data_socket.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.453s] copying safety_package\dwa_local_path.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.453s] copying safety_package\ex_calib.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.453s] copying safety_package\follow_the_carrot.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.453s] copying safety_package\load_map.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.468s] copying safety_package\my_node.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.468s] copying safety_package\odometry.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.468s] copying safety_package\path_publisher.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.468s] copying safety_package\path_tracking copy.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.484s] copying safety_package\path_tracking.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.484s] copying safety_package\publisher_member_function.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.484s] copying safety_package\run_localization.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.484s] copying safety_package\run_mapping.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.500s] copying safety_package\subscriber_member_function.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.500s] copying safety_package\utils.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+[7.500s] running install
+[7.500s] running install_lib
+[7.609s] creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.609s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\a_star.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.609s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\a_star_local_path.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.625s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\data_socket.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.625s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\dwa_local_path.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.640s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\dynamic_window_approach.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.640s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\ex_calib.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.656s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\follow_the_carrot.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.656s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\load_map.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.656s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\my_node.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.672s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\odometry.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.672s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\path_publisher.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.687s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\path_tracking copy.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.687s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\path_tracking.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.703s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\publisher_member_function.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.703s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\run_localization.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.718s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\run_mapping.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.718s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\subscriber_member_function.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.718s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\utils.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.734s] copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\__init__.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+[7.734s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\a_star.py to a_star.cpython-37.pyc
+[7.750s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\a_star_local_path.py to a_star_local_path.cpython-37.pyc
+[7.765s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\data_socket.py to data_socket.cpython-37.pyc
+[7.765s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\dwa_local_path.py to dwa_local_path.cpython-37.pyc
+[7.781s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\dynamic_window_approach.py to dynamic_window_approach.cpython-37.pyc
+[7.797s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\ex_calib.py to ex_calib.cpython-37.pyc
+[7.797s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\follow_the_carrot.py to follow_the_carrot.cpython-37.pyc
+[7.812s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\load_map.py to load_map.cpython-37.pyc
+[7.828s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\my_node.py to my_node.cpython-37.pyc
+[7.828s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\odometry.py to odometry.cpython-37.pyc
+[7.843s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\path_publisher.py to path_publisher.cpython-37.pyc
+[7.859s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\path_tracking copy.py to path_tracking copy.cpython-37.pyc
+[7.875s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\path_tracking.py to path_tracking.cpython-37.pyc
+[7.890s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\publisher_member_function.py to publisher_member_function.cpython-37.pyc
+[7.890s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\run_localization.py to run_localization.cpython-37.pyc
+[7.906s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\run_mapping.py to run_mapping.cpython-37.pyc
+[7.922s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\subscriber_member_function.py to subscriber_member_function.cpython-37.pyc
+[7.937s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\utils.py to utils.cpython-37.pyc
+[7.937s] byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\__init__.py to __init__.cpython-37.pyc
+[7.953s] running install_data
+[7.953s] creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\ament_index
+[7.953s] creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\ament_index\resource_index
+[7.953s] creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\ament_index\resource_index\packages
+[7.953s] copying resource\safety_package -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\ament_index\resource_index\packages
+[7.953s] copying package.xml -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\safety_package
+[7.953s] running install_egg_info
+[8.047s] Copying ..\..\build\safety_package\safety_package.egg-info to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package-0.0.0-py3.7.egg-info
+[8.093s] running install_scripts
+[8.734s] Installing a_star_global-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.734s] Installing a_star_global.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.734s] Installing a_star_local-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.734s] Installing a_star_local.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.750s] Installing calibration-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.750s] Installing calibration.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.750s] Installing dwa_local-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.750s] Installing dwa_local.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.750s] Installing ftc-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.765s] Installing ftc.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.765s] Installing listner-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.765s] Installing listner.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.765s] Installing load_map-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.781s] Installing load_map.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.781s] Installing mapping-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.781s] Installing mapping.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.781s] Installing my_node-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.781s] Installing my_node.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.797s] Installing odom-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.797s] Installing odom.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.797s] Installing talker-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.797s] Installing talker.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.797s] Installing test_tracking-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.812s] Installing test_tracking.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+[8.812s] writing list of installed files to 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\install.log'
+[8.812s] c:\python37\lib\site-packages\setuptools\dist.py:745: SetuptoolsDeprecationWarning: Invalid dash-separated options
+[8.812s] !!
+[8.812s] 
+[8.812s]         ********************************************************************************
+[8.812s]         Usage of dash-separated 'script-dir' will not be supported in future
+[8.812s]         versions. Please use the underscore name 'script_dir' instead.
+[8.812s] 
+[8.812s]         This deprecation is overdue, please update your project and remove deprecated
+[8.812s]         calls to avoid build errors in the future.
+[8.812s] 
+[8.812s]         See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+[8.812s]         ********************************************************************************
+[8.812s] 
+[8.812s] !!
+[8.812s]   opt = self.warn_dash_deprecation(opt, section)
+[8.875s] Invoked command in 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\src\safety_package' returned '0': PYTHONPATH=C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages;%PYTHONPATH% installDir=%installDir%
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.2\bin; c:\python37\python.exe -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ..\..\build\safety_package build --build-base C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build install --record C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\install.log --install-scripts $base/lib/safety_package --single-version-externally-managed install_data

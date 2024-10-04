@@ -1,0 +1,109 @@
+running egg_info
+creating ..\..\build\safety_package\safety_package.egg-info
+writing ..\..\build\safety_package\safety_package.egg-info\PKG-INFO
+writing dependency_links to ..\..\build\safety_package\safety_package.egg-info\dependency_links.txt
+writing entry points to ..\..\build\safety_package\safety_package.egg-info\entry_points.txt
+writing requirements to ..\..\build\safety_package\safety_package.egg-info\requires.txt
+writing top-level names to ..\..\build\safety_package\safety_package.egg-info\top_level.txt
+writing manifest file '..\..\build\safety_package\safety_package.egg-info\SOURCES.txt'
+reading manifest file '..\..\build\safety_package\safety_package.egg-info\SOURCES.txt'
+writing manifest file '..\..\build\safety_package\safety_package.egg-info\SOURCES.txt'
+running build
+running build_py
+creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build
+creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib
+creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\__init__.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\dynamic_window_approach.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\a_star.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\a_star_local_path.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\data_socket.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\dwa_local_path.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\ex_calib.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\follow_the_carrot.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\load_map.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\my_node.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\odometry.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\path_publisher.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\path_tracking copy.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\path_tracking.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\publisher_member_function.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\run_localization.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\run_mapping.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\subscriber_member_function.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+copying safety_package\utils.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package
+running install
+running install_lib
+creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\a_star.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\a_star_local_path.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\data_socket.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\dwa_local_path.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\dynamic_window_approach.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\ex_calib.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\follow_the_carrot.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\load_map.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\my_node.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\odometry.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\path_publisher.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\path_tracking copy.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\path_tracking.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\publisher_member_function.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\run_localization.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\run_mapping.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\subscriber_member_function.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\utils.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+copying C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\build\lib\safety_package\__init__.py -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\a_star.py to a_star.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\a_star_local_path.py to a_star_local_path.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\data_socket.py to data_socket.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\dwa_local_path.py to dwa_local_path.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\dynamic_window_approach.py to dynamic_window_approach.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\ex_calib.py to ex_calib.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\follow_the_carrot.py to follow_the_carrot.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\load_map.py to load_map.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\my_node.py to my_node.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\odometry.py to odometry.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\path_publisher.py to path_publisher.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\path_tracking copy.py to path_tracking copy.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\path_tracking.py to path_tracking.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\publisher_member_function.py to publisher_member_function.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\run_localization.py to run_localization.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\run_mapping.py to run_mapping.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\subscriber_member_function.py to subscriber_member_function.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\utils.py to utils.cpython-37.pyc
+byte-compiling C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package\__init__.py to __init__.cpython-37.pyc
+running install_data
+creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\ament_index
+creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\ament_index\resource_index
+creating C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\ament_index\resource_index\packages
+copying resource\safety_package -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\ament_index\resource_index\packages
+copying package.xml -> C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\share\safety_package
+running install_egg_info
+Copying ..\..\build\safety_package\safety_package.egg-info to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\Lib\site-packages\safety_package-0.0.0-py3.7.egg-info
+running install_scripts
+Installing a_star_global-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing a_star_global.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing a_star_local-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing a_star_local.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing calibration-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing calibration.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing dwa_local-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing dwa_local.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing ftc-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing ftc.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing listner-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing listner.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing load_map-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing load_map.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing mapping-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing mapping.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing my_node-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing my_node.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing odom-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing odom.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing talker-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing talker.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing test_tracking-script.py script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+Installing test_tracking.exe script to C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\install\safety_package\lib\safety_package
+writing list of installed files to 'C:\Users\SSAFY\Desktop\git_clone\S11P21B209\ROS2\build\safety_package\install.log'
