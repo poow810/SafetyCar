@@ -17,7 +17,8 @@ public class AccessFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        logManager.sendLog("DO Filter!", LogManager.LOG_TYPE.INFO);
+//        logManager.sendLog("DO Filter!", LogManager.LOG_TYPE.INFO);
+        logManager.sendLog(servletRequest.getAttributeNames().toString(), LogManager.LOG_TYPE.INFO);
 
         //TODO : token check
 
