@@ -50,7 +50,10 @@ public class UdpInboundMessageHandler {
     @ServiceActivator(inputChannel = "inboundChannel")
     public void handleMessage(Message message, @Headers Map<String, Object> headerMap) throws IOException {
 //        System.out.println(headerMap.toString());
-        if(!udpFilter.accept(message)) return;
+        if(!udpFilter.accept(message)) {
+            logManager.sendLog("ACCESS DENIED", LogManager.LOG_TYPE.WARN);
+            return;
+        }
         ByteArrayInputStream bis = new ByteArrayInputStream((byte[])message.getPayload());
         int endflag = bis.read();
         int cameraId = bis.read();

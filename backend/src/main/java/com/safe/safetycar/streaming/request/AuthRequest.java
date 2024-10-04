@@ -10,5 +10,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class AuthRequest {
-    String Access_token;
+    String Access_Token;
 }
