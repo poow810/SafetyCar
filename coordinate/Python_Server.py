@@ -574,7 +574,7 @@ async def transform_point(
 
 
     # 시뮬레이터로 주소 주기
-    await sio.emit('gridmake', data=[x_transformed+200, y_transformed], namespace='/socketio')
+    # await sio.emit('gridmake', data=[x_transformed+200, y_transformed], namespace='/socketio')
 
 
     # 여기부터는 아마 이럴 거 같다!
