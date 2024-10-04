@@ -2,10 +2,13 @@ package com.safe.safetycar.streaming.udp;
 
 import com.safe.safetycar.log.LogManager;
 import com.safe.safetycar.streaming.socket.manager.WebSocketManager;
+import com.safe.safetycar.streaming.udp.filter.UDPFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.handler.annotation.Headers;
 
 import java.io.ByteArrayInputStream;
@@ -14,7 +17,8 @@ import java.util.Map;
 
 @MessageEndpoint
 public class UdpInboundMessageHandler {
-
+    @Autowired
+    private UDPFilter udpFilter;
     @Autowired
     private WebSocketManager wsm;
 //    private final static Logger LOGGER = LoggerFactory.getLogger(UdpInboundMessageHandler.class);
@@ -45,7 +49,8 @@ public class UdpInboundMessageHandler {
     //{ip_packetAddress=/127.0.0.1:58011, ip_address=127.0.0.1, id=6626e9b4-fac2-e7d2-d2a0-afd7ce5fa366, ip_port=58011, ip_hostname=127.0.0.1, timestamp=1727833051957}
     @ServiceActivator(inputChannel = "inboundChannel")
     public void handleMessage(Message message, @Headers Map<String, Object> headerMap) throws IOException {
-        System.out.println(headerMap.toString());
+//        System.out.println(headerMap.toString());
+        if(!udpFilter.accept(message)) return;
         ByteArrayInputStream bis = new ByteArrayInputStream((byte[])message.getPayload());
         int endflag = bis.read();
         int cameraId = bis.read();
