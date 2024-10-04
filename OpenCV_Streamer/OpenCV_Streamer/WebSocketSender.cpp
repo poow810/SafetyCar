@@ -153,13 +153,17 @@ void WebSocketSender::set_connection()
 		return;
 	}
 
+
+
 	// SSL 연결 설정
 	ssl = SSL_new(ctx);
 	SSL_set_fd(ssl, clientSocket);
 	SSL_connect(ssl);
-
-	const char* request = "GET /api/test HTTP/1.1\r\nHost: j11b209.p.ssafy.io\r\nConnection: close\r\n\r\n";
-	SSL_write(ssl, request, strlen(request));
+	std::string body = "{\"Access_token\":\"1234\"}"; // JSON 데이터
+	size_t body_length = strlen(body.c_str());
+	std::string request = "POST /api/connect HTTP/1.1\r\nHost: j11b209.p.ssafy.io\r\nConnection: close\r\nContent-Type: application/json\r\nContent-Length: " + std::to_string(body_length) + "\r\n\r\n" + body;
+	
+	SSL_write(ssl, request.c_str(), strlen(request.c_str()));
 
 	// 응답 받기
 	char buf[1024];
