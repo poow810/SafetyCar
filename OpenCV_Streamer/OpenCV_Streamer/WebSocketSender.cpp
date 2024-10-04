@@ -1,12 +1,16 @@
-#include "WebSocketSender.h"
+ï»¿#include "WebSocketSender.h"
 
 WebSocketSender::WebSocketSender()
-{
-	//WebSocket ¶óÀÌºê·¯¸® ¼³Á¤ÇÏ±â 2.2 ¹öÀü
+{	
+	// https í†µì‹ ìœ¼ë¡œ ì•„ì´í”¼ ë“±ë¡í•˜ê¸°
+	set_connection();
+
+
+	//WebSocket ë¼ì´ë¸ŒëŸ¬ë¦¬ ì„¤ì •í•˜ê¸° 2.2 ë²„ì „
 	WSAStartup(MAKEWORD(2, 2), &wsadata);
-	//Åë½Å Çü½Ä ¼³Á¤, AF_INET = IP v4, SOCK_DGRAM = UDP, 0 = ÀÚµ¿ ¼³Á¤
+	//í†µì‹  í˜•ì‹ ì„¤ì •, AF_INET = IP v4, SOCK_DGRAM = UDP, 0 = ìë™ ì„¤ì •
 	m_clientSock = socket(AF_INET, SOCK_DGRAM, 0);
-	//ÃÊ±âÈ­
+	//ì´ˆê¸°í™”
 	ZeroMemory(&m_ClientAddr, sizeof(m_ClientAddr));
 	m_ClientAddr.sin_family = AF_INET;
 	m_ClientAddr.sin_addr.S_un.S_addr = inet_addr(SERVER_IP);
@@ -38,7 +42,7 @@ WebSocketSender::WebSocketSender()
 WebSocketSender::~WebSocketSender()
 {
 	connected = false;
-	//¼ÒÄÏ ¸Ş¸ğ¸® Á¤¸®
+	//ì†Œì¼“ ë©”ëª¨ë¦¬ ì •ë¦¬
 	freeaddrinfo(host_domainAddr);
 	WSACleanup();
 }
@@ -56,19 +60,19 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 	BYTE num = 0;
 	BYTE buffer[IMG_SEG_SIZE + (sizeof(BYTE) * INFO_SIZE)] = {};
 
-	//Àü¼ÛÇÒ¶§ µ¥ÀÌÅÍ ¸Ç ¾Õ 3¹ÙÀÌÆ®¿¡ ÆĞÅ¶ Á¤º¸¸¦ ÇÔ²² Àü¼Û
-	//°¢ ¹ÙÀÌÆ®´Â ¸¶Áö¸· ÆĞÅ¶¿©ºÎ, Ä«¸Ş¶ó¾ÆÀÌµğ, ÀÌ¹ÌÁö ¹øÈ£¸¦ ÀÇ¹ÌÇÑ´Ù.
+	//ì „ì†¡í• ë•Œ ë°ì´í„° ë§¨ ì• 3ë°”ì´íŠ¸ì— íŒ¨í‚· ì •ë³´ë¥¼ í•¨ê»˜ ì „ì†¡
+	//ê° ë°”ì´íŠ¸ëŠ” ë§ˆì§€ë§‰ íŒ¨í‚·ì—¬ë¶€, ì¹´ë©”ë¼ì•„ì´ë””, ì´ë¯¸ì§€ ë²ˆí˜¸ë¥¼ ì˜ë¯¸í•œë‹¤.
 	while (total_bytes_sent < img_packet_size) {
 		chunk_size = min(IMG_SEG_SIZE, img_packet_size - total_bytes_sent);
 		
-		memset(buffer, 0, sizeof(buffer));	//0À¸·Î ÃÊ±âÈ­
-		buffer[0] = total_bytes_sent + chunk_size < img_packet_size ? 0 : 255;	//¸¶Áö¸· ÆĞÅ¶ÀÎÁö °Ë»ç
+		memset(buffer, 0, sizeof(buffer));	//0ìœ¼ë¡œ ì´ˆê¸°í™”
+		buffer[0] = total_bytes_sent + chunk_size < img_packet_size ? 0 : 255;	//ë§ˆì§€ë§‰ íŒ¨í‚·ì¸ì§€ ê²€ì‚¬
 		buffer[1] = camera_id;
 		buffer[2] = num++;
 		memcpy(buffer + (sizeof(BYTE) * INFO_SIZE), bytes.data() + total_bytes_sent, chunk_size);
 		sent_bytes = sendto(m_clientSock, reinterpret_cast<char*>(buffer), chunk_size + (sizeof(BYTE) * INFO_SIZE), 0, (SOCKADDR*)&m_ClientAddr, sizeof(m_ClientAddr));
 
-		//º¸³½ µ¥ÀÌÅÍÀÇ ¾çÀÌ -1ÀÎ °æ¿ì´Â ¿À·ùÀÎ °æ¿ì
+		//ë³´ë‚¸ ë°ì´í„°ì˜ ì–‘ì´ -1ì¸ ê²½ìš°ëŠ” ì˜¤ë¥˜ì¸ ê²½ìš°
 		if (sent_bytes == SOCKET_ERROR) {
 			//check when error occured
 			//https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-sendto
@@ -97,4 +101,99 @@ void WebSocketSender::set_cameraId()
 	std::cout << "Please, Enter Camera ID : ";
 	std::cin >> id;
 	camera_id = (BYTE)id;
+}
+
+void WebSocketSender::set_connection()
+{
+	SSL_CTX* ctx;
+	SSL* ssl;
+
+	// OpenSSL ì´ˆê¸°í™”
+	SSL_library_init();
+	OpenSSL_add_all_algorithms();
+	SSL_load_error_strings();
+	ctx = SSL_CTX_new(TLS_client_method());
+
+
+
+	std::string ipAddress = SERVER_IP;
+	//std::string ipAddress = SERVER_DOMAIN;
+	int port = 443;
+	//int port = 8080;
+
+	// initialise winsock
+	WSADATA data;
+	WORD ver = MAKEWORD(2, 2);
+	int wsResult = WSAStartup(ver, &data);
+	if (wsResult != 0) {
+		std::cerr << "Can't start winsock, Err #" << wsResult << std::endl;
+		return;
+	}
+
+	// create socket
+	SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+	if (clientSocket == INVALID_SOCKET) {
+		std::cerr << "Can't create socket, Err #" << WSAGetLastError() << std::endl;
+		WSACleanup();
+		return;
+	}
+
+	// hint structure
+	sockaddr_in hint;
+	hint.sin_family = AF_INET;
+	hint.sin_port = htons(port);
+	inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
+
+	// connect
+	int connResult = connect(clientSocket, (sockaddr*)&hint, sizeof(hint));
+	if (connResult == SOCKET_ERROR) {
+		std::cerr << "Can't connect to server, Err #" << WSAGetLastError << std::endl;
+		closesocket(clientSocket);
+		WSACleanup();
+		return;
+	}
+
+	// SSL ì—°ê²° ì„¤ì •
+	ssl = SSL_new(ctx);
+	SSL_set_fd(ssl, clientSocket);
+	SSL_connect(ssl);
+
+	const char* request = "GET /api/test HTTP/1.1\r\nHost: j11b209.p.ssafy.io\r\nConnection: close\r\n\r\n";
+	SSL_write(ssl, request, strlen(request));
+
+	// ì‘ë‹µ ë°›ê¸°
+	char buf[1024];
+	int bytes;
+	while ((bytes = SSL_read(ssl, buf, sizeof(buf))) > 0) {
+		buf[bytes] = 0;
+		printf("%s", buf);
+	}
+
+	/*
+	// do while loop to send and receive data
+	char buff[4096];
+
+	char cmd[] = "GET /test HTTP/1.0\r\nHost: j11b209.p.ssafy.io\r\n\r\n";
+
+	int sendResult = send(clientSocket, cmd, sizeof(cmd), 0);
+
+	if (sendResult != SOCKET_ERROR) {
+		// wait for response
+		ZeroMemory(buff, 4096);
+		int bytesReceived = recv(clientSocket, buff, 4096, 0);
+
+		// echo response to console
+		if (bytesReceived > 0) {
+			std::cout << std::string(buff, 0, bytesReceived) << std::endl;
+		}
+	}*/
+
+	// ì—°ê²° ì¢…ë£Œ
+	SSL_shutdown(ssl);
+	SSL_free(ssl);
+	SSL_CTX_free(ctx);
+
+	closesocket(clientSocket);
+	WSACleanup();
+	return;
 }

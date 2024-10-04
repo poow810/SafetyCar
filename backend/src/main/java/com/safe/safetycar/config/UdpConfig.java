@@ -1,11 +1,17 @@
 package com.safe.safetycar.config;
 
+import com.safe.safetycar.log.LogManager;
+import com.safe.safetycar.streaming.udp.UdpInboundMessageHandler;
+import com.safe.safetycar.streaming.udp.filter.UDPFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
+import org.springframework.integration.dsl.IntegrationFlow;
+import org.springframework.integration.filter.MessageFilter;
+import org.springframework.integration.ip.dsl.Udp;
 import org.springframework.integration.ip.udp.UnicastReceivingChannelAdapter;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -28,10 +34,19 @@ public class UdpConfig {
     @Value("${udp.task-executor.queue-capacity}")
     private Integer queueSize;
 
+    private LogManager logManager = new LogManager(UdpConfig.class);
+
     @Bean
     public MessageChannel inboundChannel() {
         return new DirectChannel();
     }
+
+//    @Bean
+//    public MessageFilter registerFilter() {
+//        logManager.sendLog("registerFilter", LogManager.LOG_TYPE.INFO);
+//
+//         return new MessageFilter(new UDPFilter());
+//    }
 
     @Bean(name = "udpReceivingAdapter")
     public UnicastReceivingChannelAdapter udpReceivingAdapter() {
