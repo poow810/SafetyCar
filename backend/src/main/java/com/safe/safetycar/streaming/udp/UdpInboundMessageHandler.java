@@ -67,8 +67,9 @@ public class UdpInboundMessageHandler {
         }
 //        bis.read(camera_data_assembled[cameraId], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
         imageManager.write(bis, cameraId, segNum);
-        logManager.sendLog("Received", LogManager.LOG_TYPE.INFO);
+
         if(endflag > 0){
+            logManager.sendLog("Received", LogManager.LOG_TYPE.INFO);
             logManager.sendInterval();
             wsm.sendFrame(cameraId);
         }
