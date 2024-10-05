@@ -31,7 +31,7 @@ public class CameraService {
      * @return      생성된 카메라의 번호
      */
     public byte addCamera(String ip) {
-        if(whiteList.containsKey(ip)) {
+        if(!whiteList.containsKey(ip)) {
             whiteList.put(ip, imageManager.initCamera());   //카메라를 위한 공간 할당 및 번호 등록
         } else logManager.sendLog("Camera Already Registered!", LogManager.LOG_TYPE.WARN);
 
