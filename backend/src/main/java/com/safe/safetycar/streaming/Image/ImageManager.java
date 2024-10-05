@@ -13,11 +13,11 @@ public class ImageManager {
     private static ArrayList<Image> images = new ArrayList<>();
 
     public void write(ByteArrayInputStream bis, byte cameraId, byte segNum) {
-        images.get((int)cameraId).write(bis, segNum);
+        images.get(cameraId).write(bis, segNum);
     }
 
     public Image read(byte cameraId) {
-        return images.get((int)cameraId);
+        return images.get(cameraId);
     }
 
     /**
@@ -31,7 +31,7 @@ public class ImageManager {
     }
 
     public void clear(byte cameraId) {
-        images.remove((int)cameraId);
+        images.remove(cameraId);
     }
 
     public void clearAll() {
