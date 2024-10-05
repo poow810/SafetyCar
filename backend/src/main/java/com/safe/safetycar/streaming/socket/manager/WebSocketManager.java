@@ -1,6 +1,7 @@
 package com.safe.safetycar.streaming.socket.manager;
 
 import com.safe.safetycar.log.LogManager;
+import com.safe.safetycar.streaming.Image.ImageManager;
 import com.safe.safetycar.streaming.udp.UdpInboundMessageHandler;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnOpen;
@@ -8,6 +9,7 @@ import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,6 +25,8 @@ public class WebSocketManager {
     private final static LogManager LOGGER = new LogManager(WebSocketManager.class);
     private static Set<Session> CLIENTS = Collections.synchronizedSet(new HashSet<>());
 
+    @Autowired
+    private ImageManager imageManager;
 
     @OnOpen
     public void onOpen(Session session) {
@@ -42,13 +46,14 @@ public class WebSocketManager {
         LOGGER.sendLog("Closed : " + session, LogManager.LOG_TYPE.INFO);
     }
 
-    public void sendFrame(int cameraId) throws IOException {
+    public void sendFrame(byte cameraId) throws IOException {
 //        LOGGER.info("sending Frame");
 
         for(Session client : CLIENTS) {
             try {
                 synchronized (client) {
-                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(UdpInboundMessageHandler.camera_data_assembled[cameraId]));
+//                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(UdpInboundMessageHandler.camera_data_assembled[cameraId]));
+                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
