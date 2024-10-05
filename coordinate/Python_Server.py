@@ -7,7 +7,9 @@ import json
 from socketHandler import socket_app, sio
 
 app = FastAPI(root_path="/pyapi")
-# app.mount('/', socket_app)
+
+
+app.mount('/socket', socket_app)
 
 # CORS 설정
 app.add_middleware(
@@ -48,6 +50,9 @@ images = {
 
 # 변환 행렬을 저장하기 위한 딕셔너리
 transformations = {}
+
+# 신고를 위한 딕셔너리
+emergencyeventlog = {}
 
 # 유틸리티 함수들
 def encode_image_to_base64(image):
@@ -455,8 +460,7 @@ async def get_floor_coordinates(
     x_floor, y_floor = map_point_to_floor_coordinates(x, y, H_total)
 
     # 합성된 이미지에서의 좌표를 최종 바닥 크기에 맞게 스케일링
-    # floor_width = 500
-    # floor_height = 1300
+
     floor_width = state['floor_width']
     floor_height = state['floor_height']
 
@@ -475,28 +479,73 @@ async def get_floor_coordinates(
 
 
 # 6. 변환 행렬을 저장하는 엔드포인트
+# @app.post("/save_transformations/")
+# async def save_transformations(
+#     room_id: str = Form(...),
+#     camera_id: str = Form(...),
+#     scaleX: float = Form(...),
+#     scaleY: float = Form(...),
+# ):
+#     # 받은 데이터를 확인하는 로그 추가
+#     print(f"받은 room_id: {room_id}, camera_id: {camera_id}, scaleX: {scaleX}, scaleY: {scaleY}")
+#
+#     # 변환 행렬을 딕셔너리에 덮어쓰기
+#     transformations[camera_id] = {
+#         'room_id': room_id,
+#         'H_total': state[f'H{camera_id}_total'].tolist(),  # camera_id에 해당하는 H_total을 가져옴
+#         'scaleX': float(scaleX),  # 문자열을 float로 변환
+#         'scaleY': float(scaleY),  # 문자열을 float로 변환
+#         'floor_width': state.get('floor_width', None),  # 없을 경우 None 처리
+#         'floor_height': state.get('floor_height', None)  # 없을 경우 None 처리
+#     }
+#
+#     return {
+#         'message': f'변환 행렬이 카메라 {camera_id}에 대해 성공적으로 저장되었습니다.'
+#     }
 @app.post("/save_transformations/")
 async def save_transformations(
     room_id: str = Form(...),
-    camera_id: str = Form(...),
-    scaleX: float = Form(...),
-    scaleY: float = Form(...),
+    camera_id1: str = Form(...),
+    camera_id2: str = Form(...),
+    scaleX1: float = Form(...),
+    scaleY1: float = Form(...),
+    scaleX2: float = Form(...),
+    scaleY2: float = Form(...),
 ):
-    # 받은 데이터를 확인하는 로그 추가
-    print(f"받은 room_id: {room_id}, camera_id: {camera_id}, scaleX: {scaleX}, scaleY: {scaleY}")
+    # 로그 추가
+    print(f"받은 room_id: {room_id}, camera_id1: {camera_id1}, camera_id2: {camera_id2}, scaleX1: {scaleX1}, scaleY1: {scaleY1}, scaleX2: {scaleX2}, scaleY2: {scaleY2}")
 
-    # 변환 행렬을 딕셔너리에 덮어쓰기
-    transformations[camera_id] = {
+    # 첫 번째 카메라 ID는 H1_total에 저장
+    H1_total_key = f'H1_total'
+    if H1_total_key not in state:
+        return {'error': f'카메라 {camera_id1}에 대한 변환 행렬이 존재하지 않습니다.'}
+
+    # 두 번째 카메라 ID는 H2_total에 저장
+    H2_total_key = f'H2_total'
+    if H2_total_key not in state:
+        return {'error': f'카메라 {camera_id2}에 대한 변환 행렬이 존재하지 않습니다.'}
+
+    # 각각의 변환 행렬을 딕셔너리에 저장
+    transformations[camera_id1] = {
         'room_id': room_id,
-        'H_total': state[f'H{camera_id}_total'].tolist(),  # camera_id에 해당하는 H_total을 가져옴
-        'scaleX': float(scaleX),  # 문자열을 float로 변환
-        'scaleY': float(scaleY),  # 문자열을 float로 변환
-        'floor_width': state.get('floor_width', None),  # 없을 경우 None 처리
-        'floor_height': state.get('floor_height', None)  # 없을 경우 None 처리
+        'H_total': state[H1_total_key].tolist(),  # camera_id1에 해당하는 H_total 저장
+        'scaleX': float(scaleX1),
+        'scaleY': float(scaleY1),
+        'floor_width': state.get('floor_width', None),
+        'floor_height': state.get('floor_height', None)
+    }
+
+    transformations[camera_id2] = {
+        'room_id': room_id,
+        'H_total': state[H2_total_key].tolist(),  # camera_id2에 해당하는 H_total 저장
+        'scaleX': float(scaleX2),
+        'scaleY': float(scaleY2),
+        'floor_width': state.get('floor_width', None),
+        'floor_height': state.get('floor_height', None)
     }
 
     return {
-        'message': f'변환 행렬이 카메라 {camera_id}에 대해 성공적으로 저장되었습니다.'
+        'message': f'변환 행렬이 카메라 {camera_id1}, {camera_id2}에 대해 성공적으로 저장되었습니다.'
     }
 
 # @app.post("/save_transformations/")
@@ -573,8 +622,11 @@ async def transform_point(
     y_transformed = float(y_transformed)
 
 
+    emergencyeventlog
+
+
     # 시뮬레이터로 주소 주기
-    # await sio.emit('gridmake', data=[x_transformed+200, y_transformed], namespace='/socketio')
+    await sio.emit('gridmake', data=[x_transformed+200, y_transformed], namespace='/socketio')
 
 
     # 여기부터는 아마 이럴 거 같다!
