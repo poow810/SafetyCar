@@ -57,7 +57,7 @@ public class UdpInboundMessageHandler {
             return;
         }
         ByteArrayInputStream bis = new ByteArrayInputStream((byte[])message.getPayload());
-        byte endflag = (byte)bis.read();
+        int endflag = bis.read();
         byte cameraId = (byte)bis.read();
         byte segNum = (byte)bis.read();
 
