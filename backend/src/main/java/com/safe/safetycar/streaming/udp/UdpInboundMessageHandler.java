@@ -57,6 +57,13 @@ public class UdpInboundMessageHandler {
             return;
         }
         ByteArrayInputStream bis = new ByteArrayInputStream((byte[])message.getPayload());
+        //endflag를 byte로 받으면 아래 if문에서 정상적으로 식별이 되지 않는다. 카메라에서 255(모든 비트를 1)으로 설정하고 전송하는데 if문에서 음수로 판단하는 것 같다...
+        //c++에서는 BYTE는 unsigned char(0 ~ 255) 으로 선언되어있다. 하지만 자바에서는 byte의 표현범위가 -127 ~ 128이기 때문에 음수로 인식되어 아래 if문에서 항상 거짓이게 된다...
+        //해결 방법은 다음과 같다.
+        //1. int형으로 변환하면 원하는 값을 얻을 수 있다.
+        //2. 음수로 인식되는 범위라면 부호 비트를 반전하기
+        //3. char 자료형을 사용하기
+        // 가장 간단한 1번을 사용하기로 하였다.
         int endflag = bis.read();
         byte cameraId = (byte)bis.read();
         byte segNum = (byte)bis.read();
