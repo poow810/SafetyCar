@@ -212,7 +212,7 @@ const Step1 = () => {
 
       <div>
         <label>
-          바닥 너비 (floor width):
+          바닥 너비 (Floor Width)
           <input
             type="number"
             value={floorWidth}
@@ -223,7 +223,7 @@ const Step1 = () => {
       </div>
       <div style={{ marginTop: "10px" }}>
         <label>
-          바닥 높이 (floor height):
+          바닥 높이 (Floor Height)
           <input
             type="number"
             value={floorHeight}
@@ -237,7 +237,7 @@ const Step1 = () => {
         className="admin-button"
         disabled={floorPoints1.length < 4 || floorPoints2.length < 4}
       >
-        이미지 업로드 및 다음 단계로 진행
+        다음 단계
       </button>
     </div>
   );

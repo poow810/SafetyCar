@@ -1,9 +1,9 @@
 /* 전체 컨테이너 */
 .admin-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7); /* 반투명 검정 배경 */
+  background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 배경 */
   border-radius: 10px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
   color: #f5f5f5; /* 밝은 텍스트 색상 */
@@ -22,17 +22,20 @@
   display: flex;
   justify-content: space-around;
   margin-bottom: 30px;
+  flex-wrap: wrap; /* 화면 크기에 따라 이미지가 아래로 내려가도록 함 */
 }
 
 /* 각 이미지 컨테이너 */
 .admin-image-container {
   text-align: center;
+  flex: 1; /* 이미지들이 같은 비율로 공간을 차지하도록 함 */
+  max-width: 600px; /* 각 이미지의 최대 너비를 400px로 제한 */
 }
 
 /* 이미지 스타일 */
 .admin-image {
-  max-width: 400px;
   width: 100%;
+  max-width: 350px; /* 이미지의 최대 크기를 동일하게 맞춤 */
   height: auto;
   border: 2px solid rgba(255, 255, 255, 0.3); /* 연한 흰색 테두리 */
   border-radius: 5px;
@@ -45,17 +48,21 @@
 }
 
 /* 입력 필드 스타일 */
-input[type="number"] {
+input[type="number"],
+input[type="text"] {
+  /* 방번호와 바닥 너비/높이 입력 필드 스타일 통일 */
   padding: 8px;
   border: none;
   border-radius: 5px;
   background-color: #333; /* 어두운 배경 */
   color: #f5f5f5; /* 밝은 텍스트 */
   font-size: 16px;
-  width: 100px;
+  width: 150px; /* 입력창의 너비를 동일하게 맞춤 */
 }
 
-input[type="number"]::placeholder {
+input[type="number"]::placeholder,
+input[type="text"]::placeholder {
+  /* Placeholder 스타일도 동일하게 적용 */
   color: #ccc;
 }
 
@@ -68,8 +75,8 @@ label {
 /* 버튼 스타일 */
 .admin-button {
   display: block;
-  width: 300px;
-  padding: 12px 20px;
+  width: 200px;
+  padding: 20px 10px;
   margin: 30px auto 0;
   background-color: #008cba; /* 밝은 파란색 버튼 */
   color: white;
