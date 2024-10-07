@@ -505,7 +505,6 @@ async def get_floor_coordinates(
     # numpy.float32 타입을 Python의 float 타입으로 변환
     x_floor = float(x_floor)
     y_floor = float(y_floor)
-
     await sio.emit('gridmake', data=[x_floor, y_floor], namespace='/socketio')
     return {
         'x_floor': x_floor,
