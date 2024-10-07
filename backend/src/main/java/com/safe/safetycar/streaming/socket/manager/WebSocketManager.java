@@ -17,13 +17,15 @@ import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint(value = "/socket")
 @Service
 public class WebSocketManager {
 //    private final static Logger LOGGER = LoggerFactory.getLogger(UdpInboundMessageHandler.class);
     private final static LogManager LOGGER = new LogManager(WebSocketManager.class);
-    private static Set<Session> CLIENTS = Collections.synchronizedSet(new HashSet<>());
+    private static Set<Session> CLIENTS = ConcurrentHashMap.newKeySet();
+//    private static Set<Session> CLIENTS = Collections.synchronizedSet(new HashSet<>());
 
     @Autowired
     private ImageManager imageManager;
