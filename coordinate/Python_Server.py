@@ -7,7 +7,7 @@ import json
 from socketHandler import socket_app, sio
 # from sqlalchemy.orm import Session
 # import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 # import redis
 
 app = FastAPI(root_path="/pyapi")
