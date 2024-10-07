@@ -1,0 +1,118 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #2e2e3a;
+  color: white;
+}
+
+h1 {
+  color: white;
+  font-size: 40px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  max-width: 1200px; /* 전체 컨테이너의 최대 너비를 설정 */
+  margin: 0 auto; /* 중앙 정렬을 위해 좌우 자동 마진 */
+}
+
+.nav-container {
+  border-radius: 10px;
+  width: 150px;
+  background-color: #3b3b47;
+  padding: 20px;
+}
+
+.nav-container ul {
+  list-style: none;
+  margin-top: 50px;
+  padding: 0;
+}
+
+.nav-container li {
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.nav-container li:hover {
+  color: #ff9933;
+}
+
+.right-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  /* background-color: #3b3b47; */
+  border-radius: 10px;
+  margin-left: 20px;
+  max-width: 900px; /* 최대 너비를 설정해 일정 영역 유지 */
+}
+
+.image-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #3b3b47;
+  border-radius: 10px;
+  height: 300px; /* 이미지 컨테이너 높이를 고정 */
+}
+
+.image-box {
+  flex: 1;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.image-box:last-child {
+  margin-right: 0;
+}
+
+.image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지 비율을 유지하면서 컨테이너에 맞춤 */
+  border: 1px solid #ccc;
+}
+
+.option-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3b3b47;
+  padding: 100px 70px;
+  border-radius: 10px;
+  margin-top: 10px; /* 이미지 컨테이너와 옵션 컨테이너 사이에 40px의 공백 추가 */
+  height: 100px; /* 옵션 컨테이너 높이를 고정 */
+}
+
+.input-box {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #2e2e3a;
+  color: white;
+  margin-top: 10px;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  background-color: #ff9933;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #ff7700;
+}
