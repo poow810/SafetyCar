@@ -19,53 +19,68 @@ const Step1 = () => {
   const imageRef2 = useRef(null);
   const navigate = useNavigate();
 
-  // 비디오 프레임 캡처 함수
-  const captureFrame = (video) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    return canvas.toDataURL("image/jpeg");
-  };
+  const [camera0Image, setCamera0Image] = useState(null);
+  const [camera1Image, setCamera1Image] = useState(null);
 
   useEffect(() => {
-    const video1 = videoCaptureRef1.current;
-    const video2 = videoCaptureRef2.current;
-
-    if (video1 && video2) {
-      const handleLoadedMetadata1 = () => {
-        video1.currentTime = 0;
-      };
-
-      const handleLoadedMetadata2 = () => {
-        video2.currentTime = 0;
-      };
-
-      const handleSeeked1 = () => {
-        const frame1 = captureFrame(video1);
-        setImage1Src(frame1);
-      };
-
-      const handleSeeked2 = () => {
-        const frame2 = captureFrame(video2);
-        setImage2Src(frame2);
-      };
-
-      video1.addEventListener("loadedmetadata", handleLoadedMetadata1);
-      video2.addEventListener("loadedmetadata", handleLoadedMetadata2);
-
-      video1.addEventListener("seeked", handleSeeked1);
-      video2.addEventListener("seeked", handleSeeked2);
-
-      return () => {
-        video1.removeEventListener("loadedmetadata", handleLoadedMetadata1);
-        video2.removeEventListener("loadedmetadata", handleLoadedMetadata2);
-        video1.removeEventListener("seeked", handleSeeked1);
-        video2.removeEventListener("seeked", handleSeeked2);
-      };
+    // Local Storage에서 이미지 불러오기
+    const savedImage0 = localStorage.getItem("savedImageCamera0");
+    const savedImage1 = localStorage.getItem("savedImageCamera1");
+    if (savedImage0) {
+      setCamera0Image(savedImage0);
+    }
+    if (savedImage1) {
+      setCamera1Image(savedImage1);
     }
   }, []);
+
+  // // 비디오 프레임 캡처 함수
+  // const captureFrame = (video) => {
+  //   const canvas = document.createElement("canvas");
+  //   canvas.width = video.videoWidth;
+  //   canvas.height = video.videoHeight;
+  //   const ctx = canvas.getContext("2d");
+  //   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  //   return canvas.toDataURL("image/jpeg");
+  // };
+
+  // useEffect(() => {
+  //   const video1 = videoCaptureRef1.current;
+  //   const video2 = videoCaptureRef2.current;
+
+  //   if (video1 && video2) {
+  //     const handleLoadedMetadata1 = () => {
+  //       video1.currentTime = 0;
+  //     };
+
+  //     const handleLoadedMetadata2 = () => {
+  //       video2.currentTime = 0;
+  //     };
+
+  //     const handleSeeked1 = () => {
+  //       const frame1 = captureFrame(video1);
+  //       setImage1Src(frame1);
+  //     };
+
+  //     const handleSeeked2 = () => {
+  //       const frame2 = captureFrame(video2);
+  //       setImage2Src(frame2);
+  //     };
+
+  //     video1.addEventListener("loadedmetadata", handleLoadedMetadata1);
+  //     video2.addEventListener("loadedmetadata", handleLoadedMetadata2);
+
+  //     video1.addEventListener("seeked", handleSeeked1);
+  //     video2.addEventListener("seeked", handleSeeked2);
+
+  //     return () => {
+  //       video1.removeEventListener("loadedmetadata", handleLoadedMetadata1);
+  //       video2.removeEventListener("loadedmetadata", handleLoadedMetadata2);
+  //       video1.removeEventListener("seeked", handleSeeked1);
+  //       video2.removeEventListener("seeked", handleSeeked2);
+  //     };
+  //   }
+  // }, []);
 
   // 이미지 클릭 핸들러 (좌표 선택)
   const handleImageClick = (e, imgRef, setPoints, maxPoints) => {
@@ -169,7 +184,7 @@ const Step1 = () => {
       <div className="admin-images">
         <div className="admin-image-container">
           <h3>이미지 1</h3>
-          {image1Src && (
+          {/* {image1Src && (
             <img
               src={image1Src}
               alt="캡처된 이미지 1"
@@ -184,13 +199,32 @@ const Step1 = () => {
                 handleImageClick(e, imageRef1, setFloorPoints1, 4)
               }
             />
+          )} */}
+          {camera0Image ? (
+            <img
+              src={camera0Image}
+              alt="Camera 0"
+              ref={imageRef1}
+              className="admin-image"
+              style={{
+                cursor: floorPoints1.length < 4 ? "crosshair" : "default",
+                maxWidth: "100%",
+                height: "auto",
+              }}
+              onClick={(e) =>
+                handleImageClick(e, imageRef1, setFloorPoints1, 4)
+              }
+            />
+          ) : (
+            <p>No image saved for Camera 0</p>
           )}
+
           <p>선택한 포인트 수: {floorPoints1.length} / 4</p>
         </div>
 
         <div className="admin-image-container">
           <h3>이미지 2</h3>
-          {image2Src && (
+          {/* {image2Src && (
             <img
               src={image2Src}
               alt="캡처된 이미지 2"
@@ -205,7 +239,26 @@ const Step1 = () => {
                 handleImageClick(e, imageRef2, setFloorPoints2, 4)
               }
             />
+          )} */}
+          {camera1Image ? (
+            <img
+              src={camera1Image}
+              alt="Camera 1"
+              ref={imageRef2}
+              className="admin-image"
+              style={{
+                cursor: floorPoints2.length < 4 ? "crosshair" : "default",
+                maxWidth: "100%",
+                height: "auto",
+              }}
+              onClick={(e) =>
+                handleImageClick(e, imageRef2, setFloorPoints2, 4)
+              }
+            />
+          ) : (
+            <p>No image saved for Camera 1</p>
           )}
+
           <p>선택한 포인트 수: {floorPoints2.length} / 4</p>
         </div>
       </div>
