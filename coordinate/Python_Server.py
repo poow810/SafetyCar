@@ -505,7 +505,7 @@ async def get_floor_coordinates(
     # numpy.float32 타입을 Python의 float 타입으로 변환
     x_floor = float(x_floor)
     y_floor = float(y_floor)
-
+    await sio.emit('gridmake', data=[x_floor, y_floor], namespace='/socketio')
     return {
         'x_floor': x_floor,
         'y_floor': y_floor
@@ -629,7 +629,7 @@ async def transform_point(
     # rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
     #
 
-    await sio.emit('gridmake', data=[x_transformed + 200, y_transformed], namespace='/socketio')
+    await sio.emit('gridmake', data=[x_transformed, y_transformed], namespace='/socketio')
 
 
     # 여기부터는 아마 이럴 거 같다!
