@@ -53,5 +53,6 @@ private:
 	std::vector<int> encode_param = { cv::IMWRITE_JPEG_QUALITY, IMG_QUALITY };
 	void set_cameraId();	
 	void set_connection();
+	void disconnection();
 };
 

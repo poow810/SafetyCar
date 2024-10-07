@@ -34,13 +34,14 @@ WebSocketSender::WebSocketSender()
 	m_ClientAddr.sin_port = htons(PORT);
 
 	connected = true;
-	set_cameraId();
+	//set_cameraId();
 	std::cout << "UDP WebSocket Connected. \n";
 	
 }
 
 WebSocketSender::~WebSocketSender()
 {
+	disconnection();
 	connected = false;
 	//소켓 메모리 정리
 	freeaddrinfo(host_domainAddr);
@@ -173,6 +174,29 @@ void WebSocketSender::set_connection()
 		printf("%s", buf);
 	}
 
+	std::string response = buf;
+	size_t idx = response.find("camera_id");
+	bool camera_id_not_found = true;
+	if (idx != std::string::npos) {
+		//size_t num_start;
+		//숫자 찾기
+		//for (num_start = idx + 1; num_start < response.length() && response[num_start] < '0' && response[num_start] > '9'; num_start++);
+		
+		idx = response.find_first_of("0123456789", idx);
+		if (idx != std::string::npos) {
+			size_t last;
+			for (last = idx; last < response.length() && response[last] != ' '; last++);
+			camera_id = std::stoi(response.substr(idx, last));
+			camera_id_not_found = false;
+		}
+
+	}
+
+	if (camera_id_not_found) {
+		std::cerr << "Camera ID not found in response. \n";
+		set_cameraId();
+	}
+
 	/*
 	// do while loop to send and receive data
 	char buff[4096];
@@ -191,6 +215,84 @@ void WebSocketSender::set_connection()
 			std::cout << std::string(buff, 0, bytesReceived) << std::endl;
 		}
 	}*/
+
+	// 연결 종료
+	SSL_shutdown(ssl);
+	SSL_free(ssl);
+	SSL_CTX_free(ctx);
+
+	closesocket(clientSocket);
+	WSACleanup();
+	return;
+}
+
+void WebSocketSender::disconnection()
+{
+	SSL_CTX* ctx;
+	SSL* ssl;
+
+	// OpenSSL 초기화
+	SSL_library_init();
+	OpenSSL_add_all_algorithms();
+	SSL_load_error_strings();
+	ctx = SSL_CTX_new(TLS_client_method());
+
+
+
+	std::string ipAddress = SERVER_IP;
+	//std::string ipAddress = SERVER_DOMAIN;
+	int port = 443;
+	//int port = 8080;
+
+	// initialise winsock
+	WSADATA data;
+	WORD ver = MAKEWORD(2, 2);
+	int wsResult = WSAStartup(ver, &data);
+	if (wsResult != 0) {
+		std::cerr << "Can't start winsock, Err #" << wsResult << std::endl;
+		return;
+	}
+
+	// create socket
+	SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+	if (clientSocket == INVALID_SOCKET) {
+		std::cerr << "Can't create socket, Err #" << WSAGetLastError() << std::endl;
+		WSACleanup();
+		return;
+	}
+
+	// hint structure
+	sockaddr_in hint;
+	hint.sin_family = AF_INET;
+	hint.sin_port = htons(port);
+	inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
+
+	// connect
+	int connResult = connect(clientSocket, (sockaddr*)&hint, sizeof(hint));
+	if (connResult == SOCKET_ERROR) {
+		std::cerr << "Can't connect to server, Err #" << WSAGetLastError << std::endl;
+		closesocket(clientSocket);
+		WSACleanup();
+		return;
+	}
+
+	// SSL 연결 설정
+	ssl = SSL_new(ctx);
+	SSL_set_fd(ssl, clientSocket);
+	SSL_connect(ssl);
+	std::string body = "{\"Access_Token\":\"1234\"}"; // JSON 데이터
+	size_t body_length = strlen(body.c_str());
+	std::string request = "POST /api/disconnect/" + std::to_string(camera_id) + " HTTP/1.1\r\nHost: j11b209.p.ssafy.io\r\nConnection: close\r\nContent-Type: application/json\r\nContent-Length: " + std::to_string(body_length) + "\r\n\r\n" + body;
+
+	SSL_write(ssl, request.c_str(), strlen(request.c_str()));
+
+	// 응답 받기
+	char buf[1024];
+	int bytes;
+	while ((bytes = SSL_read(ssl, buf, sizeof(buf))) > 0) {
+		buf[bytes] = 0;
+		printf("%s", buf);
+	}
 
 	// 연결 종료
 	SSL_shutdown(ssl);
