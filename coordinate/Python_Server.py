@@ -5,11 +5,45 @@ import numpy as np
 import base64
 import json
 from socketHandler import socket_app, sio
+# from sqlalchemy.orm import Session
+# import os
+from dotenv import load_dotenv
+# import redis
 
 app = FastAPI(root_path="/pyapi")
 
+app.mount('/socket.io', socket_app)
 
-app.mount('/socket', socket_app)
+# load_dotenv()
+#
+#
+# # Redis 설정 함수
+# def redis_config():
+#     try:
+#         REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+#         REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
+#         REDIS_DATABASE = int(os.getenv("REDIS_DATABASE", 0))
+#         rd = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DATABASE)
+#         return rd
+#     except Exception as e:
+#         print(f"Redis 연결 실패: {e}")
+#         return None
+#
+#
+# # Redis 테스트 엔드포인트
+# @app.get("/items/redis_test")
+# async def redis_test():
+#     rd = redis_config()
+#     if rd is None:
+#         return {"error": "Redis 연결 실패"}
+#
+#     # Redis에 값 설정 및 가져오기
+#     rd.set("juice", "orange")
+#     value = rd.get("juice").decode("utf-8")  # 값 가져오기 및 디코딩
+#
+#     return {"res": value}
+#
+
 
 # CORS 설정
 app.add_middleware(
@@ -478,30 +512,6 @@ async def get_floor_coordinates(
     }
 
 
-# 6. 변환 행렬을 저장하는 엔드포인트
-# @app.post("/save_transformations/")
-# async def save_transformations(
-#     room_id: str = Form(...),
-#     camera_id: str = Form(...),
-#     scaleX: float = Form(...),
-#     scaleY: float = Form(...),
-# ):
-#     # 받은 데이터를 확인하는 로그 추가
-#     print(f"받은 room_id: {room_id}, camera_id: {camera_id}, scaleX: {scaleX}, scaleY: {scaleY}")
-#
-#     # 변환 행렬을 딕셔너리에 덮어쓰기
-#     transformations[camera_id] = {
-#         'room_id': room_id,
-#         'H_total': state[f'H{camera_id}_total'].tolist(),  # camera_id에 해당하는 H_total을 가져옴
-#         'scaleX': float(scaleX),  # 문자열을 float로 변환
-#         'scaleY': float(scaleY),  # 문자열을 float로 변환
-#         'floor_width': state.get('floor_width', None),  # 없을 경우 None 처리
-#         'floor_height': state.get('floor_height', None)  # 없을 경우 None 처리
-#     }
-#
-#     return {
-#         'message': f'변환 행렬이 카메라 {camera_id}에 대해 성공적으로 저장되었습니다.'
-#     }
 @app.post("/save_transformations/")
 async def save_transformations(
     room_id: str = Form(...),
@@ -548,42 +558,6 @@ async def save_transformations(
         'message': f'변환 행렬이 카메라 {camera_id1}, {camera_id2}에 대해 성공적으로 저장되었습니다.'
     }
 
-# @app.post("/save_transformations/")
-# async def save_transformations(
-#     room_id: str = Form(...),
-#     camera_id: str = Form(...),
-#     scaleX: float = Form(...),
-#     scaleY: float = Form(...),
-# ):
-#     # 받은 데이터를 확인하는 로그 추가
-#     print(f"받은 room_id: {room_id}, camera_id: {camera_id}, scaleX: {scaleX}, scaleY: {scaleY}")
-#
-#     # camera_id에 따라 변환 행렬을 가져오는 로직
-#     if camera_id == '1':
-#         H_total = state['H1_total']
-#     elif camera_id == '2':
-#         H_total = state['H2_total']
-#     else:
-#         return {'error': f'지원되지 않는 카메라 ID: {camera_id}'}
-#
-#     if H_total is None:
-#         return {'error': f'카메라 {camera_id}에 대한 변환 행렬이 설정되지 않았습니다.'}
-#
-#     # 변환 행렬을 딕셔너리에 저장
-#     transformations[camera_id] = {
-#         'room_id': room_id,
-#         'H_total': H_total.tolist(),
-#         'scaleX': float(scaleX),  # 문자열을 float로 변환
-#         'scaleY': float(scaleY),  # 문자열을 float로 변환
-#         'floor_width':state['floor_width'],
-#         'floor_height':state['floor_height']
-#     }
-#
-#     return {
-#         'message': f'변환 행렬이 카메라 {camera_id}에 대해 저장되었습니다.'
-#     }
-
-
 
 # 7. 카메라 번호와 x, y 좌표를 받아 변환된 좌표를 반환하는 엔드포인트
 @app.post("/transform_point/")
@@ -621,12 +595,41 @@ async def transform_point(
     x_transformed = float(x_transformed)
     y_transformed = float(y_transformed)
 
+    # # Redis 설정 불러오기
+    # rd = redis_config()
+    # if rd is None:
+    #     return {"error": "Redis 연결 실패"}
+    #
+    # # roomID로 조회
+    # redis_key = f"room:{room_id}"
+    # existing_value = rd.get(redis_key)
+    #
+    # if existing_value: # roomId 있다면
+    #     # Redis에서 기존 좌표를 가져옴
+    #     existing_coords = json.loads(existing_value)
+    #     x_stored = existing_coords['x']
+    #     y_stored = existing_coords['y']
+    #
+    #     # 좌표 차이를 계산
+    #     diff_x = abs(x_transformed - x_stored)
+    #     diff_y = abs(y_transformed - y_stored)
+    #
+    #     # 차이가 100 미만인 경우 시뮬레이터로 보내지 않음
+    #     if diff_x < 100 and diff_y < 100:
+    #         return {"message": "좌표 변화가 100 미만이므로 시뮬레이터로 전송하지 않음"}
+    #
+    # else:  # 없다면
+    #     # Redis에 roomID가 없다면 좌표를 저장하고 TTL을 1분 설정
+    #     rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
+    #
+    # # 좌표가 크게 변동되었거나 새로운 roomID라면 시뮬레이터로 좌표 전송
+    # await sio.emit('gridmake', data=[x_transformed + 200, y_transformed], namespace='/socketio')
+    #
+    # # Redis에 새로운 좌표 저장
+    # rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
+    #
 
-    emergencyeventlog
-
-
-    # 시뮬레이터로 주소 주기
-    await sio.emit('gridmake', data=[x_transformed+200, y_transformed], namespace='/socketio')
+    await sio.emit('gridmake', data=[x_transformed + 200, y_transformed], namespace='/socketio')
 
 
     # 여기부터는 아마 이럴 거 같다!
