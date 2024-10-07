@@ -2,6 +2,7 @@ package com.safe.safetycar.streaming.Image;
 
 import com.safe.safetycar.log.LogManager;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.ByteArrayInputStream;
 
@@ -16,8 +17,12 @@ public class Image {
 
     private byte[] data = new byte[(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
 
+    @Setter
+    private boolean isOpen = false;
+
     public Image(byte id) {
         data[0] = id;
+        isOpen = true;
     }
 
     /**

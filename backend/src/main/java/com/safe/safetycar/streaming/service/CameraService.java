@@ -40,7 +40,12 @@ public class CameraService {
     }
 
     public boolean removeCamera(String ip) {
-        return whiteList.remove(ip) != null;
+        Byte index = whiteList.remove(ip);
+        if(index != null) {
+            imageManager.remove(index);
+            return true;
+        }
+        return false;
     }
 
 }

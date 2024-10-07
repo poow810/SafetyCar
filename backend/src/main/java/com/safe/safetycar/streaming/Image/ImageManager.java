@@ -11,6 +11,7 @@ public class ImageManager {
 
     private LogManager logManager = new LogManager(ImageManager.class);
     private static ArrayList<Image> images = new ArrayList<>();
+    private static int recyclableCount = 0;
 
     public void write(ByteArrayInputStream bis, byte cameraId, byte segNum) {
         images.get(cameraId).write(bis, segNum);
@@ -21,13 +22,31 @@ public class ImageManager {
     }
 
     /**
-     * 새로운 카메라의 데이터를 담을 공간을 생성하고 아이디를 발급한다.
+     * 새로운 카메라의 데이터를 담을 공간을 생성하고 아이디를 발급한다. 만약 사용하지 않는 공간이 있다면 (이전 카메라 연결이 종료되었을경우) 해당 공간을 재사용한다.
      * @return 새로운 카메라의 아이디
      */
     public byte initCamera() {
-        byte id = (byte)images.size();
-        images.add(new Image(id));
-        return id;
+        //재사용 가능한 공간이 없다면 새로운 공간 할당
+        if(recyclableCount == 0) {
+            byte id = (byte)images.size();
+            images.add(new Image(id));
+            return id;
+        } else {
+            //가능하다면 공간을 재사용한다.
+            byte id = 0;
+            while(id < images.size() && images.get(id).isOpen()) {
+                id++;
+            }
+            recyclableCount--;
+            images.get(id).setOpen(true);
+            return id;
+        }
+
+    }
+
+    public void remove(int idx) {
+        images.get(idx).setOpen(false);
+        recyclableCount++;
     }
 
     public void clear(byte cameraId) {
