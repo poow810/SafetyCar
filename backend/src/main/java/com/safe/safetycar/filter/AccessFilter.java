@@ -4,6 +4,7 @@ import com.safe.safetycar.log.LogManager;
 import jakarta.servlet.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.PatternMatchUtils;
 
 import java.io.IOException;
 
@@ -15,6 +16,8 @@ public class AccessFilter implements Filter {
     @Value("${cctv.client.token}")
     private String TOKEN;
 
+    private static final String[] accessRequireURIs = {"/test2", "/test3"};
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 //        logManager.sendLog("DO Filter!", LogManager.LOG_TYPE.INFO);
@@ -22,6 +25,11 @@ public class AccessFilter implements Filter {
 
         //TODO : token check
 
+
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    private boolean isFilterURI(String requestURI) {
+        return PatternMatchUtils.simpleMatch(accessRequireURIs, requestURI);
     }
 }

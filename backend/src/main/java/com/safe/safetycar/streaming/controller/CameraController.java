@@ -3,6 +3,7 @@ package com.safe.safetycar.streaming.controller;
 import com.safe.safetycar.log.LogManager;
 import com.safe.safetycar.streaming.request.AuthRequest;
 import com.safe.safetycar.streaming.response.AuthResponse;
+import com.safe.safetycar.streaming.response.DisconnectResponse;
 import com.safe.safetycar.streaming.service.CameraService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,21 @@ public class CameraController {
         byte cameraId = cameraService.addCamera(ip);
 
         return new ResponseEntity<>(new AuthResponse(cameraId, "Success", 200), HttpStatus.OK);
+    }
+
+    @PostMapping("/disconnect/{cameraId}")
+    public ResponseEntity<DisconnectResponse> removeWhitelist(HttpServletRequest request, @PathVariable String cameraId, @RequestBody AuthRequest authRequest) {
+        String ip = null;
+        for(String headerType: headerTypes) {
+            ip = request.getHeader(headerType);
+            if(ip != null) break;
+        }
+        if (ip == null) ip = request.getRemoteAddr();
+        logManager.sendLog("CCTV Disconnect : " + ip, LogManager.LOG_TYPE.INFO);
+
+        return cameraService.removeCamera(cameraId) ?
+            new ResponseEntity<>(new DisconnectResponse("Disconnected", 200), HttpStatus.OK)
+                : new ResponseEntity<>(new DisconnectResponse("Already Disconnected", 400), HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -9,12 +9,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class CameraService {
 
     private LogManager logManager = new LogManager(CameraService.class);
-    private HashMap<String, Byte> whiteList = new HashMap<>();
+    private ConcurrentHashMap<String, Byte> whiteList = new ConcurrentHashMap<>();
     @Autowired
     private ImageManager imageManager;
 
@@ -38,8 +39,8 @@ public class CameraService {
         return whiteList.get(ip);
     }
 
-    public void removeCamera(String ip) {
-        whiteList.remove(ip);
+    public boolean removeCamera(String ip) {
+        return whiteList.remove(ip) != null;
     }
 
 }

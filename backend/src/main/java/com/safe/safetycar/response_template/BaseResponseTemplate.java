@@ -6,6 +6,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseResponseTemplate {
-    int status_code;
     String message;
+    int status_code;
 }
