@@ -9,7 +9,7 @@ async def connect(sid, env) :
 
 @sio.event(namespace='/socketio')
 async def disconnect(sid) :
-    print(str(sid), ' : disconnect')\
+    print(str(sid), ' : disconnect')
 
 @sio.event(namespace='/socketio')
 async def send_pose(sid, data) :
