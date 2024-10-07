@@ -2,7 +2,6 @@ import ReactDOM from "react-dom/client";
 
 import React, { useState, useEffect } from "react";
 
-
 const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 // import { Manager } from "socket.io-client";
 // function Axios() {
@@ -62,22 +61,22 @@ function ShowCCTV() {
 }
 
 function StreamingPage() {
-  const [frameSrcArr, setFrameSrcArr] = useState([null,null,null,null]);
-  
-  ws.onmessage = async function(msg) {
+  const [frameSrcArr, setFrameSrcArr] = useState([null, null, null, null]);
+
+  ws.onmessage = async function (msg) {
     let newArr = [...frameSrcArr];
-    const int8Array = new Int8Array(await msg.data.slice(0,1).arrayBuffer());
+    const int8Array = new Int8Array(await msg.data.slice(0, 1).arrayBuffer());
     const idx = int8Array[0];
     newArr[idx] = URL.createObjectURL(msg.data.slice(1));
     setFrameSrcArr(newArr);
   };
-  
 
-  return <div>
-    <img src={frameSrcArr[0]} alt="CCTV 0"></img>
-    <img src={frameSrcArr[1]} alt="CCTV 1"></img>
-    </div> 
-
+  return (
+    <div>
+      <img src={frameSrcArr[0]} alt="CCTV 0"></img>
+      <img src={frameSrcArr[1]} alt="CCTV 1"></img>
+    </div>
+  );
 }
 
 export default StreamingPage;

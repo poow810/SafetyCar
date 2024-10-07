@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
+const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
+
 function Testpage() {
   const [step, setStep] = useState(1);
   const [image1Src, setImage1Src] = useState(null);
@@ -32,6 +34,17 @@ function Testpage() {
   // 대응점 선택을 위한 포인트
   const [alignPoints1, setAlignPoints1] = useState([]);
   const [alignPoints2, setAlignPoints2] = useState([]);
+
+  // 방 번호 및 카메라 ID 상태
+  const [roomId, setRoomId] = useState("");
+  const [cameraId1, setCameraId1] = useState("");
+  const [cameraId2, setCameraId2] = useState("");
+  // 바닥 크기 상태를 추가
+  const [floorWidth, setFloorWidth] = useState(""); // 바닥 너비
+  const [floorHeight, setFloorHeight] = useState(""); // 바닥 높이
+
+  // 변환된 좌표 상태
+  const [transformedCoordinates, setTransformedCoordinates] = useState(null);
 
   useEffect(() => {
     const video1 = videoCaptureRef1.current;
@@ -122,11 +135,17 @@ function Testpage() {
     formData.append("img_id", imgId);
 
     axios
-      .post("http://localhost:8000/get_floor_coordinates/", formData)
+      .post(`${PYTHON_URL}/get_floor_coordinates/`, formData)
       .then((response) => {
-        const x_floor = response.data.x_floor;
-        const y_floor = response.data.y_floor;
-        alert(`바닥 좌표: (${x_floor.toFixed(2)}, ${y_floor.toFixed(2)})`);
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          const x_floor = response.data.x_floor;
+          const y_floor = response.data.y_floor;
+          console.log("x:", x);
+          console.log("y:", y);
+          alert(`바닥 좌표: (${x_floor.toFixed(2)}, ${y_floor.toFixed(2)})`);
+        }
       })
       .catch((error) => {
         console.error("바닥 좌표 요청 에러:", error);
@@ -136,14 +155,21 @@ function Testpage() {
 
   // 이미지 업로드 및 바닥의 네 끝점 좌표 서버로 전송
   const handleUploadImages = () => {
+    // 바닥 너비와 높이 값이 유효한지 확인
+    if (!floorWidth || !floorHeight) {
+      alert("바닥의 너비와 높이를 입력해주세요.");
+      return;
+    }
     const formData = new FormData();
     formData.append("image1", dataURLtoBlob(image1Src), "frame1.jpg");
     formData.append("image2", dataURLtoBlob(image2Src), "frame2.jpg");
     formData.append("pts1_floor", JSON.stringify(floorPoints1));
     formData.append("pts2_floor", JSON.stringify(floorPoints2));
+    formData.append("floor_width", parseFloat(floorWidth)); // 바닥 너비 전송
+    formData.append("floor_height", parseFloat(floorHeight)); // 바닥 높이 전송
 
     axios
-      .post("http://localhost:8000/upload_images/", formData)
+      .post(`${PYTHON_URL}/upload_images/`, formData)
       .then((response) => {
         setStep(response.data.step);
         setImage1Src("data:image/jpeg;base64," + response.data.image1);
@@ -176,7 +202,7 @@ function Testpage() {
     formData.append("img_id", selectedImage);
 
     axios
-      .post("http://localhost:8000/adjust_images/", formData)
+      .post(`${PYTHON_URL}/adjust_images/`, formData)
       .then((response) => {
         setStep(response.data.step);
         setImage1Src("data:image/jpeg;base64," + response.data.image1);
@@ -200,7 +226,7 @@ function Testpage() {
     formData.append("pts2_tile", JSON.stringify(tilePoints2));
 
     axios
-      .post("http://localhost:8000/upload_tile_points/", formData)
+      .post(`${PYTHON_URL}/upload_tile_points/`, formData)
       .then((response) => {
         setStep(response.data.step);
         setImage1Src("data:image/jpeg;base64," + response.data.image1);
@@ -219,18 +245,105 @@ function Testpage() {
     formData.append("pts2_align", JSON.stringify(alignPoints2));
 
     axios
-      .post("http://localhost:8000/upload_align_points/", formData)
+      .post(`${PYTHON_URL}/upload_align_points/`, formData)
       .then((response) => {
         setStep(response.data.step);
         setMergedImageSrc(
           "data:image/jpeg;base64," + response.data.merged_image
         );
+        // H1_total과 H2_total은 더 이상 프런트엔드에서 관리하지 않습니다.
       })
       .catch((error) => {
         console.error("대응점 업로드 에러:", error);
         alert("대응점 업로드 중 오류가 발생했습니다.");
       });
   };
+
+  // 변환 행렬을 서버에 저장하는 함수
+  const handleSaveTransformations = () => {
+    if (!roomId) {
+      alert("방 번호를 입력해주세요.");
+      return;
+    }
+
+    if (!cameraId1 || !cameraId2) {
+      alert("두 카메라 번호를 모두 입력해주세요.");
+      return;
+    }
+
+    const saveTransformation = (cameraId, videoRef) => {
+      const video = videoRef.current;
+      const rect = video.getBoundingClientRect();
+      const scaleX = video.videoWidth / rect.width; // 비디오 실제 너비 비율
+      const scaleY = video.videoHeight / rect.height; // 비디오 실제 높이 비율
+
+      const formData = new FormData();
+      formData.append("room_id", roomId);
+      formData.append("camera_id", cameraId);
+      formData.append("scaleX", scaleX);
+      formData.append("scaleY", scaleY);
+
+      console.log("보내는 데이터:", roomId, cameraId, scaleX, scaleY); // 디버깅을 위해 추가
+
+      axios
+        .post(`${PYTHON_URL}/save_transformations/`, formData)
+        .then((response) => {
+          console.log(`Camera ${cameraId} 변환 행렬 저장 성공:`, response.data);
+          alert(`Camera ${cameraId} 변환 행렬이 성공적으로 저장되었습니다.`);
+        })
+        .catch((error) => {
+          console.error(`Camera ${cameraId} 변환 행렬 저장 에러:`, error);
+          alert(`Camera ${cameraId} 변환 행렬 저장 중 오류가 발생했습니다.`);
+        });
+    };
+
+    saveTransformation(cameraId1, videoDisplayRef1);
+    saveTransformation(cameraId2, videoDisplayRef2);
+  };
+
+  // 좌표 변환을 서버에 요청하는 함수
+  const handleTransformPoint = () => {
+    if (
+      !transformationCameraId ||
+      transformationX === "" ||
+      transformationY === ""
+    ) {
+      alert("카메라 번호와 X, Y 좌표를 모두 입력해주세요.");
+      return;
+    }
+
+    // 로그 추가: 전송할 값 확인
+    console.log(
+      `보내는 데이터 - 카메라 번호: ${transformationCameraId}, X: ${transformationX}, Y: ${transformationY}`
+    );
+
+    const formData = new FormData();
+    formData.append("camera_id", transformationCameraId);
+    formData.append("x", parseFloat(transformationX));
+    formData.append("y", parseFloat(transformationY));
+
+    axios
+      .post(`${PYTHON_URL}/transform_point/`, formData)
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          setTransformedCoordinates({
+            x_transformed: response.data.x_transformed,
+            y_transformed: response.data.y_transformed,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("좌표 변환 요청 에러:", error);
+        alert("좌표 변환 요청 중 오류가 발생했습니다.");
+      });
+  };
+
+  // 변환 좌표 입력 상태
+  const [transformationCameraId, setTransformationCameraId] = useState("");
+  const [transformationX, setTransformationX] = useState("");
+  const [transformationY, setTransformationY] = useState("");
 
   return (
     <div className="App">
@@ -297,6 +410,30 @@ function Testpage() {
               <p>선택한 포인트 수: {floorPoints2.length} / 4</p>
             </div>
           </div>
+
+          <div>
+            <label>
+              바닥 너비 (floor width):
+              <input
+                type="number"
+                value={floorWidth}
+                onChange={(e) => setFloorWidth(e.target.value)}
+                style={{ marginLeft: "10px" }}
+              />
+            </label>
+          </div>
+          <div style={{ marginTop: "10px" }}>
+            <label>
+              바닥 높이 (floor height):
+              <input
+                type="number"
+                value={floorHeight}
+                onChange={(e) => setFloorHeight(e.target.value)}
+                style={{ marginLeft: "10px" }}
+              />
+            </label>
+          </div>
+
           <button
             onClick={handleUploadImages}
             disabled={floorPoints1.length < 4 || floorPoints2.length < 4}
@@ -479,8 +616,105 @@ function Testpage() {
 
       {step === 5 && (
         <div>
-          <h2>5. 영상에서 바닥 좌표 확인</h2>
+          <h2>5. 영상에서 바닥 좌표 확인 및 변환 행렬 저장</h2>
           <p>비디오를 클릭하여 바닥 좌표를 확인하세요.</p>
+
+          {/* 방 번호 및 카메라 ID 입력 */}
+          <div style={{ marginBottom: "20px" }}>
+            <h3>변환 행렬 저장</h3>
+            <div>
+              <label>
+                방 번호:
+                <input
+                  type="text"
+                  value={roomId}
+                  onChange={(e) => setRoomId(e.target.value)}
+                  style={{ marginLeft: "10px" }}
+                />
+              </label>
+            </div>
+            <div style={{ marginTop: "10px" }}>
+              <label>
+                카메라 1 번호:
+                <input
+                  type="number"
+                  value={cameraId1}
+                  onChange={(e) => setCameraId1(e.target.value)}
+                  style={{ marginLeft: "10px" }}
+                />
+              </label>
+            </div>
+            <div style={{ marginTop: "10px" }}>
+              <label>
+                카메라 2 번호:
+                <input
+                  type="number"
+                  value={cameraId2}
+                  onChange={(e) => setCameraId2(e.target.value)}
+                  style={{ marginLeft: "10px" }}
+                />
+              </label>
+            </div>
+            <button
+              onClick={handleSaveTransformations}
+              style={{ marginTop: "10px" }}
+            >
+              변환 행렬 저장
+            </button>
+          </div>
+
+          {/* 좌표 변환 섹션 추가 */}
+          <div style={{ marginBottom: "20px" }}>
+            <h3>좌표 변환</h3>
+            <div>
+              <label>
+                카메라 번호:
+                <input
+                  type="number"
+                  value={transformationCameraId}
+                  onChange={(e) => setTransformationCameraId(e.target.value)}
+                  style={{ marginLeft: "10px" }}
+                />
+              </label>
+            </div>
+            <div style={{ marginTop: "10px" }}>
+              <label>
+                X 좌표:
+                <input
+                  type="number"
+                  value={transformationX}
+                  onChange={(e) => setTransformationX(e.target.value)}
+                  style={{ marginLeft: "10px" }}
+                />
+              </label>
+            </div>
+            <div style={{ marginTop: "10px" }}>
+              <label>
+                Y 좌표:
+                <input
+                  type="number"
+                  value={transformationY}
+                  onChange={(e) => setTransformationY(e.target.value)}
+                  style={{ marginLeft: "10px" }}
+                />
+              </label>
+            </div>
+            <button
+              onClick={handleTransformPoint}
+              style={{ marginTop: "10px" }}
+            >
+              좌표 변환
+            </button>
+
+            {transformedCoordinates && (
+              <div style={{ marginTop: "10px" }}>
+                <h4>변환된 좌표:</h4>
+                <p>X: {transformedCoordinates.x_transformed.toFixed(2)}</p>
+                <p>Y: {transformedCoordinates.y_transformed.toFixed(2)}</p>
+              </div>
+            )}
+          </div>
+
           <div
             style={{
               display: "flex",
