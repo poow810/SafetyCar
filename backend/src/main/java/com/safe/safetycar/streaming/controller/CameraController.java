@@ -75,7 +75,7 @@ public class CameraController {
         if (ip == null) ip = request.getRemoteAddr();
         logManager.sendLog("CCTV Disconnect : " + ip, LogManager.LOG_TYPE.INFO);
 
-        return cameraService.removeCamera(cameraId) ?
+        return cameraService.removeCamera(ip) ?
             new ResponseEntity<>(new DisconnectResponse("Disconnected", 200), HttpStatus.OK)
                 : new ResponseEntity<>(new DisconnectResponse("Already Disconnected", 400), HttpStatus.BAD_REQUEST);
     }
