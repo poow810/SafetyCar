@@ -5,11 +5,12 @@ import "../styles/Mainpage.css"; // CSS 파일을 import
 
 const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
+const ws = new WebSocket(WEBSOCKET_URL);
+
 function Monitor() {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const navigate = useNavigate();
-  const ws = new WebSocket(WEBSOCKET_URL);
-
+  
   const [frameSrcArr, setFrameSrcArr] = useState([null, null, null, null]);
 
   ws.onmessage = async function (msg) {
