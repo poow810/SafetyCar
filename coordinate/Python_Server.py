@@ -629,6 +629,9 @@ async def transform_point(
     # rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
     #
 
+    print(f"카메라 ID:{camera_id} 가로={x}, 세로={y}")
+    print(f"방 ID:{room_id} 가로={x_transformed}, 세로={y_transformed}")
+
     await sio.emit('gridmake', data=[x_transformed, y_transformed], namespace='/socketio')
 
 
