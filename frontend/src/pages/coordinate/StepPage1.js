@@ -6,8 +6,6 @@ import "../../styles/step1.css";
 const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
 
 const Step1 = () => {
-  const [image1Src, setImage1Src] = useState(null);
-  const [image2Src, setImage2Src] = useState(null);
   const [floorPoints1, setFloorPoints1] = useState([]);
   const [floorPoints2, setFloorPoints2] = useState([]);
   const [floorWidth, setFloorWidth] = useState("");
@@ -32,6 +30,8 @@ const Step1 = () => {
     if (savedImage1) {
       setCamera1Image(savedImage1);
     }
+    console.log(savedImage0);
+    console.log(savedImage1);
   }, []);
 
   // // 비디오 프레임 캡처 함수
@@ -110,8 +110,17 @@ const Step1 = () => {
       return;
     }
     const formData = new FormData();
-    formData.append("image1", dataURLtoBlob(image1Src), "frame1.jpg");
-    formData.append("image2", dataURLtoBlob(image2Src), "frame2.jpg");
+    const image1Blob = dataURLtoBlob(camera0Image);
+    const image2Blob = dataURLtoBlob(camera1Image);
+    // console.log("업로드", image1Blob);
+    // console.log(image2Blob);
+    // Blob 데이터가 정상적으로 변환되었는지 확인
+    if (!image1Blob || !image2Blob) {
+      alert("이미지를 처리하는 중 오류가 발생했습니다.");
+      return;
+    }
+    formData.append("image1", image1Blob, "camera0Image.jpg");
+    formData.append("image2", image2Blob, "camera1Image.jpg");
     formData.append("pts1_floor", JSON.stringify(floorPoints1));
     formData.append("pts2_floor", JSON.stringify(floorPoints2));
     formData.append("floor_width", parseFloat(floorWidth));
@@ -120,6 +129,7 @@ const Step1 = () => {
     axios
       .post(`${PYTHON_URL}/upload_images/`, formData)
       .then((response) => {
+        console.log(response.data);
         const processedImage1 =
           "data:image/jpeg;base64," + response.data.image1;
         const processedImage2 =
