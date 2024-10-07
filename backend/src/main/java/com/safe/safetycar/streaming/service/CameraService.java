@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,6 +36,8 @@ public class CameraService {
         if(!whiteList.containsKey(ip)) {
             whiteList.put(ip, imageManager.initCamera());   //카메라를 위한 공간 할당 및 번호 등록
         } else logManager.sendLog("Camera Already Registered!", LogManager.LOG_TYPE.WARN);
+
+        logManager.sendLog(whiteList.toString(), LogManager.LOG_TYPE.INFO);
 
         return whiteList.get(ip);
     }
