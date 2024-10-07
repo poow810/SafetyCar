@@ -53,10 +53,10 @@ public class WebSocketManager {
 
         for(Session client : CLIENTS) {
             try {
-//                synchronized (client) {
+                synchronized (client) {
 //                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(UdpInboundMessageHandler.camera_data_assembled[cameraId]));
                     client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
-//                }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
