@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/step.css";
 
 function TestPage() {
   return (
@@ -13,6 +12,7 @@ function TestPage() {
             <li>사건 기록</li>
           </ul>
         </div>
+
         <div className="right-container">
           <div className="image-container">
             <div className="image-box">
@@ -24,6 +24,7 @@ function TestPage() {
               <p>Image2 0/4</p>
             </div>
           </div>
+
           <div className="option-container">
             <div className="input-box">
               <label>바닥 너비 (Floor Width)</label>

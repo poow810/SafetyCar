@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import "../../styles/StepPages.css";
 
 const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
 
@@ -44,70 +45,82 @@ const Step2 = () => {
 
   return (
     <div>
-      <h2>2. 이미지 회전/반전</h2>
-      <div style={{ marginBottom: "10px" }}>
-        <button onClick={() => handleSelectImage(1)}>이미지 1 선택</button>
-        <button
-          onClick={() => handleSelectImage(2)}
-          style={{ marginLeft: "10px" }}
-        >
-          이미지 2 선택
-        </button>
-        <p>현재 선택된 이미지: 이미지 {selectedImage}</p>
-      </div>
-      <div style={{ marginBottom: "10px" }}>
-        <button onClick={() => handleAdjustImages("r")}>
-          90도 시계 방향 회전
-        </button>
-        <button
-          onClick={() => handleAdjustImages("e")}
-          style={{ marginLeft: "10px" }}
-        >
-          90도 반시계 방향 회전
-        </button>
-        <button
-          onClick={() => handleAdjustImages("h")}
-          style={{ marginLeft: "10px" }}
-        >
-          좌우 반전
-        </button>
-        <button
-          onClick={() => handleAdjustImages("v")}
-          style={{ marginLeft: "10px" }}
-        >
-          상하 반전
-        </button>
-        <button
-          onClick={() => handleAdjustImages("n")} // 다음 단계로 이동하는 버튼에 조정된 이미지 넘기기
-          style={{ marginLeft: "10px" }}
-        >
-          다음 단계로 진행
-        </button>
-      </div>
-      <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
-        <div>
-          <h3>변환된 이미지 1</h3>
-          {image1Src ? (
-            <img
-              src={image1Src}
-              alt="변환된 이미지 1"
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
-          ) : (
-            <p>이미지 1을 불러오는 중...</p>
-          )}
+      <h1>2. 이미지 회전/반전</h1>
+      <div className="container">
+        <div className="nav-container">
+          <ul>
+            <li>홈</li>
+            <li>좌표 셋팅</li>
+            <li>사건 기록</li>
+          </ul>
         </div>
-        <div>
-          <h3>변환된 이미지 2</h3>
-          {image2Src ? (
-            <img
-              src={image2Src}
-              alt="변환된 이미지 2"
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
-          ) : (
-            <p>이미지 2를 불러오는 중...</p>
-          )}
+
+        <div className="right-container">
+          <div className="image-container">
+            <div className="image-box">
+              {image1Src ? (
+                <img
+                  src={image1Src}
+                  alt="변환된 이미지 1"
+                  style={{ maxWidth: "100%", height: "auto" }}
+                />
+              ) : (
+                <p>이미지 1을 불러오는 중...</p>
+              )}
+            </div>
+
+            <div className="image-box">
+              {image2Src ? (
+                <img
+                  src={image2Src}
+                  alt="변환된 이미지 2"
+                  style={{ maxWidth: "100%", height: "auto" }}
+                />
+              ) : (
+                <p>이미지 2를 불러오는 중...</p>
+              )}
+            </div>
+          </div>
+
+          <div className="option-container">
+            <p>선택된 이미지: 이미지 {selectedImage}</p>
+            <button onClick={() => handleSelectImage(1)}>이미지 1 선택</button>
+            <button
+              onClick={() => handleSelectImage(2)}
+              style={{ marginLeft: "10px" }}
+            >
+              이미지 2 선택
+            </button>
+
+            <button onClick={() => handleAdjustImages("r")}>
+              90도 시계 방향 회전
+            </button>
+            <button
+              onClick={() => handleAdjustImages("e")}
+              style={{ marginLeft: "10px" }}
+            >
+              90도 반시계 방향 회전
+            </button>
+            <button
+              onClick={() => handleAdjustImages("h")}
+              style={{ marginLeft: "10px" }}
+            >
+              좌우 반전
+            </button>
+            <button
+              onClick={() => handleAdjustImages("v")}
+              style={{ marginLeft: "10px" }}
+            >
+              상하 반전
+            </button>
+            <button
+              onClick={() => handleAdjustImages("n")} // 다음 단계로 이동하는 버튼에 조정된 이미지 넘기기
+              className="submit-btn"
+              style={{ marginLeft: "10px" }}
+            >
+              다음
+            </button>
+          </div>
         </div>
       </div>
     </div>

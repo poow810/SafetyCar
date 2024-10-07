@@ -1,16 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../styles/StepPages.css";
+import { PYTHON_URL } from "./StepPage1";
 
-const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
-
-const Step1 = () => {
+export const Step1 = () => {
   const [floorPoints1, setFloorPoints1] = useState([]);
   const [floorPoints2, setFloorPoints2] = useState([]);
   const [floorWidth, setFloorWidth] = useState("");
   const [floorHeight, setFloorHeight] = useState("");
 
+  const videoCaptureRef1 = useRef(null);
+  const videoCaptureRef2 = useRef(null);
   const imageRef1 = useRef(null);
   const imageRef2 = useRef(null);
   const navigate = useNavigate();
@@ -32,6 +32,45 @@ const Step1 = () => {
     console.log(savedImage1);
   }, []);
 
+  // // 비디오 프레임 캡처 함수
+  // const captureFrame = (video) => {
+  //   const canvas = document.createElement("canvas");
+  //   canvas.width = video.videoWidth;
+  //   canvas.height = video.videoHeight;
+  //   const ctx = canvas.getContext("2d");
+  //   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  //   return canvas.toDataURL("image/jpeg");
+  // };
+  // useEffect(() => {
+  //   const video1 = videoCaptureRef1.current;
+  //   const video2 = videoCaptureRef2.current;
+  //   if (video1 && video2) {
+  //     const handleLoadedMetadata1 = () => {
+  //       video1.currentTime = 0;
+  //     };
+  //     const handleLoadedMetadata2 = () => {
+  //       video2.currentTime = 0;
+  //     };
+  //     const handleSeeked1 = () => {
+  //       const frame1 = captureFrame(video1);
+  //       setImage1Src(frame1);
+  //     };
+  //     const handleSeeked2 = () => {
+  //       const frame2 = captureFrame(video2);
+  //       setImage2Src(frame2);
+  //     };
+  //     video1.addEventListener("loadedmetadata", handleLoadedMetadata1);
+  //     video2.addEventListener("loadedmetadata", handleLoadedMetadata2);
+  //     video1.addEventListener("seeked", handleSeeked1);
+  //     video2.addEventListener("seeked", handleSeeked2);
+  //     return () => {
+  //       video1.removeEventListener("loadedmetadata", handleLoadedMetadata1);
+  //       video2.removeEventListener("loadedmetadata", handleLoadedMetadata2);
+  //       video1.removeEventListener("seeked", handleSeeked1);
+  //       video2.removeEventListener("seeked", handleSeeked2);
+  //     };
+  //   }
+  // }, []);
   // 이미지 클릭 핸들러 (좌표 선택)
   const handleImageClick = (e, imgRef, setPoints, maxPoints) => {
     if (e.nativeEvent.which !== 1) return;
@@ -117,7 +156,7 @@ const Step1 = () => {
         <div className="nav-container">
           <ul>
             <li>홈</li>
-            <li>좌표 셋팅</li>
+            <li>바닥 검출</li>
             <li>사건 기록</li>
           </ul>
         </div>
@@ -142,9 +181,8 @@ const Step1 = () => {
               ) : (
                 <p>No image saved for Camera 0</p>
               )}
-              <p>
-                Image1 <span> {floorPoints1.length}/4</span>
-              </p>
+
+              <p>Image1 {floorPoints1.length}/4</p>
             </div>
 
             <div className="image-box">
@@ -166,16 +204,14 @@ const Step1 = () => {
                 <p>No image saved for Camera 1</p>
               )}
 
-              <p>
-                Image2 <span> {floorPoints2.length}/4</span>
-              </p>
+              <p>Image2 {floorPoints2.length}/4</p>
             </div>
           </div>
 
           <div className="option-container">
             <div className="input-box">
               <label>
-                Floor Width
+                바닥 너비 (Floor Width)
                 <input
                   type="number"
                   value={floorWidth}
@@ -186,7 +222,7 @@ const Step1 = () => {
 
             <div className="input-box">
               <label>
-                Floor Height
+                바닥 높이 (Floor Height)
                 <input
                   type="number"
                   value={floorHeight}
@@ -197,12 +233,8 @@ const Step1 = () => {
             {/* (roomId) BE 수정 완료되면 전송할 데이터 */}
             <div className="input-box">
               <label>
-                roomId
-                <input
-                  type="text"
-                  // value={roomId}
-                  // onChange={(e) => setRoomId(e.target.value)}
-                />
+                방 번호
+                <input type="text" />
               </label>
             </div>
             <button
@@ -210,7 +242,7 @@ const Step1 = () => {
               className="submit-btn"
               disabled={floorPoints1.length < 4 || floorPoints2.length < 4}
             >
-              다음
+              다음 단계
             </button>
           </div>
         </div>
@@ -218,5 +250,3 @@ const Step1 = () => {
     </>
   );
 };
-
-export default Step1;

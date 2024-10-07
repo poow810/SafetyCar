@@ -20,7 +20,7 @@ const Step5 = () => {
   useEffect(() => {
     if (!mergedImageSrc) {
       alert("이전 단계에서 합성된 이미지가 제공되지 않았습니다.");
-      navigate("/step4"); // Step4로 이동
+      // navigate("/step4"); // Step4로 이동
     }
   }, [mergedImageSrc, navigate]);
 
@@ -114,10 +114,16 @@ const Step5 = () => {
   };
 
   return (
-    <div>
+    <>
       <h2>5. 영상에서 바닥 좌표 확인 및 변환 행렬 저장</h2>
       <p>비디오를 클릭하여 바닥 좌표를 확인하세요.</p>
-      {/* 방 번호 및 카메라 ID 입력 */}
+      {/* <div className="nav-container">
+        <ul>
+          <li>홈</li>
+          <li>좌표 셋팅</li>
+          <li>사건 기록</li>
+        </ul>
+      </div> */}
       <div style={{ marginBottom: "20px" }}>
         <h3>변환 행렬 저장</h3>
 
@@ -150,7 +156,6 @@ const Step5 = () => {
           변환 행렬 저장
         </button>
       </div>
-
       <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
         <div>
           <h3>영상 1</h3>
@@ -183,7 +188,7 @@ const Step5 = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

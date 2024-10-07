@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import "../../styles/StepPages.css";
 
 const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
 
@@ -22,7 +23,7 @@ const Step3 = () => {
     if (!image1Src || !image2Src) {
       console.error("이미지 데이터가 없습니다.");
       alert("이전 단계의 이미지 데이터를 불러오는데 문제가 발생했습니다.");
-      navigate("/step2"); // 이미지 데이터가 없으면 이전 단계로 돌아가기
+      // navigate("/step2"); // 이미지 데이터가 없으면 이전 단계로 돌아가기
     }
   }, [image1Src, image2Src, navigate]);
 
@@ -79,39 +80,64 @@ const Step3 = () => {
   };
 
   return (
-    <div>
-      <h2>3. 타일 모서리 선택</h2>
-      <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
-        <div>
-          <h3>이미지 1</h3>
-          <img
-            src={image1Src}
-            alt="타일 선택 이미지 1"
-            ref={imageRef1}
-            style={{ cursor: tilePoints1.length < 4 ? "crosshair" : "default" }}
-            onClick={(e) => handleImageClick(e, imageRef1, setTilePoints1, 4)}
-          />
-          <p>선택한 포인트 수: {tilePoints1.length} / 4</p>
+    <>
+      <h1>3. 타일 모서리 선택</h1>
+      <div className="container">
+        <div className="nav-container">
+          <ul>
+            <li>홈</li>
+            <li>좌표 셋팅</li>
+            <li>사건 기록</li>
+          </ul>
         </div>
-        <div>
-          <h3>이미지 2</h3>
-          <img
-            src={image2Src}
-            alt="타일 선택 이미지 2"
-            ref={imageRef2}
-            style={{ cursor: tilePoints2.length < 4 ? "crosshair" : "default" }}
-            onClick={(e) => handleImageClick(e, imageRef2, setTilePoints2, 4)}
-          />
-          <p>선택한 포인트 수: {tilePoints2.length} / 4</p>
+
+        <div className="right-container">
+          <div className="image-container">
+            <div className="image-box">
+              <img
+                src={image1Src}
+                alt="타일 이미지 1"
+                ref={imageRef1}
+                style={{
+                  cursor: tilePoints1.length < 4 ? "crosshair" : "default",
+                }}
+                onClick={(e) =>
+                  handleImageClick(e, imageRef1, setTilePoints1, 4)
+                }
+              />
+              <p>
+                Image1 <span> {tilePoints2.length}/4</span>
+              </p>
+            </div>
+            <div className="image-box">
+              <img
+                src={image2Src}
+                alt="타일 이미지 2"
+                ref={imageRef2}
+                style={{
+                  cursor: tilePoints2.length < 4 ? "crosshair" : "default",
+                }}
+                onClick={(e) =>
+                  handleImageClick(e, imageRef2, setTilePoints2, 4)
+                }
+              />
+              <p>
+                Image2 <span> {tilePoints2.length}/4</span>
+              </p>
+            </div>
+          </div>
+          <div className="option-container">
+            <button
+              onClick={handleUploadTilePoints}
+              className="submit-btn"
+              disabled={tilePoints1.length < 4 || tilePoints2.length < 4}
+            >
+              다음
+            </button>
+          </div>
         </div>
       </div>
-      <button
-        onClick={handleUploadTilePoints}
-        disabled={tilePoints1.length < 4 || tilePoints2.length < 4}
-      >
-        타일 포인트 업로드 및 다음 단계로 진행
-      </button>
-    </div>
+    </>
   );
 };
 
