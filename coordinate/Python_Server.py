@@ -7,7 +7,7 @@ import json
 from socketHandler import socket_app, sio
 # from sqlalchemy.orm import Session
 # import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 # import redis
 
 app = FastAPI(root_path="/pyapi")
@@ -506,6 +506,7 @@ async def get_floor_coordinates(
     x_floor = float(x_floor)
     y_floor = float(y_floor)
 
+    await sio.emit('gridmake', data=[x_floor, y_floor], namespace='/socketio')
     return {
         'x_floor': x_floor,
         'y_floor': y_floor
@@ -629,7 +630,10 @@ async def transform_point(
     # rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
     #
 
-    await sio.emit('gridmake', data=[x_transformed + 200, y_transformed], namespace='/socketio')
+    print(f"카메라 ID:{camera_id} 가로={x}, 세로={y}")
+    print(f"방 ID:{room_id} 가로={x_transformed}, 세로={y_transformed}")
+
+    await sio.emit('gridmake', data=[x_transformed, y_transformed], namespace='/socketio')
 
 
     # 여기부터는 아마 이럴 거 같다!
