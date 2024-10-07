@@ -1,16 +1,17 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import httpx
 
 app = FastAPI()
 
-SPRING_BOOT_URL = 'https://j11b209.p.ssafy.io/pyapi'
+PYTHON_URL = 'https://j11b209.p.ssafy.io/pyapi'
+SPRING_URL = 'https://j11b209.p.ssafy.io/api'
 
 
 async def send_coordinate(x, y, camera_id):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
-                f"{SPRING_BOOT_URL}/transform_point/",
+                f"{SPRING_URL}/transform_point/",
                 data={
                     "x": x,
                     "y": y,
@@ -18,15 +19,10 @@ async def send_coordinate(x, y, camera_id):
                 },
                 timeout=10.0  # 요청 타임아웃 설정
             )
-            print(response)
             response.raise_for_status()  # HTTP 오류 발생 시 예외 발생
             
             
-        except httpx.HTTPError as e:
-            print(f"HTTP 오류: {e}")
-            return {"status": "error", "message": str(e)}
-        except Exception as e:
-            print(f"예상치 못한 오류: {e}")
+        except httpx.HTTPStatusError as e:
             return {"status": "error", "message": str(e)}
 
     try:
@@ -42,3 +38,17 @@ async def send_coordinate(x, y, camera_id):
     except ValueError:
         print("JSON 파싱 오류:", response.content)
         return {"status": "error", "response": response.content}
+    
+
+async def authentication():
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(f"{PYTHON_URL}/connect", json={
+                "AccessToken": "1234"  
+            })
+            response.raise_for_status() 
+            return response.json() 
+    except httpx.HTTPStatusError as e:
+        return {"status": "error", "message": str(e)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}

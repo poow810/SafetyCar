@@ -2,7 +2,7 @@ import cv2
 from ultralytics import YOLO
 import time
 import asyncio
-from main import send_coordinate
+from main import send_coordinate, authentication
 from udp import UdpSender
 import check_skeleton
 
@@ -359,7 +359,7 @@ async def process_video(udp_sender):
 
     # 동영상 파일 열기
     video_path = "falling.mp4"
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(0)
 
     # 객체 상태 추적
     tracking_data = {}
@@ -406,13 +406,19 @@ async def process_video(udp_sender):
     cap.release()
     cv2.destroyAllWindows()
 
+async def send_accesstoken():
+    result = await authentication()
+    print(result)
+    return result
 
 if __name__ == "__main__":
     SERVER_IP = "43.202.61.242"
     PORT = 5432
-    camera_id = 0
+    camera_id = 1
     udp_sender = UdpSender(SERVER_IP, PORT, camera_id)
     
+    asyncio.run(send_accesstoken())
+
     try:
         asyncio.run(process_video(udp_sender))
     finally:
