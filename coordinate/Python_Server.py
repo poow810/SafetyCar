@@ -5,11 +5,45 @@ import numpy as np
 import base64
 import json
 from socketHandler import socket_app, sio
+from sqlalchemy.orm import Session
+import os
+from dotenv import load_dotenv
+import redis
 
 app = FastAPI(root_path="/pyapi")
 
+app.mount('/socket.io', socket_app)
 
-app.mount('/socket', socket_app)
+load_dotenv()
+
+
+# Redis 설정 함수
+def redis_config():
+    try:
+        REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+        REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
+        REDIS_DATABASE = int(os.getenv("REDIS_DATABASE", 0))
+        rd = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DATABASE)
+        return rd
+    except Exception as e:
+        print(f"Redis 연결 실패: {e}")
+        return None
+
+
+# Redis 테스트 엔드포인트
+@app.get("/items/redis_test")
+async def redis_test():
+    rd = redis_config()
+    if rd is None:
+        return {"error": "Redis 연결 실패"}
+
+    # Redis에 값 설정 및 가져오기
+    rd.set("juice", "orange")
+    value = rd.get("juice").decode("utf-8")  # 값 가져오기 및 디코딩
+
+    return {"res": value}
+
+
 
 # CORS 설정
 app.add_middleware(
@@ -621,13 +655,38 @@ async def transform_point(
     x_transformed = float(x_transformed)
     y_transformed = float(y_transformed)
 
+    # Redis 설정 불러오기
+    rd = redis_config()
+    if rd is None:
+        return {"error": "Redis 연결 실패"}
 
-    emergencyeventlog
+    # roomID로 조회
+    redis_key = f"room:{room_id}"
+    existing_value = rd.get(redis_key)
 
+    if existing_value: # roomId 있다면
+        # Redis에서 기존 좌표를 가져옴
+        existing_coords = json.loads(existing_value)
+        x_stored = existing_coords['x']
+        y_stored = existing_coords['y']
 
-    # 시뮬레이터로 주소 주기
-    await sio.emit('gridmake', data=[x_transformed+200, y_transformed], namespace='/socketio')
+        # 좌표 차이를 계산
+        diff_x = abs(x_transformed - x_stored)
+        diff_y = abs(y_transformed - y_stored)
 
+        # 차이가 100 미만인 경우 시뮬레이터로 보내지 않음
+        if diff_x < 100 and diff_y < 100:
+            return {"message": "좌표 변화가 100 미만이므로 시뮬레이터로 전송하지 않음"}
+
+    else:  # 없다면
+        # Redis에 roomID가 없다면 좌표를 저장하고 TTL을 1분 설정
+        rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
+
+    # 좌표가 크게 변동되었거나 새로운 roomID라면 시뮬레이터로 좌표 전송
+    await sio.emit('gridmake', data=[x_transformed + 200, y_transformed], namespace='/socketio')
+
+    # Redis에 새로운 좌표 저장
+    rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
 
     # 여기부터는 아마 이럴 거 같다!
     # if room_id in rooms_to_sid:
