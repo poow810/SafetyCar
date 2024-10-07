@@ -7,6 +7,12 @@ const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
 const ws = new WebSocket(WEBSOCKET_URL);
 
+const handlePopstate = () => {
+  if (ws) {
+    ws.disconnect();
+  }
+};
+
 function Monitor() {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const navigate = useNavigate();
@@ -28,6 +34,8 @@ function Monitor() {
   const handleMouseLeave = () => {
     setExpandedIndex(null);
   };
+
+  window.addEventListener('popstate', handlePopstate);
 
   return (
     <>
