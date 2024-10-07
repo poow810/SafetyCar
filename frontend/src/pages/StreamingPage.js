@@ -63,12 +63,32 @@ function ShowCCTV() {
 function StreamingPage() {
   const [frameSrcArr, setFrameSrcArr] = useState([null, null, null, null]);
 
+  // 이미지 저장 함수 (Blob -> Base64로 변환 후 Local Storage에 저장)
+  const saveFrameToLocalStorage = (blob, cameraIndex) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob); // Blob을 Base64로 변환
+    reader.onloadend = function () {
+      const base64Data = reader.result;
+      localStorage.setItem(`savedImageCamera${cameraIndex}`, base64Data); // 카메라 인덱스에 맞게 저장
+    };
+  };
+
   ws.onmessage = async function (msg) {
     let newArr = [...frameSrcArr];
     const int8Array = new Int8Array(await msg.data.slice(0, 1).arrayBuffer());
     const idx = int8Array[0];
     newArr[idx] = URL.createObjectURL(msg.data.slice(1));
     setFrameSrcArr(newArr);
+    const blob = new Blob([msg.data.slice(1)], { type: "image/jpeg" });
+    const blobUrl = URL.createObjectURL(blob);
+    newArr[idx] = blobUrl;
+
+    // 각 카메라 프레임을 Local Storage에 저장
+    if (idx === 0) {
+      saveFrameToLocalStorage(blob, 0); // 카메라 0번의 프레임을 저장
+    } else if (idx === 1) {
+      saveFrameToLocalStorage(blob, 1); // 카메라 1번의 프레임을 저장
+    }
   };
 
   return (
