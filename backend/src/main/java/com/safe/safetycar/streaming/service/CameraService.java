@@ -43,10 +43,18 @@ public class CameraService {
     }
 
     public boolean removeCamera(String ip) {
-        Byte index = whiteList.remove(ip);
+//        if(whiteList.containsKey(ip)) {
+//            imageManager.remove(whiteList.get(ip));
+//            whiteList.remove(ip);
+//            return true;
+//        }
+//        return false;
+
+        Object index = whiteList.remove(ip);
+        logManager.sendLog(ip + " - " + (byte)index, LogManager.LOG_TYPE.WARN);
         if(index != null) {
-            logManager.sendLog("Camera Removed!" + ip + " - " + index, LogManager.LOG_TYPE.WARN);
-            imageManager.remove(index);
+            logManager.sendLog("Camera Removed!" + ip + " - " + (byte)index, LogManager.LOG_TYPE.WARN);
+            imageManager.remove((byte)index);
             return true;
         }
         return false;
