@@ -16,7 +16,7 @@ const handlePopstate = () => {
 function Monitor() {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const navigate = useNavigate();
-  
+
   const [frameSrcArr, setFrameSrcArr] = useState([null, null, null, null]);
 
   ws.onmessage = async function (msg) {
@@ -35,20 +35,11 @@ function Monitor() {
     setExpandedIndex(null);
   };
 
-  window.addEventListener('popstate', handlePopstate);
+  window.addEventListener("popstate", handlePopstate);
 
   return (
     <>
-      <h1
-        style={{
-          color: "white",
-          textAlign: "center",
-          marginTop: "50px",
-          marginBottom: "70px",
-        }}
-      >
-        안전 관제 통합 대시보드
-      </h1>
+      <h1>안전 관제 통합 대시보드</h1>
 
       <div className="container">
         {/* 모니터 섹션 */}
@@ -63,9 +54,6 @@ function Monitor() {
               onMouseLeave={handleMouseLeave}
             >
               <div className="monitorScreen">
-                <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
-                  CCTV 1 화면
-                </h3>
                 <img src={frameSrcArr[0]} alt="CCTV 0"></img>
               </div>
               <div className="monitorStand"></div>
@@ -82,9 +70,6 @@ function Monitor() {
               onMouseLeave={handleMouseLeave}
             >
               <div className="monitorScreen">
-                <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
-                  CCTV 2 화면
-                </h3>
                 <img src={frameSrcArr[1]} alt="CCTV 1"></img>
               </div>
               <div className="monitorStand"></div>

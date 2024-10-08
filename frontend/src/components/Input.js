@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Input.css"; // CSS 파일 임포트
 
-function InputForm({ type, label }) {
+function InputForm({ type, label, disabled = false }) {
   const [isFocused, setIsFocused] = useState(false); // focus 상태 관리
 
   return (
@@ -10,8 +10,9 @@ function InputForm({ type, label }) {
       <input
         type={type}
         placeholder={label}
-        onFocus={() => setIsFocused(true)} // input에 focus가 되었을 때
-        onBlur={() => setIsFocused(false)} // input에서 focus가 벗어났을 때
+        onFocus={() => !disabled && setIsFocused(true)} // 비활성화가 아닌 경우에만 focus 상태 관리
+        onBlur={() => !disabled && setIsFocused(false)} // 비활성화가 아닌 경우에만 focus 상태 관리
+        disabled={disabled} // disabled 속성 적용
       />
     </div>
   );

@@ -13,7 +13,7 @@ html {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* 가로/세로 스크롤 제거 */
+  /* overflow: hidden; 가로/세로 스크롤 제거 */
 }
 
 /* 배경 이미지가 화면을 꽉 채우도록 설정 */
@@ -24,7 +24,7 @@ html {
   background-repeat: no-repeat; /* 이미지가 반복되지 않도록 */
   height: 100%;
   width: 100%; /* 배경 이미지가 가로, 세로 모두 채우도록 설정 */
-  position: fixed; /* 배경을 고정해서 스크롤에 따라 움직이지 않게 설정 */
+  /* position: fixed; 배경을 고정해서 스크롤에 따라 움직이지 않게 설정 */
   top: 0;
   left: 0;
 }
