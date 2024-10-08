@@ -1,5 +1,5 @@
-import "../styles/global.css";
 import "../styles/LoginPage.css";
+import "../styles/global.css";
 import LoginForm from "../components/Loginform";
 
 function LoginPage() {

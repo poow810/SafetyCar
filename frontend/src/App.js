@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/MainPage";
 import LibraryPage from "./pages/LibraryPage";
-import Testpage from "./pages/TestPage";
+import TestPage from "./pages/TestPage";
 import StreamingPage from "./pages/StreamingPage";
 import StepPage1 from "./pages/coordinate/StepPage1";
 import StepPage2 from "./pages/coordinate/StepPage2";
@@ -12,7 +12,7 @@ import StepPage3 from "./pages/coordinate/StepPage3";
 import StepPage4 from "./pages/coordinate/StepPage4";
 import StepPage5 from "./pages/coordinate/StepPage5";
 
-import "./styles/global.css";
+// import "./styles/global.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -58,7 +58,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/library" element={<LibraryPage />} />
-          <Route path="/test" element={<Testpage />} />
+          <Route path="/test" element={<TestPage />} />
           <Route path="/streamingTest" element={<StreamingPage />} />
           <Route path="/step1" element={<StepPage1 />} />
           <Route path="/step2" element={<StepPage2 />} />

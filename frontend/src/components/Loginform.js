@@ -4,7 +4,7 @@ import InputForm from "./Input";
 import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
-  const [id, setId] = useState("");
+  const [id] = useState("admin@domain.com"); // 관리자 계정 자동 입력
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // useNavigate 훅 사용
 
@@ -40,8 +40,9 @@ function LoginForm() {
         <InputForm
           type="text"
           value={id}
-          label="ID"
-          onChange={(e) => setId(e.target.value)}
+          label="admin"
+          disabled={true} // 관리자 계정 필드를 읽기 전용으로 설정
+          style={{ color: "gray" }}
         />
       </div>
       <div style={{ marginBottom: "20px" }}>
