@@ -11,7 +11,7 @@ class UdpSender:
         self.info_size = 3
         self.packet_size = self.mtu - self.udp_header_size
         self.img_seg_size = self.packet_size - self.info_size
-        self.img_quality = 80
+        self.img_quality = 50
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
