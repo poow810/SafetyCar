@@ -4,13 +4,14 @@ import cv2
 import numpy as np
 import base64
 import json
-from socketHandler import socket_app, sio
+from socketHandler import socket_app, sio, safetyCar
 
 #redis
 # from sqlalchemy.orm import Session
 import os
 from dotenv import load_dotenv
 import redis
+
 
 app = FastAPI(root_path="/pyapi")
 
@@ -336,6 +337,22 @@ def map_point_to_floor_coordinates(x, y, H_total):
     transformed_point = cv2.perspectiveTransform(point, H_total)
     return transformed_point[0][0]
 
+# SafetyCar 위치 반환
+@app.get("/safety_Car/pos")
+async def get_safety_Car():
+    return {
+        'afetyCar': safetyCar
+    }
+
+# SafetyCar 강제 제자리로
+@app.get("/safety_Car/halt")
+async def safetyhalt():
+ await sio.emit('gridmake', namespace='/socketio')
+# 근범이형!!
+
+
+
+
 # 1. 클라이언트로부터 이미지와 바닥의 네 끝점 좌표를 받는 엔드포인트
 @app.post("/upload_images/")
 async def upload_images(
@@ -626,7 +643,7 @@ async def transform_point(
         rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
 
     # 좌표가 크게 변동되었거나 새로운 roomID라면 시뮬레이터로 좌표 전송
-    await sio.emit('gridmake', data=[x_transformed + 200, y_transformed], namespace='/socketio')
+    await sio.emit('gridmake', data=[x_transformed , y_transformed], namespace='/socketio')
 
     # Redis에 새로운 좌표 저장
     rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
