@@ -1,5 +1,7 @@
 import rclpy
 from rclpy.node import Node
+from safety_package.qos import qos_sensor, qos_service
+
 import ros2pkg
 from geometry_msgs.msg import Twist,PoseStamped,Pose,TransformStamped
 from ssafy_msgs.msg import TurtlebotStatus
@@ -148,8 +150,8 @@ class Mapper(Node):
         
         # 로직 1 : publisher, subscriber, msg 생성
         self.subscription = self.create_subscription(LaserScan,
-        '/scan',self.scan_callback,10)
-        self.map_pub = self.create_publisher(OccupancyGrid, 'map', 1)
+        '/scan',self.scan_callback,qos_sensor)
+        self.map_pub = self.create_publisher(OccupancyGrid, 'map', qos_service)
         
         self.map_msg=OccupancyGrid()
         self.map_msg.header.frame_id="map"

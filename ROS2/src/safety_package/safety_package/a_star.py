@@ -1,7 +1,7 @@
 import rclpy
 import numpy as np
 from rclpy.node import Node
-from safety_package.qos import qos_default, qos_service, qos_sensor
+from safety_package.qos import qos_service, qos_sensor
 
 import os
 from geometry_msgs.msg import Pose,PoseStamped
@@ -31,10 +31,10 @@ class a_star(Node):
     def __init__(self):
         super().__init__('a_Star')
         # 로직 1. publisher, subscriber 만들기
-        self.map_sub = self.create_subscription(OccupancyGrid,'/map',self.map_callback, qos_default)
+        self.map_sub = self.create_subscription(OccupancyGrid,'/map',self.map_callback, qos_service)
         self.odom_sub = self.create_subscription(Odometry,'/odom',self.odom_callback, qos_sensor)
         self.goal_sub = self.create_subscription(PoseStamped,'/goal',self.goal_callback, qos_service)
-        self.a_star_pub= self.create_publisher(Path, 'global_path', qos_sensor)
+        self.a_star_pub= self.create_publisher(Path, 'global_path', qos_service)
 
         self.map_msg=OccupancyGrid()
         self.odom_msg=Odometry()

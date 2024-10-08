@@ -1,7 +1,7 @@
 import rclpy
 import numpy as np
 from rclpy.node import Node
-from safety_package.qos import qos_default
+from safety_package.qos import qos_service
 
 import os
 from geometry_msgs.msg import Pose
@@ -21,7 +21,7 @@ class loadMap(Node):
 
     def __init__(self):
         super().__init__('load_map')
-        self.map_pub2 = self.create_publisher(OccupancyGrid, 'map', qos_default)
+        self.map_pub2 = self.create_publisher(OccupancyGrid, 'map', qos_service)
         time_period=1
         self.timer = self.create_timer(time_period, self.timer_callback)
        

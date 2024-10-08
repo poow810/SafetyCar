@@ -6,7 +6,7 @@ from nav_msgs.msg import Odometry, OccupancyGrid
 from geometry_msgs.msg import PoseStamped
 from dotenv import load_dotenv
 from rclpy.node import Node
-from safety_package.qos import qos_default, qos_service, qos_sensor
+from safety_package.qos import qos_service, qos_sensor
 
 sio = socketio.Client()
 x_offset = -53.97
@@ -55,7 +55,7 @@ class Test(Node):
 
         self.goal_pub= self.create_publisher(PoseStamped, 'goal', qos_service)
         self.odom_sub = self.create_subscription(Odometry,'/odom',self.odom_callback, qos_sensor)
-        self.map_sub = self.create_subscription(OccupancyGrid,'/map',self.map_callback, qos_default)
+        self.map_sub = self.create_subscription(OccupancyGrid,'/map',self.map_callback, qos_service)
         self.timer = self.create_timer(0.5, self.timer_callback)
 
         self.odom_msg = Odometry()
@@ -76,7 +76,9 @@ class Test(Node):
         if self.is_odom :
             x=self.odom_msg.pose.pose.position.x
             y=self.odom_msg.pose.pose.position.y
-            sio.emit('send_pose', data=[x, y], namespace='/socketio')
+            map_point_x= round((x - x_offset) / 0.05)
+            map_point_y= round((y - y_offset) / 0.05)
+            sio.emit('send_pose', data=[map_point_x, map_point_y], namespace='/socketio')
         if not is_Pose:
             return
         

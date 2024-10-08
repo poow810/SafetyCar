@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from safety_package.qos import qos_sensor
+from safety_package.qos import qos_service, qos_sensor
 
 from geometry_msgs.msg import Twist, Point, Point32
 from ssafy_msgs.msg import TurtlebotStatus
@@ -18,7 +18,7 @@ class followTheCarrot(Node):
         self.cmd_publisher = self.create_publisher(Twist, 'cmd_vel', qos_sensor)
         self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, qos_sensor)
         self.turtlebot_status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.status_callback, qos_sensor)
-        self.path_sub = self.create_subscription(Path, '/local_path', self.path_callback, qos_sensor)
+        self.path_sub = self.create_subscription(Path, '/local_path', self.path_callback, qos_service)
         self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, qos_sensor)
         
         time_period = 0.05

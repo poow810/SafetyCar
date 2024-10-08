@@ -1,6 +1,8 @@
 
 import rclpy
 from rclpy.node import Node
+from safety_package.qos import qos_sensor
+
 import ros2pkg
 from geometry_msgs.msg import Twist,PoseStamped,Pose,TransformStamped,PoseWithCovarianceStamped
 from ssafy_msgs.msg import TurtlebotStatus
@@ -515,14 +517,14 @@ class Localizer(Node):
         # 로직 3. 노드에 필요한 publisher, subscriber, transform broadcaster 생성
         super().__init__('Localizer')
         self.subscription = self.create_subscription(LaserScan,
-        '/scan',self.scan_callback,1)
+        '/scan',self.scan_callback,qos_sensor)
         self.init_pose_sub = self.create_subscription(PoseWithCovarianceStamped,
         '/initialpose',self.init_pose_callback,1)
         self.imu_sub = self.create_subscription(Imu,
-        '/imu',self.imu_callback,1)
+        '/imu',self.imu_callback,qos_sensor)
         self.turtle_sub = self.create_subscription(TurtlebotStatus,
-        '/turtlebot_status',self.turtlebot_status_callback,1)
-        self.odom_publisher = self.create_publisher(Odometry, 'odom', 1)
+        '/turtlebot_status',self.turtlebot_status_callback,qos_sensor)
+        self.odom_publisher = self.create_publisher(Odometry, 'odom', qos_sensor)
         self.broadcaster = tf2_ros.StaticTransformBroadcaster(self)
         
         self.odom_msg=Odometry()
