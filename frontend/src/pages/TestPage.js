@@ -744,7 +744,7 @@ function Testpage() {
               <img
                 src={camera0Image}
                 alt="Camera 1"
-                ref={imageRef1}
+                ref={videoDisplayRef1}
                 style={{
                   cursor: floorPoints1.length < 4 ? "crosshair" : "default",
                   maxWidth: "100%",
@@ -769,7 +769,7 @@ function Testpage() {
               <img
                 src={camera1Image}
                 alt="Camera 1"
-                ref={imageRef2}
+                ref={videoDisplayRef2}
                 style={{
                   cursor: floorPoints2.length < 4 ? "crosshair" : "default",
                   maxWidth: "100%",
