@@ -1,5 +1,8 @@
 import socketio
 
+safetyCar = []
+
+
 sio = socketio.AsyncServer(async_mode='asgi', path='/socket')
 socket_app = socketio.ASGIApp(sio)
 
@@ -14,7 +17,8 @@ async def disconnect(sid) :
 @sio.event(namespace='/socketio')
 async def send_pose(sid, data) :
     # print(data)
-    return
+    safetyCar = data
+
 
 # 여기부터는 아마 이럴 거 같다!
 
