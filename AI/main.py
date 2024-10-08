@@ -11,7 +11,7 @@ async def send_coordinate(x, y, camera_id):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
-                f"{SPRING_URL}/transform_point/",
+                f"{PYTHON_URL}/transform_point/",
                 data={
                     "x": x,
                     "y": y,
@@ -43,7 +43,20 @@ async def send_coordinate(x, y, camera_id):
 async def authentication():
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.post(f"{PYTHON_URL}/connect", json={
+            response = await client.post(f"{SPRING_URL}/connect", json={
+                "AccessToken": "1234"  
+            })
+            response.raise_for_status() 
+            return response.json() 
+    except httpx.HTTPStatusError as e:
+        return {"status": "error", "message": str(e)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+async def disconnect(camera_id):
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(f"{SPRING_URL}/disconnect/{camera_id}", json={
                 "AccessToken": "1234"  
             })
             response.raise_for_status() 

@@ -2,7 +2,7 @@ import cv2
 from ultralytics import YOLO
 import time
 import asyncio
-from main import send_coordinate, authentication
+from main import send_coordinate, authentication, disconnect
 from udp import UdpSender
 import check_skeleton
 
@@ -332,6 +332,7 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
                                 start_x, start_y, end_x, end_y = x1, y1, x2, y2
                                 if not tracking_data[tracking_id]['sent']:
                                     await send_coordinate(float(send_x), float(send_y), 0)
+                                    print(send_x, send_y)
                                     tracking_data[tracking_id]['sent'] = True
                             else:
                                 status_type = 1
@@ -354,11 +355,11 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
     return (annotated_frame, lst)
             
 
-async def process_video(udp_sender):
+async def process_video(udp_sender, camera_id):
     model = YOLO("model/yolov8s-pose.pt").to('cuda')
 
     # 동영상 파일 열기
-    video_path = "falling.mp4"
+    video_path = "falling2.mp4"
     cap = cv2.VideoCapture(0)
 
     # 객체 상태 추적
@@ -400,6 +401,7 @@ async def process_video(udp_sender):
 
         # 'q' 키를 눌러 종료
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            await disconnect(camera_id)
             break
 
     # 자원 해제
@@ -414,12 +416,10 @@ async def send_accesstoken():
 if __name__ == "__main__":
     SERVER_IP = "43.202.61.242"
     PORT = 5432
-    camera_id = 1
-    udp_sender = UdpSender(SERVER_IP, PORT, camera_id)
+    result = asyncio.run(send_accesstoken())
+    udp_sender = UdpSender(SERVER_IP, PORT, result['camera_id'])
     
-    asyncio.run(send_accesstoken())
-
     try:
-        asyncio.run(process_video(udp_sender))
+        asyncio.run(process_video(udp_sender, result['camera_id']))
     finally:
         udp_sender.close()
