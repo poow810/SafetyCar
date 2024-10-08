@@ -12,6 +12,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
 COPY ./*.py /app/
+COPY ./*.txt /app/
 
 CMD [ "python3", "Python_Server.py" ]
 
