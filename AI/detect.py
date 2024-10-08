@@ -2,11 +2,11 @@ import cv2
 from ultralytics import YOLO
 import time
 import asyncio
-from main import send_coordinate
+from main import send_coordinate, authentication, disconnect
 from udp import UdpSender
+import check_skeleton
 
-
-# 수평으로 쓰러졌을 때
+# 보행자의 쓰러짐을 y좌표를 통한 기울기 값으로 판단합니다
 def is_aligned_nose(nose_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y, slope_threshold=40):
     if nose_y is None or left_ankle_y is None or right_ankle_y is None or left_knee_y is None or right_knee_y is None:
         return False
@@ -51,7 +51,6 @@ def is_aligned_ear(left_ear_y, right_ear_y, left_ankle_y, right_ankle_y, left_kn
 
         if y_diff_ankle < slope_threshold and y_diff_knee < slope_threshold:
             return True
-
     return False
 
 
@@ -77,43 +76,220 @@ def is_aligned_eye(left_eye_y, right_eye_y, left_ankle_y, right_ankle_y, left_kn
 
         if y_diff_ankle < slope_threshold and y_diff_knee < slope_threshold:
             return True
-        
     return False
 
 
-def is_falling_func(width, height, keypoint_data, is_falling):
+# 그리드 영역을 통해 보행자가 비스듬히 쓰러졌는지, 수평으로 쓰러졌는지 판단합니다.
+def check_nose_grid(check_list, bounding_box):
+    
+    nose_x, nose_y = check_list[0], check_list[1]
+    left_ankle_x, left_ankle_y = check_list[2], check_list[3]
+    right_ankle_x, right_ankle_y = check_list[4], check_list[5]
+    left_knee_x, left_knee_y = check_list[6], check_list[7]
+    right_knee_x, right_knee_y = check_list[8], check_list[9]
 
-    nose_y = keypoint_data[0][0][1].item() if keypoint_data[0][0][2].numel() == 1 and keypoint_data[0][0][2] > 0 else None
-    left_eye_y = keypoint_data[0][1][1].item() if keypoint_data[0][1][2].numel() == 1 and keypoint_data[0][1][2] > 0 else None 
-    right_eye_y = keypoint_data[0][2][1].item() if keypoint_data[0][2][2].numel() == 1 and keypoint_data[0][2][2] > 0 else None
-    left_ear_y = keypoint_data[0][3][1].item() if keypoint_data[0][3][2].numel() == 1 and keypoint_data[0][3][2] > 0 else None
-    right_ear_y = keypoint_data[0][4][1].item() if keypoint_data[0][4][2].numel() == 1 and keypoint_data[0][4][2] > 0 else None
-    left_knee_y = keypoint_data[0][13][1].item() if keypoint_data[0][13][2].numel() == 1 and keypoint_data[0][13][2] > 0 else None
-    right_knee_y = keypoint_data[0][14][1].item() if keypoint_data[0][14][2].numel() == 1 and keypoint_data[0][14][2] > 0 else None
-    left_ankle_y = keypoint_data[0][15][1].item() if keypoint_data[0][15][2].numel() == 1 and keypoint_data[0][15][2] > 0 else None
-    right_ankle_y = keypoint_data[0][16][1].item() if keypoint_data[0][16][2].numel() == 1 and keypoint_data[0][16][2] > 0 else None
+    # 상체 기준
+    upper_x, upper_y = nose_x, nose_y
+
+    # 하체 기준
+    if left_ankle_y is not None and right_ankle_y is not None:
+        lower_x = (left_ankle_x + right_ankle_x) / 2
+        lower_y = (left_ankle_y + right_ankle_y) / 2
+    elif left_ankle_y is not None:
+        lower_x, lower_y = left_ankle_x, left_ankle_y
+    elif right_ankle_y is not None:
+        lower_x, lower_y = right_ankle_x, right_ankle_y
+    else:  # left_ankle_y와 right_ankle_y가 모두 None인 경우
+        if left_knee_y is not None and right_knee_y is not None:
+            lower_x = (left_knee_x + right_knee_x) / 2
+            lower_y = (left_knee_y + right_knee_y) / 2
+        elif left_knee_y is not None:
+            lower_x, lower_y = left_knee_x, left_knee_y
+        elif right_knee_y is not None:
+            lower_x, lower_y = right_knee_x, right_knee_y
+        else:
+            return False  # 모든 관련 y 값이 None인 경우
+
+    # 그리드 위치 계산
+    upper_grid_pos = check_skeleton.get_grid_position(bounding_box, upper_x, upper_y)
+    lower_grid_pos = check_skeleton.get_grid_position(bounding_box, lower_x, lower_y)
+
+    # 경사 판단
+    if check_skeleton.incline_judgment(upper_grid_pos, lower_grid_pos):
+        return 1
+    else:
+        return 0
+
+
+def check_eye_ear_grid(check_list, bounding_box):
+    
+    left_ear_x, left_ear_y = check_list[0], check_list[1]
+    right_ear_x, right_ear_y = check_list[2], check_list[3]
+    
+    left_eye_x, left_eye_y = check_list[4], check_list[5]
+    right_eye_x, right_eye_y = check_list[6], check_list[7]
+
+    left_ankle_x, left_ankle_y = check_list[8], check_list[9]
+    right_ankle_x, right_ankle_y = check_list[10], check_list[11]
+
+    left_knee_x, left_knee_y = check_list[12], check_list[13]
+    right_knee_x, right_knee_y = check_list[14], check_list[15]
+
+    # 상체 기준
+    if left_ear_y is not None and right_ear_y is not None:
+        upper_x = (left_ear_x + right_ear_x) / 2
+        upper_y = (left_ear_y + right_ear_y) / 2
+    elif left_ear_y is not None:
+        upper_x, upper_y = left_ear_x, left_ear_y
+    elif right_ear_y is not None:
+        upper_x, upper_y = right_ear_x, right_ear_y
+    else:  # left_ear_y와 right_ear_y가 모두 None인 경우
+        if left_eye_y is not None and right_eye_y is not None:
+            upper_x = (left_eye_x + right_eye_x) / 2
+            upper_y = (left_eye_y + right_eye_y) / 2
+        elif left_eye_y is not None:
+            upper_x, upper_y = left_eye_x, left_eye_y
+        elif right_eye_y is not None:
+            upper_x, upper_y = right_eye_x, right_eye_y
+        else:
+            return False  # 모든 관련 y 값이 None인 경우
+
+    # 하체 기준
+    if left_ankle_y is not None and right_ankle_y is not None:
+        lower_x = (left_ankle_x + right_ankle_x) / 2
+        lower_y = (left_ankle_y + right_ankle_y) / 2
+    elif left_ankle_y is not None:
+        lower_x, lower_y = left_ankle_x, left_ankle_y
+    elif right_ankle_y is not None:
+        lower_x, lower_y = right_ankle_x, right_ankle_y
+    else:  # left_ankle_y와 right_ankle_y가 모두 None인 경우
+        if left_knee_y is not None and right_knee_y is not None:
+            lower_x = (left_knee_x + right_knee_x) / 2
+            lower_y = (left_knee_y + right_knee_y) / 2
+        elif left_knee_y is not None:
+            lower_x, lower_y = left_knee_x, left_knee_y
+        elif right_knee_y is not None:
+            lower_x, lower_y = right_knee_x, right_knee_y
+        else:
+            return False  # 모든 관련 y 값이 None인 경우
+
+    # 그리드 위치 계산
+    upper_grid_pos = check_skeleton.get_grid_position(bounding_box, upper_x, upper_y)
+    lower_grid_pos = check_skeleton.get_grid_position(bounding_box, lower_x, lower_y)
+
+    # 경사 판단
+    if check_skeleton.incline_judgment(upper_grid_pos, lower_grid_pos):
+        return 1
+    else:
+        return 0
+
+
+# 좌표를 딕셔너리로 추출합니다.
+def extract_keypoint(keypoint_data):
+    keypoints = {
+        'nose': {'x': None, 'y': None},
+        'left_eye': {'x': None, 'y': None},
+        'right_eye': {'x': None, 'y': None},
+        'left_ear': {'x': None, 'y': None},
+        'right_ear': {'x': None, 'y': None},
+        'left_knee': {'x': None, 'y': None},
+        'right_knee': {'x': None, 'y': None},
+        'left_ankle': {'x': None, 'y': None},
+        'right_ankle': {'x': None, 'y': None}
+    }
+
+    # 좌표 저장
+    if keypoint_data[0][0][2].numel() == 1 and keypoint_data[0][0][1] > 0:
+        keypoints['nose']['x'] = keypoint_data[0][0][0].item()
+        keypoints['nose']['y'] = keypoint_data[0][0][1].item()
+    
+    if keypoint_data[0][1][2].numel() == 1 and keypoint_data[0][1][1] > 0:
+        keypoints['left_eye']['x'] = keypoint_data[0][1][0].item()
+        keypoints['left_eye']['y'] = keypoint_data[0][1][1].item()
+    
+    if keypoint_data[0][2][2].numel() == 1 and keypoint_data[0][2][1] > 0:
+        keypoints['right_eye']['x'] = keypoint_data[0][2][0].item()
+        keypoints['right_eye']['y'] = keypoint_data[0][2][1].item()
+    
+    if keypoint_data[0][3][2].numel() == 1 and keypoint_data[0][3][1] > 0:
+        keypoints['left_ear']['x'] = keypoint_data[0][3][0].item()
+        keypoints['left_ear']['y'] = keypoint_data[0][3][1].item()
+    
+    if keypoint_data[0][4][2].numel() == 1 and keypoint_data[0][4][1] > 0:
+        keypoints['right_ear']['x'] = keypoint_data[0][4][0].item()
+        keypoints['right_ear']['y'] = keypoint_data[0][4][1].item()
+
+    if keypoint_data[0][13][2].numel() == 1 and keypoint_data[0][13][1] > 0:
+        keypoints['left_knee']['x'] = keypoint_data[0][13][0].item()
+        keypoints['left_knee']['y'] = keypoint_data[0][13][1].item()
+    
+    if keypoint_data[0][14][2].numel() == 1 and keypoint_data[0][14][1] > 0:
+        keypoints['right_knee']['x'] = keypoint_data[0][14][0].item()
+        keypoints['right_knee']['y'] = keypoint_data[0][14][1].item()
+    
+    if keypoint_data[0][15][2].numel() == 1 and keypoint_data[0][15][1] > 0:
+        keypoints['left_ankle']['x'] = keypoint_data[0][15][0].item()
+        keypoints['left_ankle']['y'] = keypoint_data[0][15][1].item()
+    
+    if keypoint_data[0][16][2].numel() == 1 and keypoint_data[0][16][1] > 0:
+        keypoints['right_ankle']['x'] = keypoint_data[0][16][0].item()
+        keypoints['right_ankle']['y'] = keypoint_data[0][16][1].item()
+
+    return keypoints
+
+
+def is_falling_func(width, height, keypoint_data, is_falling, bounding_box):
+    keypoints = extract_keypoint(keypoint_data)
+
+    # y 좌표 확인
+    nose_x = keypoints['nose']['x']
+    nose_y = keypoints['nose']['y']
+    left_eye_x = keypoints['left_eye']['x']
+    left_eye_y = keypoints['left_eye']['y']
+    right_eye_x = keypoints['right_eye']['x']
+    right_eye_y = keypoints['right_eye']['y']
+    left_ear_x = keypoints['left_ear']['x']
+    left_ear_y = keypoints['left_ear']['y']
+    right_ear_x = keypoints['right_ear']['x']
+    right_ear_y = keypoints['right_ear']['y']
+    left_ankle_x = keypoints['left_ankle']['x']
+    left_ankle_y = keypoints['left_ankle']['y']
+    left_knee_x = keypoints['left_knee']['x']
+    left_knee_y = keypoints['left_knee']['y']
+    right_ankle_x = keypoints['right_ankle']['x']
+    right_ankle_y = keypoints['right_ankle']['y']
+    right_knee_x = keypoints['right_knee']['x']
+    right_knee_y = keypoints['right_knee']['y']
 
 
     if left_ankle_y is None and left_knee_y is None and right_ankle_y is None and right_knee_y is None:
         return False
-    else:
-        aspect_ratio_threshold = 1.2
+    
+    aspect_ratio_threshold = 1.2
 
-        if width > height * aspect_ratio_threshold:
-            if nose_y is not None and (left_ankle_y is not None or right_ankle_y is not None) and (left_knee_y is not None or right_knee_y is not None):
+    if width > height * aspect_ratio_threshold:
+        grid_status = 0
+        if nose_y is not None and (left_ankle_y is not None or right_ankle_y is not None) and (left_knee_y is not None or right_knee_y is not None):
+            grid_status = check_nose_grid([nose_x, nose_y, left_ankle_x, left_ankle_y, right_ankle_x, right_ankle_y,
+                                    left_knee_x, left_knee_y, right_knee_x, right_knee_y], bounding_box)
+            if grid_status:
+                if is_aligned_nose(nose_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y, 70):
+                    return True
+            else:
                 if is_aligned_nose(nose_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y):
                     return True
 
-            if not is_falling and (left_ear_y is not None or right_ear_y is not None) and (left_ankle_y is not None or right_ankle_y is not None) and (left_knee_y is not None or right_knee_y is not None):
-                if is_aligned_ear(left_ear_y, right_ear_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y):
-                    return True
-            
-            if not is_falling and (left_eye_y is not None or right_eye_y is not None) and (left_ankle_y is not None or right_ankle_y is not None) and (left_knee_y is not None or right_knee_y is not None):
-                if is_aligned_eye(left_eye_y, right_eye_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y):
-                    return True
+        if not is_falling and (left_ear_y is not None or right_ear_y is not None) and (left_ankle_y is not None or right_ankle_y is not None) and (left_knee_y is not None or right_knee_y is not None):
+            grid_status = check_eye_ear_grid([left_ear_x, left_ear_y, right_ear_x, right_ear_y, left_eye_x, left_eye_y, right_eye_x, right_eye_y, left_ankle_x, left_ankle_y,
+                                              right_ankle_x, right_ankle_y, left_knee_x, left_knee_y, right_knee_x, right_knee_y], bounding_box)
+            if is_aligned_ear(left_ear_y, right_ear_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y):
+                return True
+        
+        if not is_falling and (left_eye_y is not None or right_eye_y is not None) and (left_ankle_y is not None or right_ankle_y is not None) and (left_knee_y is not None or right_knee_y is not None):
+            if is_aligned_eye(left_eye_y, right_eye_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y):
+                return True
 
     return False
-
 
 async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
     
@@ -137,7 +313,7 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
                 if keypoint_data.size(1) == 17:
                     # 각 키포인트의 좌표 추출
                     is_falling = False
-                    is_falling = is_falling_func(width, height, keypoint_data, is_falling)
+                    is_falling = is_falling_func(width, height, keypoint_data, is_falling, box.xyxy[0])
 
                     current_time = time.time()
 
@@ -150,16 +326,13 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
                             elapsed_time = current_time - tracking_data[tracking_id]['start_time']
                             if elapsed_time >= 5:
                                 status_type = 0
-                                
-                                # 객체 정중앙 좌표
-                                # center_x = (x1 + x2) / 2
-                                # center_y = (y1 + y2) / 2
 
                                 # 객체 발 밑 좌표
                                 send_x, send_y = (x1 + x2) / 2, y2
                                 start_x, start_y, end_x, end_y = x1, y1, x2, y2
                                 if not tracking_data[tracking_id]['sent']:
-                                    await send_coordinate(float(send_x), float(send_y))
+                                    await send_coordinate(float(send_x), float(send_y), 0)
+                                    print(send_x, send_y)
                                     tracking_data[tracking_id]['sent'] = True
                             else:
                                 status_type = 1
@@ -182,11 +355,11 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
     return (annotated_frame, lst)
             
 
-async def process_video(udp_sender):
+async def process_video(udp_sender, camera_id):
     model = YOLO("model/yolov8s-pose.pt").to('cuda')
 
     # 동영상 파일 열기
-    video_path = "falling.mp4"
+    video_path = "falling2.mp4"
     cap = cv2.VideoCapture(0)
 
     # 객체 상태 추적
@@ -228,20 +401,25 @@ async def process_video(udp_sender):
 
         # 'q' 키를 눌러 종료
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            await disconnect(camera_id)
             break
 
     # 자원 해제
     cap.release()
     cv2.destroyAllWindows()
 
+async def send_accesstoken():
+    result = await authentication()
+    print(result)
+    return result
 
 if __name__ == "__main__":
     SERVER_IP = "43.202.61.242"
     PORT = 5432
-    camera_id = 0
-    udp_sender = UdpSender(SERVER_IP, PORT, camera_id)
+    result = asyncio.run(send_accesstoken())
+    udp_sender = UdpSender(SERVER_IP, PORT, result['camera_id'])
     
     try:
-        asyncio.run(process_video(udp_sender))
+        asyncio.run(process_video(udp_sender, result['camera_id']))
     finally:
         udp_sender.close()
