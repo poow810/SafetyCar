@@ -28,16 +28,20 @@ const Step5 = () => {
     }
 
     // Local Storage에서 이미지 불러오기
-    const savedImage0 = localStorage.getItem("savedImageCamera0");
-    const savedImage1 = localStorage.getItem("savedImageCamera1");
-    if (savedImage0) {
-      setCamera0Image(savedImage0);
-    }
-    if (savedImage1) {
-      setCamera1Image(savedImage1);
-    }
-    console.log(savedImage0);
-    console.log(savedImage1);
+    const loadImages = async () => {
+      const savedImage0 = localStorage.getItem("savedImageCamera0");
+      const savedImage1 = localStorage.getItem("savedImageCamera1");
+
+      if (savedImage0) {
+        setCamera0Image(savedImage0);
+      }
+
+      if (savedImage1) {
+        setCamera1Image(savedImage1);
+      }
+    };
+
+    loadImages();
   }, [mergedImageSrc, navigate]);
 
   // 비디오 클릭 시 좌표 전송 및 변환된 좌표 출력
