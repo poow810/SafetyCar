@@ -341,7 +341,7 @@ def map_point_to_floor_coordinates(x, y, H_total):
 @app.get("/safety_Car/pos")
 async def get_safety_Car():
     return {
-        'afetyCar': safetyCar
+        'safetyCar': safetyCar
     }
 
 # SafetyCar 강제 제자리로
