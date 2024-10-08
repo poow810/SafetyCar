@@ -13,7 +13,8 @@ async def disconnect(sid) :
 
 @sio.event(namespace='/socketio')
 async def send_pose(sid, data) :
-    print(data)
+    # print(data)
+    return
 
 # 여기부터는 아마 이럴 거 같다!
 
