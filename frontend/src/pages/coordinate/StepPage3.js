@@ -106,7 +106,7 @@ const Step3 = () => {
                 }
               />
               <p>
-                Image1 <span> {tilePoints2.length}/4</span>
+                Image1 <span> {tilePoints1.length}/4</span>
               </p>
             </div>
             <div className="image-box">
