@@ -10,8 +10,11 @@ import java.io.ByteArrayInputStream;
 public class Image {
     //미리 공간을 열어놓기 640*480 크기의 jpg를 테스트해본결과 약 60000 바이트가 나올때가 있고 20000 바이트가 될때가 있다.
     //최악의 경우를 가정해서 넉넉하게 공간을 만들어놓기
+    public static int MTU = 1500;   //Maximum Transmission Unit
+    public static short UDP_HEADER_SIZE = 28;   //Maximum Transmission Unit
+    public static short INFO_SIZE = 3;
 
-    public static short IMG_SEG_SIZE = 1469;
+    public static int IMG_SEG_SIZE = MTU - (UDP_HEADER_SIZE + INFO_SIZE);
     public static short MAX_SEG_NUM = 150;
     public static short HEADER_SIZE = 1;     //카메라 정보를 담을 커스텀 헤더 크기
 
