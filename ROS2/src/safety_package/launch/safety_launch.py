@@ -3,18 +3,6 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     return LaunchDescription([
-        # Node(
-        #     package='safety_package',
-        #     node_namespace='talker',
-        #     node_executable='talker',
-        #     node_name='talker'
-        # ),
-        # Node(
-        #     package='safety_package',
-        #     node_namespace='listner',
-        #     node_executable='listner',
-        #     node_name='listner'
-        # ),
         Node(
             package='safety_package',
             node_executable='odom',
@@ -37,22 +25,13 @@ def generate_launch_description():
         ),
         Node(
             package='safety_package',
-            node_executable='calibration',
-            node_name='calibration'
-        ),
-        Node(
-            package='safety_package',
             node_executable='a_star_local',
             node_name='a_star_local'
         ),
-        # Node(
-        #     package = 'safety_package',
-        #     node_executable='dwa',
-        #     node_name='dwa'
-        # )
-        # Node(
-        #     package='safety_package',
-        #     node_executable='mapping',
-        #     node_name='screen'
-        # )
+        Node(
+            package='safety_package',
+            node_executable='socket',
+            node_name='data_socket'
+        ),
+
     ])

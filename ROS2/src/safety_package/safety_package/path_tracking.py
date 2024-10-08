@@ -188,15 +188,7 @@ class followTheCarrot(Node):
                     # 선속, 각속 값 지정
                     out_vel = 1.0
                     out_rad_vel = theta
-                    # if len(self.path_msg.poses) > 20 :
-                    #     self.cmd_msg.linear.x = 1.0
-                    #     # self.cmd_msg.angular.z = 2.0
-                    #     self.cmd_msg.angular.z = theta*2/self.omega_max
-                    #     #11.7
-                    # elif len(self.path_msg.poses) > 10 :
-                    #     self.cmd_msg.linear.x = 0.8
-                    #     # self.cmd_msg.angular.z = 2.0
-                    #     self.cmd_msg.angular.z = theta/self.omega_max
+                    
                     if len(self.path_msg.poses) < 20:
                         out_vel = 0.7
                         if len(self.path_msg.poses) < 10:
@@ -306,10 +298,6 @@ class followTheCarrot(Node):
             backward_dis = sum(backward) / len(backward)
             self.left_dis = sum(left) / len(left)
             self.right_dis = sum(right) / len(right)
-            # #print('전방', self.forward_dis)
-            # #print('후방', backward_dis)
-            # #print('좌측', left_dis)       
-            # #print('우측', right_dis)
 
             # 근접 감지
             if self.forward_dis < 0.05:
@@ -329,10 +317,6 @@ class followTheCarrot(Node):
                 print('우측 근접')
             else:
                 self.is_right_approach = False
-                
-            # elif backward_dis < 0.25:
-            #     self.is_approach = False
-            #     #print('후방 근접')
 
 
             

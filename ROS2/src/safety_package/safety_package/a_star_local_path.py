@@ -1,5 +1,7 @@
 import rclpy
 from rclpy.node import Node
+from safety_package.qos import qos_sensor
+
 from geometry_msgs.msg import PoseStamped
 from squaternion import Quaternion
 from nav_msgs.msg import Odometry,Path
@@ -22,9 +24,9 @@ class astarLocalpath(Node):
     def __init__(self):
         super().__init__('a_star_local_path')
         # 로직 1. publisher, subscriber 만들기
-        self.local_path_pub = self.create_publisher(Path, 'local_path', 10)
-        self.subscription = self.create_subscription(Path,'/global_path',self.path_callback,10)
-        self.subscription = self.create_subscription(Odometry,'/odom',self.listener_callback,10)
+        self.local_path_pub = self.create_publisher(Path, 'local_path', qos_sensor)
+        self.subscription = self.create_subscription(Path,'/global_path',self.path_callback, qos_sensor)
+        self.subscription = self.create_subscription(Odometry,'/odom',self.listener_callback, qos_sensor)
         self.odom_msg=Odometry()
         self.is_odom=False
         self.is_path=False

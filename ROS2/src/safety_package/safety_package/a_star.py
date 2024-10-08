@@ -1,12 +1,15 @@
 import rclpy
 import numpy as np
 from rclpy.node import Node
+from safety_package.qos import qos_default, qos_service, qos_sensor
+
 import os
 from geometry_msgs.msg import Pose,PoseStamped
 from squaternion import Quaternion
 from nav_msgs.msg import Odometry,OccupancyGrid,MapMetaData,Path
 from math import pi,cos,sin
 from collections import deque
+
 
 # a_star 노드는  OccupancyGrid map을 받아 grid map 기반 최단경로 탐색 알고리즘을 통해 로봇이 목적지까지 가는 경로를 생성하는 노드입니다.
 # 로봇의 위치(/pose), 맵(/map), 목표 위치(/goal_pose)를 받아서 전역경로(/global_path)를 만들어 줍니다. 
@@ -28,10 +31,10 @@ class a_star(Node):
     def __init__(self):
         super().__init__('a_Star')
         # 로직 1. publisher, subscriber 만들기
-        self.map_sub = self.create_subscription(OccupancyGrid,'map',self.map_callback,1)
-        self.odom_sub = self.create_subscription(Odometry,'odom',self.odom_callback,1)
-        self.goal_sub = self.create_subscription(PoseStamped,'goal_pose',self.goal_callback,1)
-        self.a_star_pub= self.create_publisher(Path, 'global_path', 1)
+        self.map_sub = self.create_subscription(OccupancyGrid,'/map',self.map_callback, qos_default)
+        self.odom_sub = self.create_subscription(Odometry,'/odom',self.odom_callback, qos_sensor)
+        self.goal_sub = self.create_subscription(PoseStamped,'/goal',self.goal_callback, qos_service)
+        self.a_star_pub= self.create_publisher(Path, 'global_path', qos_sensor)
 
         self.map_msg=OccupancyGrid()
         self.odom_msg=Odometry()
@@ -42,13 +45,13 @@ class a_star(Node):
 
         # 로직 2. 파라미터 설정
         self.goal = [184,224] 
-        self.map_size_x=350
-        self.map_size_y=350
+        self.map_size_x=500
+        self.map_size_y=500
         self.map_resolution=0.05
-        self.map_offset_x=-8-8.75
-        self.map_offset_y=-4-8.75
+        self.map_offset_x=-47-12.5
+        self.map_offset_y=-58-12.5
 
-        self.GRIDSIZE=350 
+        self.GRIDSIZE=500
  
         self.dx = [-1,0,0,1,-1,-1,1,1]
         self.dy = [0,1,-1,0,-1,1,-1,1]
@@ -129,6 +132,9 @@ class a_star(Node):
                 
                 # 다익스트라 알고리즘을 완성하고 주석을 해제 시켜주세요. 
                 # 시작지, 목적지가 탐색가능한 영역이고, 시작지와 목적지가 같지 않으면 경로탐색을 합니다.
+                if self.grid[self.goal[0]][self.goal[1]] != 0 :
+                    self.bfs()
+
                 if self.grid[start_grid_cell[0]][start_grid_cell[1]] ==0  and self.grid[self.goal[0]][self.goal[1]] ==0  and start_grid_cell != self.goal :
                     self.dijkstra(start_grid_cell)
 
@@ -174,6 +180,7 @@ class a_star(Node):
                                 self.path[next[0]][next[1]] = current
                                 self.cost[next[0]][next[1]] = self.cost[current[0]][current[1]] + self.dCost[i] + heuristic
 
+
                             
                             if next == self.goal :
                                 print('found')
@@ -184,7 +191,30 @@ class a_star(Node):
             nextNode = self.path[node[0]][node[1]]
             self.final_path.append(nextNode)
             node = nextNode
-        
+    
+    def bfs(self) :
+        visited = [[False for _ in range(500)] for _ in range(500)]
+        queue = deque()
+        dr = [1, -1, 0, 0, 1, -1, 1, -1]
+        dc = [0, 0, 1, -1, -1, 1, 1, -1]
+        queue.append(self.goal)
+
+        while queue:
+            current = queue.popleft()
+
+            for i in range(8) :
+                r = current[0] + dr[i]
+                c = current[1] + dc[i]
+
+                if 0 <= r < 500 and 0 <= c < 500 :
+                    if visited[r][c] :
+                        continue
+                    if self.grid[r][c] == 0 :
+                        self.goal[0] = r
+                        self.goal[1] = c
+                        return
+                    queue.append([r, c])
+                    visited[r][c] = True
 
         
 def main(args=None):

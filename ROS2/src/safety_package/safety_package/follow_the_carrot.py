@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+from safety_package.qos import qos_sensor
 
 from geometry_msgs.msg import Twist, Point, Point32
 from ssafy_msgs.msg import TurtlebotStatus
@@ -13,12 +14,12 @@ import numpy as np
 class followTheCarrot(Node):
 
     def __init__(self):
-        super().__init__('ftc')
-        self.cmd_publisher = self.create_publisher(Twist, 'cmd_vel', 10)
-        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
-        self.turtlebot_status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.status_callback, 10)
-        self.path_sub = self.create_subscription(Path, '/local_path', self.path_callback, 10)
-        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, 10)
+        super().__init__('path_tracking')
+        self.cmd_publisher = self.create_publisher(Twist, 'cmd_vel', qos_sensor)
+        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, qos_sensor)
+        self.turtlebot_status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.status_callback, qos_sensor)
+        self.path_sub = self.create_subscription(Path, '/local_path', self.path_callback, qos_sensor)
+        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, qos_sensor)
         
         time_period = 0.05
         self.timer = self.create_timer(time_period, self.timer_callback)
@@ -59,7 +60,7 @@ class followTheCarrot(Node):
                     self.lfd = self.min_lfd
                 if self.lfd > self.max_lfd :
                     self.lfd = self.max_lfd
-                # print(self.lfd)
+                print(self.lfd)
 
                 min_dis = float('inf')
 
@@ -86,60 +87,51 @@ class followTheCarrot(Node):
                     local_forward_point = det_trans_matrix.dot(global_forward_point)
                     theta = -atan2(local_forward_point[1], local_forward_point[0])
 
-                    # if len(self.path_msg.poses) > 20 :
-                    #     self.cmd_msg.linear.x = 1.0
-                    #     # self.cmd_msg.angular.z = 2.0
-                    #     self.cmd_msg.angular.z = theta*2/self.omega_max
-                    #     #11.7
-                    # elif len(self.path_msg.poses) > 10 :
-                    #     self.cmd_msg.linear.x = 0.8
-                    #     # self.cmd_msg.angular.z = 2.0
-                    #     self.cmd_msg.angular.z = theta/self.omega_max
+                    if self.is_start :
+                        
+                        if -0.15 < theta < 0.15 :
+                            self.cmd_msg.angular.z = 0.02
+                            self.is_start = False
 
-                    # else :
-                    #     self.cmd_msg.linear.x = 0.3
-                    #     # self.cmd_msg.angular.z = 2.0
-                    #     self.cmd_msg.angular.z = theta/self.omega_max
+                        else :
+                            self.cmd_msg.angular.z = 0.2
 
-                    velocity = 1.0
-                    angle_vel = theta*2
-                    if len(self.path_msg.poses) < 20:
-                        velocity = 0.8
-                        angle_vel = angle_vel/2
-                    elif len(self.path_msg.poses) < 10:
-                        velocity = 0.5
-                        angle_vel = angle_vel/2
-                    self.cmd_msg.linear.x = velocity
-                    self.cmd_msg.angular.z = angle_vel/self.omega_max
+                        
+                    else :
+                        if len(self.path_msg.poses) > 20 :
+                            self.cmd_msg.linear.x = 0.5
+                            # self.cmd_msg.angular.z = 2.0
+                            self.cmd_msg.angular.z = theta*2/self.omega_max
+                            #11.7
+                        elif len(self.path_msg.poses) > 10 :
+                            self.cmd_msg.linear.x = 0.3
+                            # self.cmd_msg.angular.z = 2.0
+                            self.cmd_msg.angular.z = theta/self.omega_max
+                        
+                        else :
+                            self.cmd_msg.linear.x = 0.2
+                            # self.cmd_msg.angular.z = 2.0
+                            self.cmd_msg.angular.z = theta/self.omega_max
 
-                    
-                    # 충동 했을 때
-                    # lidar 값을 불러 들어온 후, 가장 먼 거리로 조향각을 설정한 뒤 이동
-                    if self.collision == True :
-                        # self.cmd_msg.linear.x = 0.0
-                        # self.cmd_msg.angular.z = 0.0
-                        self.avoid_collision()
+                        if self.forward_dis <= 0.05:
+                            self.cmd_msg.linear.x = -0.5
+                            self.cmd_msg.angular.z = 0.0
+                        elif self.left_dis <= 0.1:
+                            self.cmd_msg.linear.x = -0.5
+                            self.cmd_msg.angular.z = -120.0
+                        elif self.right_dis <= 0.1:
+                            self.cmd_msg.linear.x = -0.5
+                            self.cmd_msg.angular.z = -60.0
 
-                    ## 여기에 거리값을 통해서 충돌 확인
 
 
             else :
-                # print("no found forward point")
+                print("no found forward point")
                 self.is_start = True
                 self.cmd_msg.linear.x = 0.0
                 self.cmd_msg.angular.z = 0.0
 
         self.cmd_publisher.publish(self.cmd_msg)
-
-    def avoid_collision(self):
-        max_dis = max(self.lidar_msg.ranges)
-        max_index = self.lidar_msg.ranges.index(max_dis)
-        angle = max_index * (pi/180.0)
-
-        self.cmd_msg.linear.x = 0.2
-        self.cmd_msg.angular.z = angle
-
-        print(f"avoid collision: angle = {angle*180 / pi}" )
 
     def odom_callback(self, msg) :
         self.is_odom = True
@@ -158,8 +150,8 @@ class followTheCarrot(Node):
     def lidar_callback(self, msg) :
         self.lidar_msg = msg
         if self.is_path == True and self.is_odom == True :
-            self.is_lidar = True
-            pcd_msg = PointCloud()  
+            
+            pcd_msg = PointCloud()
             pcd_msg.header.frame_id = 'map'
 
             pose_x = self.odom_msg.pose.pose.position.x
@@ -186,19 +178,38 @@ class followTheCarrot(Node):
                     global_point.y = global_result[1][0]
                     pcd_msg.points.append(global_point)
 
-            # self.collision = False
-            # for waypoint in self.path_msg.poses :
-            #     for lidar_point in pcd_msg.points :
-            #         distance = sqrt(pow(waypoint.pose.position.x - lidar_point.x, 2) + pow(waypoint.pose.position.y - lidar_point.y, 2))
-            #         if distance < 0.01 :
-            #             self.collision = True
-            #             print(f"distance: {distance}")
-            #             # print(f'collision')
-
-            forward = self.lidar_msg.ranges[-2:2] # -359~1 -> 범위 조정?
+            # 전/후방, 좌/우측 충돌 감지
+            forward_left = self.lidar_msg.ranges[0:1]
+            forward_right = self.lidar_msg.ranges[359:360]
+            forward = forward_left + forward_right
+            backward = self.lidar_msg.ranges[170:191]
             left = self.lidar_msg.ranges[20:31]
-            
-            
+            right = self.lidar_msg.ranges[330:341]
+
+            # 평균 거리 계산
+            self.forward_dis = sum(forward) / len(forward)
+            backward_dis = sum(backward) / len(backward)
+            self.left_dis = sum(left) / len(left)
+            self.right_dis = sum(right) / len(right)
+
+            # 근접 감지
+            if self.forward_dis < 0.05:
+                self.is_forward_approach = True
+                print('전방 근접')
+            else:
+                self.is_forward_approach = False 
+
+            if self.left_dis < 0.1:
+                self.is_left_approach = True
+                print('좌측 근접')
+            else:
+                self.is_left_approach = False
+
+            if self.right_dis < 0.1:
+                self.is_right_approach = True
+                print('우측 근접')
+            else:
+                self.is_right_approach = False
 
 
 def main(args=None):

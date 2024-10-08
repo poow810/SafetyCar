@@ -12,7 +12,6 @@ setup(
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
-    py_modules=['safety_package.dynamic_window_approach'],
     zip_safe=True,
     maintainer='ability',
     maintainer_email='ek6015@naver.com',
@@ -21,9 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'my_node = safety_package.my_node:main',
-            'talker = safety_package.publisher_member_function:main',
-            'listner = safety_package.subscriber_member_function:main',
+            'laser_test = safety_package.laser_distance_test:main',
             # 'odom = safety_package.run_localization:main',
             'odom = safety_package.odometry:main',
             'ftc = safety_package.follow_the_carrot:main',
@@ -31,10 +28,9 @@ setup(
             'a_star_global = safety_package.a_star:main',
             'a_star_local = safety_package.a_star_local_path:main',
             'mapping = safety_package.run_mapping:main',
-            'dwa_local = safety_package.dwa_local_path:main',
-            # 'dwa = safety_package.dynamic_window_approach:main',
             'calibration = safety_package.ex_calib:main',
             'test_tracking = safety_package.path_tracking:main',
+            'socket = safety_package.data_socket:main',
         ],
     },
 )
