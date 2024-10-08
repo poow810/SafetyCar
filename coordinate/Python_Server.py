@@ -1,10 +1,13 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 import base64
 import json
 from socketHandler import socket_app, sio, safetyCar
+from io import BytesIO
 
 #redis
 # from sqlalchemy.orm import Session
@@ -337,8 +340,63 @@ def map_point_to_floor_coordinates(x, y, H_total):
     transformed_point = cv2.perspectiveTransform(point, H_total)
     return transformed_point[0][0]
 
+
+def read_map(file_path):
+    with open(file_path, 'r') as file:
+        map_data = file.read().strip().split()
+    
+    if len(map_data) < 500 * 500:
+        raise ValueError("파일에 충분한 데이터가 없습니다.")
+    
+    map_list = []
+    for i in range(500):
+        row = list(map(int, map_data[i * 500:(i + 1) * 500]))
+        map_list.append(row)
+    
+    return map_list
+
+def modify_surroundings(map_data, target_value=100, surrounding_value=60, distance=5):
+    rows, cols = len(map_data), len(map_data[0])
+    
+    for i in range(rows):
+        for j in range(cols):
+            if map_data[i][j] == target_value:
+                for d in range(-distance, distance + 1):
+                    for r in range(-distance, distance + 1):
+                        new_i = i + d
+                        new_j = j + r
+                        if (0 <= new_i < rows) and (0 <= new_j < cols):
+                            map_data[new_i][new_j] = surrounding_value
+
+def visualize_map(map_data):
+    np_map = np.array(map_data)
+    flipped_map = np.flip(np_map, axis=1)
+
+    plt.figure(figsize=(10, 10), facecolor='white')
+    plt.imshow(flipped_map, cmap='Greys', interpolation='nearest')
+    plt.axis('off')
+
+    # BytesIO를 사용하여 이미지 저장
+    buf = BytesIO()
+    plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0, transparent=True)
+    buf.seek(0)  # 버퍼의 시작으로 이동
+    plt.close()
+    return buf
+
+
+@app.get("/get-map")
+async def get_map():
+    file_path = "map2.txt"
+    mp = read_map(file_path)
+
+    modify_surroundings(mp)
+
+    image_buf = visualize_map(mp)  # 수정된 배열 시각화
+
+    return StreamingResponse(image_buf, media_type="image/png")
+
 # SafetyCar 위치 반환
-@app.get("/safety_Car/pos")
+@app.get("/get-coordinate")
 async def get_safety_Car():
     return {
         'safetyCar': safetyCar
