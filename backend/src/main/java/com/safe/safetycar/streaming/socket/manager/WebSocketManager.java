@@ -62,4 +62,8 @@ public class WebSocketManager {
             }
         }
     }
+
+    public int getClientSize() {
+        return CLIENTS.size();
+    }
 }
