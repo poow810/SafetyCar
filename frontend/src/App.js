@@ -12,7 +12,7 @@ import StepPage3 from "./pages/coordinate/StepPage3";
 import StepPage4 from "./pages/coordinate/StepPage4";
 import StepPage5 from "./pages/coordinate/StepPage5";
 
-import "./styles/global.css";
+// import "./styles/global.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
