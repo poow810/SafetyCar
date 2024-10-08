@@ -53,6 +53,7 @@ async def authentication():
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+
 async def disconnect(camera_id):
     try:
         async with httpx.AsyncClient() as client:
