@@ -12,7 +12,6 @@ const handlePopstate = () => {
   }
 };
 
-
 function Monitor() {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [frameSrcArr, setFrameSrcArr] = useState([null, null, null, null]);
@@ -35,7 +34,6 @@ function Monitor() {
     setExpandedIndex(null);
   };
 
-
   // MapComponent에서 이미지를 받는 함수
   const handleImageLoad = (url) => {
     setSimulatorImage(url); // 시뮬레이터 이미지 상태 업데이트
@@ -55,16 +53,7 @@ function Monitor() {
 
   return (
     <>
-      <h1
-        style={{
-          color: "white",
-          textAlign: "center",
-          marginTop: "50px",
-          marginBottom: "70px",
-        }}
-      >
-        안전 관제 통합 대시보드
-      </h1>
+      <h1>안전 관제 통합 대시보드</h1>
 
       <div className="container">
         {/* 모니터 섹션 */}
@@ -114,7 +103,10 @@ function Monitor() {
           
           {/* 시뮬레이터 이미지 추가 */}
           {simulatorImage && (
-            <div className="simulatorImageContainer" style={{ position: 'relative' }}>
+            <div
+              className="simulatorImageContainer"
+              style={{ position: "relative" }}
+            >
               <img
                 src={simulatorImage}
                 alt="Simulator"
@@ -125,14 +117,14 @@ function Monitor() {
                 <div
                   key={index}
                   style={{
-                    position: 'absolute',
+                    position: "absolute",
                     left: point.x,
                     top: point.y,
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '50%',
-                    backgroundColor: 'red',
-                    transform: 'translate(-50%, -50%)', // 중앙 정렬
+                    width: "10px",
+                    height: "10px",
+                    borderRadius: "50%",
+                    backgroundColor: "red",
+                    transform: "translate(-50%, -50%)", // 중앙 정렬
                   }}
                 />
               ))}

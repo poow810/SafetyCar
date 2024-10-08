@@ -9,6 +9,10 @@
   box-sizing: border-box;
 }
 
+h1 {
+  color: white;
+  text-align: center;
+}
 /* 모니터 섹션 스타일 */
 .monitorSection {
   display: flex;
@@ -17,6 +21,7 @@
   align-items: center;
   justify-content: flex-start;
   flex: 0.5;
+  margin-bottom: 50px;
 }
 
 /* 시뮬레이터 섹션 스타일 */
@@ -42,7 +47,7 @@
 .monitorFrameLeft,
 .monitorFrameRight {
   width: 550px;
-  height: 350px;
+  height: 400px;
   background-color: #222;
   border-radius: 20px;
   padding: 10px;
@@ -77,6 +82,14 @@
   align-items: center;
   color: white;
   font-family: "Roboto Mono", monospace;
+}
+
+/*------------------------------------- 영상 크기 맞춤 조절 추가 */
+.monitorScreen img {
+  width: 100%; /* 모니터 너비에 맞추기 */
+  height: 100%; /* 모니터 높이에 맞추기 */
+  object-fit: contain; /* 영상 비율을 유지하면서 컨테이너에 맞춤 */
+  border-radius: 10px; /* 모니터 테두리와 맞추기 */
 }
 
 /* 모니터 받침대 스타일 */
