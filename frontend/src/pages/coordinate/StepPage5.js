@@ -25,18 +25,19 @@ const Step5 = () => {
     if (!mergedImageSrc) {
       alert("이전 단계에서 합성된 이미지가 제공되지 않았습니다.");
       // navigate("/step4"); // Step4로 이동
-      // Local Storage에서 이미지 불러오기
-      const savedImage0 = localStorage.getItem("savedImageCamera0");
-      const savedImage1 = localStorage.getItem("savedImageCamera1");
-      if (savedImage0) {
-        setCamera0Image(savedImage0);
-      }
-      if (savedImage1) {
-        setCamera1Image(savedImage1);
-      }
-      console.log(savedImage0);
-      console.log(savedImage1);
     }
+
+    // Local Storage에서 이미지 불러오기
+    const savedImage0 = localStorage.getItem("savedImageCamera0");
+    const savedImage1 = localStorage.getItem("savedImageCamera1");
+    if (savedImage0) {
+      setCamera0Image(savedImage0);
+    }
+    if (savedImage1) {
+      setCamera1Image(savedImage1);
+    }
+    console.log(savedImage0);
+    console.log(savedImage1);
   }, [mergedImageSrc, navigate]);
 
   // 비디오 클릭 시 좌표 전송 및 변환된 좌표 출력
