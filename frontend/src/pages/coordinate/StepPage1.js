@@ -148,9 +148,9 @@ const Step1 = () => {
             </div>
 
             <div className="image-box">
-              {camera0Image ? (
+              {camera1Image ? (
                 <img
-                  src={camera0Image}
+                  src={camera1Image}
                   alt="Camera 1"
                   ref={imageRef2}
                   style={{
