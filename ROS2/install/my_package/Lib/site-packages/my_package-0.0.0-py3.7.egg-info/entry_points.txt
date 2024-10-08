@@ -1,0 +1,9 @@
+[console_scripts]
+a_star_global = my_package.a_star:main
+a_star_local = my_package.a_star_local_path:main
+ftc = my_package.follow_the_carrot:main
+load_map = my_package.load_map:main
+mapping = my_package.run_mapping:main
+odom = my_package.odometry:main
+test = my_package.data_socket:main
+

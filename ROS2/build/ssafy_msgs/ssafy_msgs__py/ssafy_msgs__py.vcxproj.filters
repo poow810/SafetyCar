@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\ssafy_msgs\CMakeFiles\b14962bc29961d8207c75db542af56dc\_ssafy_msgs_s.ep.rosidl_typesupport_c.c.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\ssafy_msgs\CMakeFiles\9dff02f873255f399206f4e4c8416c38\ssafy_msgs__py.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\ssafy_msgs\ssafy_msgs__py\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\ssafy_msgs\ssafy_msgs__py\CMakeFiles\ssafy_msgs__py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C8E17FC5-E2AD-33CB-828F-EB9509B0FA37}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

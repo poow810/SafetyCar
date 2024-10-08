@@ -1,0 +1,84 @@
+[1.313s] Invoking command in 'C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\src\my_package': PYTHONPATH=C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages;%PYTHONPATH% installDir=%installDir%
+IntelliJ IDEA=C:\Program Files\JetBrains\IntelliJ IDEA 2024.1.4\bin;
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.1.4\bin; c:\python37\python.exe -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ..\..\build\my_package build --build-base C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build install --record C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\install.log --install-scripts $base/lib/my_package --single-version-externally-managed install_data
+[1.610s] running egg_info
+[1.610s] creating ..\..\build\my_package\my_package.egg-info
+[1.610s] writing ..\..\build\my_package\my_package.egg-info\PKG-INFO
+[1.610s] writing dependency_links to ..\..\build\my_package\my_package.egg-info\dependency_links.txt
+[1.610s] writing entry points to ..\..\build\my_package\my_package.egg-info\entry_points.txt
+[1.625s] writing requirements to ..\..\build\my_package\my_package.egg-info\requires.txt
+[1.625s] writing top-level names to ..\..\build\my_package\my_package.egg-info\top_level.txt
+[1.625s] writing manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[1.641s] reading manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[1.641s] writing manifest file '..\..\build\my_package\my_package.egg-info\SOURCES.txt'
+[1.641s] running build
+[1.641s] running build_py
+[1.641s] creating C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build
+[1.641s] creating C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib
+[1.641s] creating C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.641s] copying my_package\a_star.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.641s] copying my_package\a_star_local_path.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.641s] copying my_package\data_socket.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.641s] copying my_package\follow_the_carrot.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.641s] copying my_package\load_map.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.656s] copying my_package\odometry.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.656s] copying my_package\path_publisher.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.656s] copying my_package\qos.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.656s] copying my_package\run_localization.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.656s] copying my_package\run_mapping.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.656s] copying my_package\utils.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.656s] copying my_package\__init__.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package
+[1.656s] running install
+[1.656s] running install_lib
+[1.656s] creating C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.656s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\a_star.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.656s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\a_star_local_path.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.656s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\data_socket.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.672s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\follow_the_carrot.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.672s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\load_map.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.672s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\odometry.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.672s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\path_publisher.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.672s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\qos.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.672s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\run_localization.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.672s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\run_mapping.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.672s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\utils.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.688s] copying C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build\lib\my_package\__init__.py -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package
+[1.688s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\a_star.py to a_star.cpython-37.pyc
+[1.688s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\a_star_local_path.py to a_star_local_path.cpython-37.pyc
+[1.688s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\data_socket.py to data_socket.cpython-37.pyc
+[1.688s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\follow_the_carrot.py to follow_the_carrot.cpython-37.pyc
+[1.688s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\load_map.py to load_map.cpython-37.pyc
+[1.703s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\odometry.py to odometry.cpython-37.pyc
+[1.703s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\path_publisher.py to path_publisher.cpython-37.pyc
+[1.703s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\qos.py to qos.cpython-37.pyc
+[1.703s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\run_localization.py to run_localization.cpython-37.pyc
+[1.703s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\run_mapping.py to run_mapping.cpython-37.pyc
+[1.719s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\utils.py to utils.cpython-37.pyc
+[1.719s] byte-compiling C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package\__init__.py to __init__.cpython-37.pyc
+[1.719s] running install_data
+[1.719s] creating C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\share\ament_index
+[1.719s] creating C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\share\ament_index\resource_index
+[1.719s] creating C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\share\ament_index\resource_index\packages
+[1.719s] copying resource\my_package -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\share\ament_index\resource_index\packages
+[1.719s] copying package.xml -> C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\share\my_package
+[1.719s] running install_egg_info
+[1.719s] Copying ..\..\build\my_package\my_package.egg-info to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages\my_package-0.0.0-py3.7.egg-info
+[1.735s] running install_scripts
+[1.750s] Installing a_star_global-script.py script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.750s] Installing a_star_global.exe script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.750s] Installing a_star_local-script.py script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.750s] Installing a_star_local.exe script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing ftc-script.py script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing ftc.exe script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing load_map-script.py script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing load_map.exe script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing mapping-script.py script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing mapping.exe script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing odom-script.py script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing odom.exe script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing test-script.py script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] Installing test.exe script to C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\lib\my_package
+[1.766s] writing list of installed files to 'C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\install.log'
+[1.781s] Invoked command in 'C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\src\my_package' returned '0': PYTHONPATH=C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\prefix_override;c:\python37\lib\site-packages\colcon_core\task\python\colcon_distutils_commands;C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\install\my_package\Lib\site-packages;%PYTHONPATH% installDir=%installDir%
+IntelliJ IDEA=C:\Program Files\JetBrains\IntelliJ IDEA 2024.1.4\bin;
+IntelliJ IDEA Community Edition=C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.1.4\bin; c:\python37\python.exe -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ..\..\build\my_package build --build-base C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\build install --record C:\Users\SSAFY\Desktop\Second_Project\Project\S11P21B209\ROS2\build\my_package\install.log --install-scripts $base/lib/my_package --single-version-externally-managed install_data

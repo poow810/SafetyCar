@@ -1,0 +1,20 @@
+^C:\USERS\SSAFY\DESKTOP\SECOND_PROJECT\PROJECT\S11P21B209\ROS2\BUILD\SSAFY_MSGS\CMAKEFILES\AC42A2542C4699C7F8F0FBF19FCAB8CA\NUM__ROSIDL_TYPESUPPORT_INTROSPECTION_C.H.RULE
+setlocal
+C:\Python37\python.exe C:/dev/ros2-windows/lib/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c --generator-arguments-file C:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/build/ssafy_msgs/rosidl_typesupport_introspection_c__arguments.json
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\SSAFY\DESKTOP\SECOND_PROJECT\PROJECT\S11P21B209\ROS2\SRC\SSAFY_MSGS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/src/ssafy_msgs -BC:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/build/ssafy_msgs --check-stamp-file C:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/build/ssafy_msgs/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

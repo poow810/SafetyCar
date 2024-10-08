@@ -1,0 +1,10 @@
+^C:\USERS\SSAFY\DESKTOP\SECOND_PROJECT\PROJECT\S11P21B209\ROS2\BUILD\SSAFY_MSGS\CMAKEFILES\9BA4987C400687F4502AB3FEE196A5F5\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/src/ssafy_msgs -BC:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/build/ssafy_msgs --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/build/ssafy_msgs/ssafy_msgs.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,20 @@
+^C:\USERS\SSAFY\DESKTOP\SECOND_PROJECT\PROJECT\S11P21B209\ROS2\BUILD\SSAFY_MSGS\CMAKEFILES\8FD4C985305CCDC27E75411619265A50\NUM__TYPE_SUPPORT.CPP.RULE
+setlocal
+C:\Python37\python.exe C:/dev/ros2-windows/lib/rosidl_typesupport_opensplice_cpp/rosidl_typesupport_opensplice_cpp --generator-arguments-file C:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/build/ssafy_msgs/rosidl_typesupport_opensplice_cpp__arguments.json --dds-interface-base-path C:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/build/ssafy_msgs/rosidl_generator_dds_idl --idl-pp C:/dev/opensplice/HDE/x86_64.win64/bin/idlpp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\SSAFY\DESKTOP\SECOND_PROJECT\PROJECT\S11P21B209\ROS2\SRC\SSAFY_MSGS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/src/ssafy_msgs -BC:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/build/ssafy_msgs --check-stamp-file C:/Users/SSAFY/Desktop/Second_Project/Project/S11P21B209/ROS2/build/ssafy_msgs/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
