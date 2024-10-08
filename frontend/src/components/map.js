@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
+
+const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
+
 const MapComponent = ({ onImageLoad, onPointReceive }) => {
   const [intervalId, setIntervalId] = useState(null);
 
   const createImage = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/get-map', {
+      const response = await fetch(`${PYTHON_URL}/get-map`, {
         method: 'GET',
       });
 
@@ -23,7 +26,7 @@ const MapComponent = ({ onImageLoad, onPointReceive }) => {
 
   const fetchCoordinates = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/get-coordinate', {
+      const response = await fetch(`${PYTHON_URL}/get-coordinate`, {
         method: 'GET',
       });
 
