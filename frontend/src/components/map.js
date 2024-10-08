@@ -8,7 +8,7 @@ const MapComponent = ({ onImageLoad, onPointReceive }) => {
 
   const createImage = async () => {
     try {
-      const response = await fetch(`${PYTHON_URL}/get-map`, {
+      const response = await fetch(`${PYTHON_URL}/get-map/`, {
         method: 'GET',
       });
 
@@ -26,7 +26,7 @@ const MapComponent = ({ onImageLoad, onPointReceive }) => {
 
   const fetchCoordinates = async () => {
     try {
-      const response = await fetch(`${PYTHON_URL}/get-coordinate`, {
+      const response = await fetch(`${PYTHON_URL}/get-coordinate/`, {
         method: 'GET',
       });
 
