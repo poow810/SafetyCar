@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 
 const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
+const LOCAL_URL = process.env.REACT_APP_LOCAL_URL;
 
 const MapComponent = ({ onImageLoad, onPointReceive }) => {
   const [intervalId, setIntervalId] = useState(null);
