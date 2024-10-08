@@ -1,4 +1,5 @@
 import socketio
+global safetyCar
 
 safetyCar = []
 
@@ -17,6 +18,7 @@ async def disconnect(sid) :
 @sio.event(namespace='/socketio')
 async def send_pose(sid, data) :
     # print(data)
+    global safetyCar
     safetyCar = data
 
 
