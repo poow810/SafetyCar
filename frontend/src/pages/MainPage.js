@@ -43,10 +43,15 @@ function Monitor() {
 
   // MapComponent에서 좌표를 받는 함수
   const handlePointReceive = (point) => {
-    setPoints([point]); // 새로운 좌표로 이전 좌표를 덮어씌움
+    // 500x500 기준에서 400x400 기준으로 변환
+    const newX = (point.x / 500) * 400;
+    const newY = (point.y / 500) * 400;
+    
+    setPoints([ { x: newX, y: newY } ]); // 변환된 좌표로 업데이트
   };
 
-  window.addEventListener("popstate", handlePopstate);
+
+   window.addEventListener("popstate", handlePopstate);
 
   return (
     <>
@@ -106,13 +111,14 @@ function Monitor() {
         {/* 시뮬레이터 지도 섹션 */}
         <div className="simulatorOverlay">
           <MapComponent onImageLoad={handleImageLoad} onPointReceive={handlePointReceive} />
+          
           {/* 시뮬레이터 이미지 추가 */}
           {simulatorImage && (
             <div className="simulatorImageContainer" style={{ position: 'relative' }}>
               <img
                 src={simulatorImage}
                 alt="Simulator"
-                style={{ width: '100%', maxHeight: '400px', objectFit: 'contain' }}
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }} // 컨테이너에 맞춰 조정
               />
               {/* 좌표 표시 */}
               {points.map((point, index) => (
