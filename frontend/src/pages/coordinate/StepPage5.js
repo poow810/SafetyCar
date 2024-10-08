@@ -17,10 +17,25 @@ const Step5 = () => {
   const [cameraId1, setCameraId1] = useState("");
   const [cameraId2, setCameraId2] = useState("");
   // 이미지가 없을 경우 Step4로 리디렉션
+
+  const [camera0Image, setCamera0Image] = useState(null);
+  const [camera1Image, setCamera1Image] = useState(null);
+
   useEffect(() => {
     if (!mergedImageSrc) {
       alert("이전 단계에서 합성된 이미지가 제공되지 않았습니다.");
       // navigate("/step4"); // Step4로 이동
+      // Local Storage에서 이미지 불러오기
+      const savedImage0 = localStorage.getItem("savedImageCamera0");
+      const savedImage1 = localStorage.getItem("savedImageCamera1");
+      if (savedImage0) {
+        setCamera0Image(savedImage0);
+      }
+      if (savedImage1) {
+        setCamera1Image(savedImage1);
+      }
+      console.log(savedImage0);
+      console.log(savedImage1);
     }
   }, [mergedImageSrc, navigate]);
 
@@ -159,20 +174,34 @@ const Step5 = () => {
       <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
         <div>
           <h3>영상 1</h3>
-          <video
+          {/* <video
             ref={videoDisplayRef1}
             src="../../assets/cctv1.mp4"
             controls
+            style={{ maxWidth: "100%", cursor: "crosshair" }}
+            onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
+          /> */}
+          <img
+            src={camera0Image}
+            alt="Camera 1"
+            ref={videoDisplayRef1}
             style={{ maxWidth: "100%", cursor: "crosshair" }}
             onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
           />
         </div>
         <div>
           <h3>영상 2</h3>
-          <video
+          {/* <video
             ref={videoDisplayRef2}
             src="../../assets/cctv2.mp4"
             controls
+            style={{ maxWidth: "100%", cursor: "crosshair" }}
+            onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
+          /> */}
+          <img
+            src={camera1Image}
+            alt="Camera 1"
+            ref={videoDisplayRef2}
             style={{ maxWidth: "100%", cursor: "crosshair" }}
             onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
           />
