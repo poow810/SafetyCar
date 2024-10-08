@@ -395,11 +395,12 @@ async def get_map():
 
     return StreamingResponse(image_buf, media_type="image/png")
 
+coordinate = []
 # SafetyCar 위치 반환
 @app.get("/get-coordinate")
 async def get_safety_Car():
     return {
-        'safetyCar': safetyCar
+        'safetyCar': coordinate
     }
 
 # SafetyCar 강제 제자리로

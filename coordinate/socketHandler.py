@@ -1,7 +1,6 @@
 import socketio
-global safetyCar
+from Python_Server import coordinate
 
-safetyCar = []
 
 
 sio = socketio.AsyncServer(async_mode='asgi', path='/socket')
@@ -18,8 +17,10 @@ async def disconnect(sid) :
 @sio.event(namespace='/socketio')
 async def send_pose(sid, data) :
     # print(data)
-    global safetyCar
-    safetyCar = data
+    global coordinate
+    coordinate = data
+
+
 
 
 # 여기부터는 아마 이럴 거 같다!
