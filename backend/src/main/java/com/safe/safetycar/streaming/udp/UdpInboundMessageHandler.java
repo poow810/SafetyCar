@@ -80,6 +80,7 @@ public class UdpInboundMessageHandler {
 
         if(endflag != pre_flag){
             pre_flag = endflag;
+            logManager.sendLog("new frame", LogManager.LOG_TYPE.INFO);
 //            logManager.sendLog("Received", LogManager.LOG_TYPE.INFO);
 //            imageManager.read(cameraId).setNextCacheIdx();
             logManager.sendInterval();
