@@ -60,7 +60,7 @@ const Navbar = () => {
         <img src="/assets/navi/Mail.png" alt="Mail" className="nav-icon" />{" "}
         {/* Mail 아이콘 */}
       </div>
-      <div className="nav-item" onClick={() => navigate("/rotate")}>
+      <div className="nav-item" onClick={handleRotateClick}>
         <img
           src="/assets/navi/Rotate cw (1).png"
           alt="Rotate"
