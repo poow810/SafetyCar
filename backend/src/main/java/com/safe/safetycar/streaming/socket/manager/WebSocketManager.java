@@ -10,6 +10,7 @@ import jakarta.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -53,14 +54,20 @@ public class WebSocketManager {
 
         for(Session client : CLIENTS) {
             try {
-                synchronized (client) {
+//                synchronized (client) {
 //                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(UdpInboundMessageHandler.camera_data_assembled[cameraId]));
-                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
-                }
+//                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
+                    sendFrame2Client(client, cameraId);
+//                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+//    @Async
+    public void sendFrame2Client(Session client, byte cameraId) throws IOException {
+        client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
     }
 
     public int getClientSize() {
