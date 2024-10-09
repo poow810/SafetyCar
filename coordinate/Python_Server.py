@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, JSONResponse
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -407,6 +407,7 @@ async def get_safety_Car():
 @app.get("/safety_Car/halt")
 async def safetyhalt():
     await sio.emit('go_home', namespace='/socketio')
+    return JSONResponse(status_code=200, content={"message": "집가유."})
 # 근범이형!!
 
 
