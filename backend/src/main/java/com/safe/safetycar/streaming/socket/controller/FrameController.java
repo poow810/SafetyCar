@@ -37,7 +37,7 @@ public class FrameController {
     public @ResponseBody byte[] getFrame(@PathVariable("cameraId") String cameraId) {
 //        InputStream in = new ByteArrayInputStream(UdpInboundMessageHandler.camera_data_assembled[Integer.parseInt(cameraId)]);
 //        return UdpInboundMessageHandler.camera_data_assembled[Integer.parseInt(cameraId)];
-        return imageManager.read(Byte.parseByte(cameraId)).getData();
+        return imageManager.read(Byte.parseByte(cameraId)).getPrevData();
     }
 
     @GetMapping("/clientCount")

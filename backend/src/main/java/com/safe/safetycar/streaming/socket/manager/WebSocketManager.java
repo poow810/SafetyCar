@@ -65,7 +65,7 @@ public class WebSocketManager {
                 }
                 synchronized (client) {
 //                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(UdpInboundMessageHandler.camera_data_assembled[cameraId]));
-                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
+                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getPrevData()));
 //                    sendFrame2Client(client, cameraId);
                 }
             } catch (IOException e) {
@@ -78,7 +78,7 @@ public class WebSocketManager {
 
 //    @Async
     public void sendFrame2Client(Session client, byte cameraId) throws IOException {
-        client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
+        client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getPrevData()));
 //        client.getAsyncRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
 //        ConcurrentWebSocketSessionDecorator c = new ConcurrentWebSocketSessionDecorator(client);
 //        client.getAsyncRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));

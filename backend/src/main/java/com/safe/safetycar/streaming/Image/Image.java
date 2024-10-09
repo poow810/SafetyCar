@@ -17,15 +17,31 @@ public class Image {
     public static int IMG_SEG_SIZE = MTU - (UDP_HEADER_SIZE + INFO_SIZE);
     public static short MAX_SEG_NUM = 150;
     public static short HEADER_SIZE = 1;     //카메라 정보를 담을 커스텀 헤더 크기
+    private static final int MAX_CACHE = 2;
 
-    private byte[] data = new byte[(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
+    private byte[][] data = new byte[MAX_CACHE][(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
+    private static int cacheIdx = 0;
 
     @Setter
     private boolean isOpen = false;
 
     public Image(byte id) {
-        data[0] = id;
+        data[0][0] = id;
+        data[1][0] = id;
         isOpen = true;
+        cacheIdx = 0;
+    }
+
+    public byte[] getPrevData() {
+        return data[getPrevCacheIdx()];
+    }
+
+    public void setNextCacheIdx() {
+        cacheIdx = (cacheIdx + 1) % MAX_CACHE;
+    }
+
+    public int getPrevCacheIdx() {
+        return (cacheIdx - 1 + MAX_CACHE) % MAX_CACHE;
     }
 
     /**
@@ -35,7 +51,9 @@ public class Image {
      * @return          정상적으로 읽었다면 읽은 만큼의 바이트 그렇지 않다면  -1, ByteArrayInputStream.read()와 같다.
      */
     public int write(ByteArrayInputStream bis, byte segNum) {
-        return bis.read(data, (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
+        int idx = bis.read();
+        idx = idx == cacheIdx ? cacheIdx : getPrevCacheIdx();
+        return bis.read(data[idx], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
     }
 
 }
