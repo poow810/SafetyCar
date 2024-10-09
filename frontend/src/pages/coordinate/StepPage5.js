@@ -134,13 +134,12 @@ const Step5 = () => {
 
   return (
     <>
-      <h1>5. 영상에서 바닥 좌표 확인 및 변환 행렬 저장</h1>
-      <p>비디오를 클릭하여 바닥 좌표를 확인하세요.</p>
+      <h1>STEP5. 변환 행렬 저장</h1>
+      <p>이미지를 클릭하여 바닥 좌표를 확인하세요.</p>
       <div className="container">
         <div className="right-container">
           <div className="image-container">
             <div className="image-box">
-
               {/* <video
             ref={videoDisplayRef1}
             src="../../assets/cctv1.mp4"
@@ -159,7 +158,6 @@ const Step5 = () => {
             </div>
 
             <div className="image-box">
-
               {/* <video
             ref={videoDisplayRef2}
             src="../../assets/cctv2.mp4"

@@ -72,10 +72,8 @@ const Step4 = () => {
 
   return (
     <>
-      <h1>STEP4. 이미지 합성을 위한 대응점 선택</h1>
+      <h1>STEP4. 대응점 선택</h1>
       <div className="container">
- 
-
         <div className="right-container">
           <div className="image-container">
             <div className="image-box">

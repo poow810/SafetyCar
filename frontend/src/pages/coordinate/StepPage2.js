@@ -45,10 +45,8 @@ const Step2 = () => {
 
   return (
     <div>
-      <h1>2. 이미지 회전/반전</h1>
+      <h1>STEP2. 이미지 회전/반전</h1>
       <div className="container">
- 
-
         <div className="right-container">
           <div className="image-container">
             <div className="image-box">
@@ -61,6 +59,7 @@ const Step2 = () => {
               ) : (
                 <p>이미지 1을 불러오는 중...</p>
               )}
+              <p>Image1</p>
             </div>
 
             <div className="image-box">
@@ -73,6 +72,7 @@ const Step2 = () => {
               ) : (
                 <p>이미지 2를 불러오는 중...</p>
               )}
+              <p>Image2</p>
             </div>
           </div>
 

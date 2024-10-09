@@ -81,10 +81,8 @@ const Step3 = () => {
 
   return (
     <>
-      <h1>3. 타일 모서리 선택</h1>
+      <h1>STEP3. 타일 매칭</h1>
       <div className="container">
-
-
         <div className="right-container">
           <div className="image-container">
             <div className="image-box">
