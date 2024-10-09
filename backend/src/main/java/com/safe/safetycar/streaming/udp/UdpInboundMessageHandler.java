@@ -77,7 +77,7 @@ public class UdpInboundMessageHandler {
 
         if(endflag > 0){
 //            logManager.sendLog("Received", LogManager.LOG_TYPE.INFO);
-            imageManager.read(cameraId).setNextCacheIdx();
+//            imageManager.read(cameraId).setNextCacheIdx();
             logManager.sendInterval();
             wsm.sendFrame(cameraId);
         }
