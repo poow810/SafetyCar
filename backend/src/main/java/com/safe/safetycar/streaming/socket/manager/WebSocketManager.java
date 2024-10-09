@@ -67,7 +67,8 @@ public class WebSocketManager {
 
 //    @Async
     public void sendFrame2Client(Session client, byte cameraId) throws IOException {
-        client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
+//        client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
+        client.getAsyncRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
     }
 
     public int getClientSize() {
