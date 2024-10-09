@@ -47,13 +47,7 @@ const Step2 = () => {
     <div>
       <h1>2. 이미지 회전/반전</h1>
       <div className="container">
-        <div className="nav-container">
-          <ul>
-            <li>홈</li>
-            <li>좌표 셋팅</li>
-            <li>사건 기록</li>
-          </ul>
-        </div>
+ 
 
         <div className="right-container">
           <div className="image-container">
