@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "../styles/Mainpage.css"; // CSS 파일을 import
 import MapComponent from "../components/map";
 import axios from "axios";
+import NavibarComponent from "../components/navibar";
 
 const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 const API_URL = process.env.REACT_APP_API_URL;
@@ -90,6 +91,10 @@ function Monitor() {
       <h1>SafetyCar 상황실</h1>
 
       <div className="container">
+        <div className="container" style={{ display: 'flex' }}>
+          {/* 네비바 추가 */}
+          <NavibarComponent />
+        </div>
         {/* 모니터 섹션 */}
         <div className="monitorSection">
           {/* 첫 번째 모니터: CCTV 1 */}
