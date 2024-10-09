@@ -21,7 +21,7 @@
 #define PORT			5432
 #define MTU				1500
 #define UDP_HEADER_SIZE 28
-#define INFO_SIZE		3						//카메라 번호 및 이미지 번호를 담는 임의의 사용자 정의 패킷 헤더(UDP 헤더와 별개)의 크기(바이트) - End_Flag, CameraID, ImageSegNum
+#define INFO_SIZE		4						//카메라 번호 및 이미지 번호를 담는 임의의 사용자 정의 패킷 헤더(UDP 헤더와 별개)의 크기(바이트) - End_Flag, CameraID, ImageSegNum
 #define PACKET_SIZE		MTU - UDP_HEADER_SIZE	//MTU - UPD-Header = 1500 - 28 = 1472
 #define IMG_SEG_SIZE	PACKET_SIZE - INFO_SIZE
 #define IMG_QUALITY		20						//jpeg 형식으로 변환할때 화질 설정
@@ -45,6 +45,7 @@ public:
 	inline bool isconnected() { return connected; }
 private:
 	bool connected;
+	bool flag;
 	BYTE camera_id;
 	WSADATA wsadata;
 	SOCKET m_clientSock;
