@@ -90,33 +90,6 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 		total_bytes_sent += chunk_size;
 	}
 
-	//num = 0;
-	//total_bytes_sent = 0;
-	//while (total_bytes_sent < img_packet_size) {
-	//	chunk_size = min(IMG_SEG_SIZE, img_packet_size - total_bytes_sent);
-
-	//	memset(buffer, 0, sizeof(buffer));	//0으로 초기화
-	//	//buffer[0] = total_bytes_sent + chunk_size < img_packet_size ? 0 : 255;	//마지막 패킷인지 검사
-	//	buffer[0] = frame_flag ? 255 : 0;
-	//	buffer[1] = camera_id;
-	//	buffer[2] = num++;
-	//	buffer[3] = cache_idx;
-	//	memcpy(buffer + (sizeof(BYTE) * INFO_SIZE), bytes.data() + total_bytes_sent, chunk_size);
-	//	sent_bytes = sendto(m_clientSock, reinterpret_cast<char*>(buffer), chunk_size + (sizeof(BYTE) * INFO_SIZE), 0, (SOCKADDR*)&m_ClientAddr, sizeof(m_ClientAddr));
-
-	//	//보낸 데이터의 양이 -1인 경우는 오류인 경우
-	//	if (sent_bytes == SOCKET_ERROR) {
-	//		//check when error occured
-	//		//https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-sendto
-	//		std::cerr << "ERROR code: " << WSAGetLastError() << "\n";
-	//		//delete &bytes;
-	//		return;
-	//	}
-
-	//	total_bytes_sent += chunk_size;
-	//}
-
-
 	std::cout << "Packet sent : " << total_bytes_sent << " \n" << "Seg sent : " << (short)num << " \n";
 	//flag != flag;
 	cache_idx = (cache_idx + 1) % MAX_CACHE;

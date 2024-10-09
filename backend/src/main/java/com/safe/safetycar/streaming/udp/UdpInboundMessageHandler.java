@@ -38,7 +38,7 @@ public class UdpInboundMessageHandler {
 //    public static byte[][] camera_data_assembled = new byte[MAX_CAMERA_NUM][(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
 
     public UdpInboundMessageHandler() {
-        logManager.setInterval(LogManager.LOG_TYPE.INFO, 50, "image received");
+        logManager.setInterval(LogManager.LOG_TYPE.INFO, 200, "image received");
         
         
         // 카메라 번호 할당
