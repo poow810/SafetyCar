@@ -98,6 +98,7 @@ const Step1 = () => {
 
   // Base64 이미지 데이터를 Blob으로 변환하는 함수
   const dataURLtoBlob = (dataURL) => {
+    console.log(dataURL);
     const arr = dataURL.split(",");
     const mimeMatch = arr[0].match(/:(.*?);/);
     const mime = mimeMatch ? mimeMatch[1] : "image/jpeg";
