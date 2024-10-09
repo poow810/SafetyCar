@@ -1,6 +1,5 @@
 import socketio
-from Python_Server import coordinate
-
+from coordinate import coordinate
 
 
 sio = socketio.AsyncServer(async_mode='asgi', path='/socket')
@@ -16,10 +15,9 @@ async def disconnect(sid) :
 
 @sio.event(namespace='/socketio')
 async def send_pose(sid, data) :
-    # print(data)
+    print(data)
     global coordinate
     coordinate = data
-
 
 
 

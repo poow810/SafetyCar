@@ -6,7 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import base64
 import json
-from socketHandler import socket_app, sio, safetyCar
+from socketHandler import socket_app, sio
+from coordinate import coordinate
 from io import BytesIO
 
 #redis
@@ -395,7 +396,7 @@ async def get_map():
 
     return StreamingResponse(image_buf, media_type="image/png")
 
-coordinate = []
+
 # SafetyCar 위치 반환
 @app.get("/get-coordinate")
 async def get_safety_Car():
@@ -729,4 +730,4 @@ async def transform_point(
 # 서버 실행
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(app, host='127.0.0.1', port=8000)
