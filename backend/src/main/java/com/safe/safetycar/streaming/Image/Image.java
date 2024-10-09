@@ -17,7 +17,7 @@ public class Image {
     public static int IMG_SEG_SIZE = MTU - (UDP_HEADER_SIZE + INFO_SIZE);
     public static short MAX_SEG_NUM = 20;
     public static short HEADER_SIZE = 1;     //카메라 정보를 담을 커스텀 헤더 크기
-    private static final int MAX_CACHE = 3;
+    private static final int MAX_CACHE = 2;
 
     private byte[][] data = new byte[MAX_CACHE][(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
     private static int cacheIdx = 0;
@@ -40,7 +40,8 @@ public class Image {
     }
 
     public byte[] getCurrentData() {
-        return data[0];
+        return data[flag == 0 ? 1 : 0];
+//        return data[0];
     }
 
     public void setNextCacheIdx() {
@@ -66,7 +67,8 @@ public class Image {
 //        idx = idx == cacheIdx ? cacheIdx : getPrevCacheIdx();
 //        if((idx + 1) % MAX_CACHE == cacheIdx) idx = getPrevCacheIdx();
 //        else if((idx - 1 + MAX_CACHE) % MAX_CACHE == cacheIdx) idx = getNextCacheIdx();
-        return bis.read(data[0], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
+        return bis.read(data[flag == 0 ? 0 : 1], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
+//        return bis.read(data[0], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
     }
 
 }
