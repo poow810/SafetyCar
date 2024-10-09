@@ -42,7 +42,7 @@ function Monitor() {
   };
 
   const handleImageLoad = (url) => {
-    setSimulatorImage(url); 
+    setSimulatorImage(url);
   };
 
   const handleImageClick = (e, imageRef, imgId) => {
@@ -81,24 +81,22 @@ function Monitor() {
   // MapComponent에서 좌표를 받는 함수
   const handlePointReceive = (point) => {
     console.log(point);
-    if (!point || point.length === 0) {
+
+    // point가 없거나 x, y가 undefined인 경우
+    if (
+      !point ||
+      typeof point.x === "undefined" ||
+      typeof point.y === "undefined"
+    ) {
       setPoints([]);
       return;
-
-  const handlePointReceive = (point) => {
-    console.log(point);
-    
-    // point가 없거나 x, y가 undefined인 경우
-    if (!point || typeof point.x === 'undefined' || typeof point.y === 'undefined') {
-        setPoints([]); 
-        return; 
     }
 
     const newX = (point.x / 500) * 400;
     const newY = (point.y / 500) * 400;
 
-    setPoints([{ x: newX, y: newY }]); 
-};
+    setPoints([{ x: newX, y: newY }]);
+  };
 
   const handleSendSMS = () => {
     const space = "삼성화재 유성캠퍼스(SSAFY 교육동)";
@@ -186,37 +184,41 @@ function Monitor() {
 
           {/* 시뮬레이터 이미지 추가 */}
           {simulatorImage && (
-          <div className="simulatorImageContainer" style={{ position: "relative" }}>
+            <div
+              className="simulatorImageContainer"
+              style={{ position: "relative" }}
+            >
               <img
-                  src={simulatorImage}
-                  alt="Simulator"
-                  style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      borderRadius: "20px",
-                      opacity: "0.3",
-                  }} // 컨테이너에 맞춰 조정
+                src={simulatorImage}
+                alt="Simulator"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  borderRadius: "20px",
+                  opacity: "0.3",
+                }} // 컨테이너에 맞춰 조정
               />
               {/* 좌표 표시 */}
-              {points.length > 0 && points.map((point, index) => (
+              {points.length > 0 &&
+                points.map((point, index) => (
                   <div
-                      key={index}
-                      style={{
-                          position: "absolute",
-                          left: point.x,
-                          top: point.y,
-                          width: "10px",
-                          height: "10px",
-                          borderRadius: "50%",
-                          backgroundColor: "red",
-                          transform: "translate(-50%, -50%)", // 중앙 정렬
-                      }}
-                    />
-                  ))}
-                </div>
-              )}
+                    key={index}
+                    style={{
+                      position: "absolute",
+                      left: point.x,
+                      top: point.y,
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      backgroundColor: "red",
+                      transform: "translate(-50%, -50%)", // 중앙 정렬
+                    }}
+                  />
+                ))}
             </div>
+          )}
+        </div>
         <div>
           <button onClick={handleOpenModal}>119 신고</button>
         </div>
