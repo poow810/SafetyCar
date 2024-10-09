@@ -39,12 +39,6 @@ public class UdpInboundMessageHandler {
 
     public UdpInboundMessageHandler() {
         logManager.setInterval(LogManager.LOG_TYPE.INFO, 200, "image received");
-        
-        
-        // 카메라 번호 할당
-//        for(byte i = 0; i < MAX_CAMERA_NUM; i++) {
-//            camera_data_assembled[i][0] = i;
-//        }
     }
 
     //headerMap 내용 example
@@ -77,7 +71,6 @@ public class UdpInboundMessageHandler {
 
         if(endflag != imageManager.getFlag(cameraId)){
             imageManager.setFlag(cameraId, endflag);
-//            System.out.println("new frame");
 //            imageManager.read(cameraId).setNextCacheIdx();
             logManager.sendInterval();
             wsm.sendFrame(cameraId);

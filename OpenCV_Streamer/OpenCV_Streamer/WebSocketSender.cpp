@@ -71,6 +71,11 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 		
 		memset(buffer, 0, sizeof(buffer));	//0으로 초기화
 		//buffer[0] = total_bytes_sent + chunk_size < img_packet_size ? 0 : 255;	//마지막 패킷인지 검사
+
+		// 0 - 새로운 프레임인지 여부를 표시하는 바이트 (스위치 처럼 동작한다. ON/OFF)
+		// 1 - 카메라 아이디를 표시한다.
+		// 2 - MTU를 기준으로 이미지를 나누어 전송하는데 해당 이미지가 몇 번째 세그먼트인지 표시한다.
+		// 3 - cache_idx 이미지 캐시를 위한 바이트 (사용되지 않음)
 		buffer[0] = frame_flag ? 255 : 0;
 		buffer[1] = camera_id;
 		buffer[2] = num++;
@@ -187,10 +192,7 @@ void WebSocketSender::set_connection()
 	size_t idx = response.find("camera_id");
 	bool camera_id_not_found = true;
 	if (idx != std::string::npos) {
-		//size_t num_start;
-		//숫자 찾기
-		//for (num_start = idx + 1; num_start < response.length() && response[num_start] < '0' && response[num_start] > '9'; num_start++);
-		
+		//숫자 찾기, 0 ~ 9가 포함된 곳을 찾는다.
 		idx = response.find_first_of("0123456789", idx);
 		if (idx != std::string::npos) {
 			size_t last;
@@ -201,6 +203,7 @@ void WebSocketSender::set_connection()
 
 	}
 
+	//카메라 아이디를 못 받았을 경우 수동으로 입력
 	if (camera_id_not_found) {
 		std::cerr << "Camera ID not found in response. \n";
 		set_cameraId();

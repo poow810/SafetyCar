@@ -28,8 +28,6 @@ public class Image {
     private boolean isOpen = false;
 
     public Image(byte id) {
-//        data[0][0] = id;
-//        data[1][0] = id;
         for(int i = 0; i < MAX_CACHE; i++) {data[i][0]=id;}
         isOpen = true;
         cacheIdx = 0;
