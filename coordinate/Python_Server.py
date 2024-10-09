@@ -400,13 +400,13 @@ async def get_map():
 @app.get("/get-coordinate")
 async def get_safety_Car():
     return {
-        'safetyCar': get_pose
+        'safetyCar': get_pose()
     }
 
 # SafetyCar 강제 제자리로
 @app.get("/safety_Car/halt")
 async def safetyhalt():
- await sio.emit('go_home', namespace='/socketio')
+    await sio.emit('go_home', namespace='/socketio')
 # 근범이형!!
 
 
