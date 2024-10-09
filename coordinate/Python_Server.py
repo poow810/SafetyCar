@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import base64
 import json
 from socketHandler import socket_app, sio, get_pose
-from coordinate import coordinate
 from io import BytesIO
 
 #redis
@@ -409,8 +408,6 @@ async def get_safety_Car():
 async def safetyhalt():
  await sio.emit('go_home', namespace='/socketio')
 # 근범이형!!
-
-
 
 
 # 1. 클라이언트로부터 이미지와 바닥의 네 끝점 좌표를 받는 엔드포인트
