@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/MainPage";
 import LibraryPage from "./pages/LibraryPage";
 import TestPage from "./pages/TestPage";
-import StreamingPage from "./pages/StreamingPage";
+// import StreamingPage from "./pages/StreamingPage";
 import StepPage1 from "./pages/coordinate/StepPage1";
 import StepPage2 from "./pages/coordinate/StepPage2";
 import StepPage3 from "./pages/coordinate/StepPage3";
@@ -59,7 +59,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/test" element={<TestPage />} />
-          <Route path="/streamingTest" element={<StreamingPage />} />
+          {/* <Route path="/streamingTest" element={<StreamingPage />} /> */}
           <Route path="/step1" element={<StepPage1 />} />
           <Route path="/step2" element={<StepPage2 />} />
           <Route path="/step3" element={<StepPage3 />} />

@@ -5,6 +5,7 @@ import MapComponent from "../components/map";
 
 const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 const ws = new WebSocket(WEBSOCKET_URL);
+// console.log("SOCKET CONNECTED");
 
 const handlePopstate = () => {
   if (ws) {
