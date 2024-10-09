@@ -12,7 +12,7 @@ public class Image {
     //최악의 경우를 가정해서 넉넉하게 공간을 만들어놓기
     public static int MTU = 1500;   //Maximum Transmission Unit
     public static short UDP_HEADER_SIZE = 28;   //Maximum Transmission Unit
-    public static short INFO_SIZE = 3;
+    public static short INFO_SIZE = 4;
 
     public static int IMG_SEG_SIZE = MTU - (UDP_HEADER_SIZE + INFO_SIZE);
     public static short MAX_SEG_NUM = 150;
