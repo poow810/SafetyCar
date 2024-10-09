@@ -10,7 +10,10 @@ import jakarta.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorator;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -53,14 +56,29 @@ public class WebSocketManager {
 
         for(Session client : CLIENTS) {
             try {
+                if(!client.isOpen()) {
+                    onClose(client);
+                    continue;
+                }
                 synchronized (client) {
 //                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(UdpInboundMessageHandler.camera_data_assembled[cameraId]));
                     client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
+//                    sendFrame2Client(client, cameraId);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
+    }
+
+//    @Async
+    public void sendFrame2Client(Session client, byte cameraId) throws IOException {
+        client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
+//        client.getAsyncRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
+//        ConcurrentWebSocketSessionDecorator c = new ConcurrentWebSocketSessionDecorator(client);
+//        client.getAsyncRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
     }
 
     public int getClientSize() {
