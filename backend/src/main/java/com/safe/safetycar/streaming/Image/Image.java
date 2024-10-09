@@ -56,10 +56,11 @@ public class Image {
      */
     public int write(ByteArrayInputStream bis, byte segNum) {
         int idx = bis.read();
+
 //        idx = idx == cacheIdx ? cacheIdx : getPrevCacheIdx();
-        if((idx + 1) % MAX_CACHE == cacheIdx) idx = getPrevCacheIdx();
-        else if((idx - 1 + MAX_CACHE) % MAX_CACHE == cacheIdx) idx = getNextCacheIdx();
-        return bis.read(data[idx], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
+//        if((idx + 1) % MAX_CACHE == cacheIdx) idx = getPrevCacheIdx();
+//        else if((idx - 1 + MAX_CACHE) % MAX_CACHE == cacheIdx) idx = getNextCacheIdx();
+        return bis.read(data[0], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
     }
 
 }
