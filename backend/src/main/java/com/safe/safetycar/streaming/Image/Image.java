@@ -17,7 +17,7 @@ public class Image {
     public static int IMG_SEG_SIZE = MTU - (UDP_HEADER_SIZE + INFO_SIZE);
     public static short MAX_SEG_NUM = 150;
     public static short HEADER_SIZE = 1;     //카메라 정보를 담을 커스텀 헤더 크기
-    private static final int MAX_CACHE = 2;
+    private static final int MAX_CACHE = 3;
 
     private byte[][] data = new byte[MAX_CACHE][(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
     private static int cacheIdx = 0;
@@ -26,8 +26,9 @@ public class Image {
     private boolean isOpen = false;
 
     public Image(byte id) {
-        data[0][0] = id;
-        data[1][0] = id;
+//        data[0][0] = id;
+//        data[1][0] = id;
+        for(int i = 0; i < MAX_CACHE; i++) {data[i][0]=id;}
         isOpen = true;
         cacheIdx = 0;
     }
@@ -43,6 +44,9 @@ public class Image {
     public int getPrevCacheIdx() {
         return (cacheIdx - 1 + MAX_CACHE) % MAX_CACHE;
     }
+    public int getNextCacheIdx() {
+        return (cacheIdx + 1) % MAX_CACHE;
+    }
 
     /**
      * 주어진 세그먼트를 입력받는다.
@@ -52,7 +56,9 @@ public class Image {
      */
     public int write(ByteArrayInputStream bis, byte segNum) {
         int idx = bis.read();
-        idx = idx == cacheIdx ? cacheIdx : getPrevCacheIdx();
+//        idx = idx == cacheIdx ? cacheIdx : getPrevCacheIdx();
+        if((idx + 1) % MAX_CACHE == cacheIdx) idx = getPrevCacheIdx();
+        else if((idx - 1 + MAX_CACHE) % MAX_CACHE == cacheIdx) idx = getNextCacheIdx();
         return bis.read(data[idx], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
     }
 

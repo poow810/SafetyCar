@@ -29,6 +29,8 @@
 #define SERVER_IP		"43.202.61.242"
 #define SERVER_DOMAIN	"j11b209.p.ssafy.io"
 
+#define MAX_CACHE 3
+
 //이미지 Mat의 크기
 constexpr int IMG_FULL_SIZE = 640 * 480 * 3;
 
@@ -45,7 +47,7 @@ public:
 	inline bool isconnected() { return connected; }
 private:
 	bool connected;
-	bool flag;
+	BYTE cache_idx;
 	BYTE camera_id;
 	WSADATA wsadata;
 	SOCKET m_clientSock;
