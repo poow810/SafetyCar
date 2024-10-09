@@ -111,6 +111,10 @@ const Step1 = () => {
     return new Blob([u8arr], { type: mime });
   };
 
+  const handlePrevious = () => {
+    navigate("/"); // HomePage로 이동
+  };
+  
   return (
     <>
       <h1>STEP1. 바닥 모서리 검출</h1>
@@ -197,6 +201,12 @@ const Step1 = () => {
               />
             </label>
           </div>
+          <button
+              onClick={handlePrevious}
+              className="previous-btn"
+            >
+              이전
+            </button>
           <button
             onClick={handleUploadImages}
             className="submit-btn"

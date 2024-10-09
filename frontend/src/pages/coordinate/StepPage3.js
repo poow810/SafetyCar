@@ -79,6 +79,11 @@ const Step3 = () => {
       });
   };
 
+
+  const handlePrevious = () => {
+    navigate("/step2"); // HomePage로 이동
+  };
+
   return (
     <>
       <h1>STEP3. 타일 매칭</h1>
@@ -119,6 +124,7 @@ const Step3 = () => {
             </div>
           </div>
           <div className="option-container">
+
             <button
               onClick={handleUploadTilePoints}
               className="submit-btn"
