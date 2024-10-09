@@ -4,7 +4,18 @@ import "../styles/navibar.css"; // CSS 파일 import
 import axios from "axios";
 
 const Navbar = () => {
-  const navigate = useNavigate(); // navigate 함수 생성
+  const navigate = useNavigate(); 
+  const PYTHON_URL = process.env.REACT_APP_PYTHON_URL; 
+
+  const handleRotateClick = async () => {
+    try {
+      const response = await axios.get(`${PYTHON_URL}/safety_Car/halt`);
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error making GET request:', error);
+      alert('요청 처리 중 오류가 발생했습니다.');
+    }
+  };
 
   const handleSendSMS = () => {
     const space = "삼성화재 유성캠퍼스(SSAFY 교육동)";
