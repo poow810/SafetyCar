@@ -35,6 +35,7 @@ WebSocketSender::WebSocketSender()
 
 	//flag = false;
 	cache_idx = 0;
+	frame_flag = false;
 	connected = true;
 	//set_cameraId();
 	std::cout << "UDP WebSocket Connected. \n";
@@ -69,7 +70,8 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 		chunk_size = min(IMG_SEG_SIZE, img_packet_size - total_bytes_sent);
 		
 		memset(buffer, 0, sizeof(buffer));	//0으로 초기화
-		buffer[0] = total_bytes_sent + chunk_size < img_packet_size ? 0 : 255;	//마지막 패킷인지 검사
+		//buffer[0] = total_bytes_sent + chunk_size < img_packet_size ? 0 : 255;	//마지막 패킷인지 검사
+		buffer[0] = frame_flag ? 255 : 0;
 		buffer[1] = camera_id;
 		buffer[2] = num++;
 		buffer[3] = cache_idx;
@@ -91,6 +93,7 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 	std::cout << "Packet sent : " << total_bytes_sent << "\n" << "Seg sent : " << (short)num << "\n";
 	//flag != flag;
 	cache_idx = (cache_idx + 1) % MAX_CACHE;
+	frame_flag = !frame_flag;
 
 	//std::cout << "(%) : " << (float)total_bytes_sent / (float)IMG_FULL_SIZE << "\n";
 }

@@ -26,6 +26,8 @@ public class UdpInboundMessageHandler {
     @Autowired
     private ImageManager imageManager;
 
+    private int pre_flag = 0;
+
     private final static LogManager logManager = new LogManager(UdpInboundMessageHandler.class);
 
     //미리 공간을 열어놓기 640*480 크기의 jpg를 테스트해본결과 약 60000 바이트가 나올때가 있고 20000 바이트가 될때가 있다.
@@ -75,7 +77,8 @@ public class UdpInboundMessageHandler {
 //        bis.read(camera_data_assembled[cameraId], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
         imageManager.write(bis, cameraId, segNum);
 
-        if(endflag > 0){
+        if(endflag != pre_flag){
+            pre_flag = endflag;
 //            logManager.sendLog("Received", LogManager.LOG_TYPE.INFO);
 //            imageManager.read(cameraId).setNextCacheIdx();
             logManager.sendInterval();
