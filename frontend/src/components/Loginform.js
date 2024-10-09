@@ -36,7 +36,7 @@ function LoginForm() {
 
   return (
     <div style={{ maxWidth: "300px", margin: "0 auto" }}>
-      <div style={{ marginBottom: "20px" }}>
+      {/* <div style={{ marginBottom: "20px" }}>
         <InputForm
           type="text"
           value={id}
@@ -44,7 +44,7 @@ function LoginForm() {
           disabled={true} // 관리자 계정 필드를 읽기 전용으로 설정
           style={{ color: "gray" }}
         />
-      </div>
+      </div> */}
       <div style={{ marginBottom: "20px" }}>
         <InputForm
           type="password"
