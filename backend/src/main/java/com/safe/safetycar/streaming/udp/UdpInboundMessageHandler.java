@@ -77,12 +77,12 @@ public class UdpInboundMessageHandler {
 
         if(endflag != imageManager.getFlag(cameraId)){
             imageManager.setFlag(cameraId, endflag);
-            System.out.println("new frame");
+//            System.out.println("new frame");
 //            imageManager.read(cameraId).setNextCacheIdx();
             logManager.sendInterval();
             wsm.sendFrame(cameraId);
         }
         imageManager.write(bis, cameraId, segNum);
-        System.out.println(segNum);
+//        System.out.println(segNum);
     }
 }
