@@ -7,6 +7,7 @@ import NavibarComponent from "../components/navibar";
 
 const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 const API_URL = process.env.REACT_APP_API_URL;
+const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
 const ws = new WebSocket(WEBSOCKET_URL);
 // console.log("SOCKET CONNECTED");
 

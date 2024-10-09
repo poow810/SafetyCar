@@ -73,6 +73,7 @@ h2 {
   align-items: center;
   justify-content: center;
   flex: 0.5;
+  padding-right: 300px;
   /* padding-bottom: 50px; */
 }
 
@@ -98,7 +99,7 @@ h2 {
 /* 모니터 프레임 스타일 */
 .monitorFrameLeft,
 .monitorFrameRight {
-  width: 550px;
+  width: 500px;
   height: 400px;
   background-color: #222;
   border-radius: 20px;
