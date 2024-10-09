@@ -692,18 +692,18 @@ async def transform_point(
         diff_y = abs(y_transformed - y_stored)
 
         # 차이가 100 미만인 경우 시뮬레이터로 보내지 않음
-        if diff_x < 100 and diff_y < 100:
+        if diff_x < 70 and diff_y < 70:
             return {"message": "좌표 변화가 100 미만이므로 시뮬레이터로 전송하지 않음"}
 
     else:  # 없다면
         # Redis에 roomID가 없다면 좌표를 저장하고 TTL을 1분 설정
-        rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
+        rd.setex(redis_key, 20, json.dumps({"x": x_transformed, "y": y_transformed}))
 
     # 좌표가 크게 변동되었거나 새로운 roomID라면 시뮬레이터로 좌표 전송
     await sio.emit('gridmake', data=[x_transformed , y_transformed], namespace='/socketio')
 
     # Redis에 새로운 좌표 저장
-    rd.setex(redis_key, 60, json.dumps({"x": x_transformed, "y": y_transformed}))
+    rd.setex(redis_key, 20, json.dumps({"x": x_transformed, "y": y_transformed}))
 
 
     print(f"카메라 ID:{camera_id} 가로={x}, 세로={y}")
@@ -722,6 +722,16 @@ async def transform_point(
     return {
         'x_transformed': x_transformed,
         'y_transformed': y_transformed
+    }
+
+@app.post("/point_test/")
+async def transform_point(
+    camera_id: str = Form(...),
+    x: float = Form(...),
+    y: float = Form(...)
+):
+    await sio.emit('gridmake', data=[x , y], namespace='/socketio')
+    return{
     }
 
 # 서버 실행
