@@ -43,12 +43,15 @@ public class WebSocketManager {
             CLIENTS.add(session);
             LOGGER.sendLog("new Session", LogManager.LOG_TYPE.INFO);
         }
+        LOGGER.sendLog("Clients Num : " + CLIENTS.size(), LogManager.LOG_TYPE.INFO);
     }
 
     @OnClose
     public void onClose(Session session) throws Exception {
         CLIENTS.remove(session);
         LOGGER.sendLog("Closed : " + session, LogManager.LOG_TYPE.INFO);
+        LOGGER.sendLog("Clients Num : " + CLIENTS.size(), LogManager.LOG_TYPE.INFO);
+
     }
 
     public void sendFrame(byte cameraId) throws IOException {
