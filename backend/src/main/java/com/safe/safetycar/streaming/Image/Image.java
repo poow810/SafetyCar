@@ -37,6 +37,10 @@ public class Image {
         return data[getPrevCacheIdx()];
     }
 
+    public byte[] getCurrentData() {
+        return data[0];
+    }
+
     public void setNextCacheIdx() {
         cacheIdx = (cacheIdx + 1) % MAX_CACHE;
     }

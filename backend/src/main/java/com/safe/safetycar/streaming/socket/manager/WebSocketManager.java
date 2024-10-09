@@ -65,7 +65,8 @@ public class WebSocketManager {
                 }
                 synchronized (client) {
 //                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(UdpInboundMessageHandler.camera_data_assembled[cameraId]));
-                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getPrevData()));
+//                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getPrevData()));
+                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getCurrentData()));
 //                    sendFrame2Client(client, cameraId);
                 }
             } catch (IOException e) {
