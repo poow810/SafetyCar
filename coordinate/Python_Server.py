@@ -588,7 +588,33 @@ async def get_floor_coordinates(
         'x_floor': x_floor,
         'y_floor': y_floor
     }
+# 시뮬에 보내지 않음
+@app.post("/check_coordinates/")
+async def check_coordinates(
+    x: float = Form(...),
+    y: float = Form(...),
+    img_id: int = Form(...)
+):
+    H_total = state['H1_total'] if img_id == 1 else state['H2_total']
+    x_floor, y_floor = map_point_to_floor_coordinates(x, y, H_total)
 
+    # 합성된 이미지에서의 좌표를 최종 바닥 크기에 맞게 스케일링
+
+    floor_width = state['floor_width']
+    floor_height = state['floor_height']
+
+    # 좌표를 바닥 크기에 맞게 제한
+    x_floor = max(0, min(floor_width, x_floor))
+    y_floor = max(0, min(floor_height, y_floor))
+
+    # numpy.float32 타입을 Python의 float 타입으로 변환
+    x_floor = float(x_floor)
+    y_floor = float(y_floor)
+
+    return {
+        'x_floor': x_floor,
+        'y_floor': y_floor
+    }
 
 @app.post("/save_transformations/")
 async def save_transformations(
