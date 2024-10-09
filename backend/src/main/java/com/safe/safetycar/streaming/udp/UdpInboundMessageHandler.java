@@ -73,18 +73,16 @@ public class UdpInboundMessageHandler {
             return;
         }
 //        bis.read(camera_data_assembled[cameraId], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
-        imageManager.write(bis, cameraId, segNum);
-//        logManager.sendLog("received : " + segNum, LogManager.LOG_TYPE.INFO);
-        System.out.println(segNum);
+
 
         if(endflag != imageManager.getFlag(cameraId)){
             imageManager.setFlag(cameraId, endflag);
             System.out.println("new frame");
-//            logManager.sendLog("new frame", LogManager.LOG_TYPE.INFO);
-//            logManager.sendLog("Received", LogManager.LOG_TYPE.INFO);
 //            imageManager.read(cameraId).setNextCacheIdx();
             logManager.sendInterval();
             wsm.sendFrame(cameraId);
         }
+        imageManager.write(bis, cameraId, segNum);
+        System.out.println(segNum);
     }
 }
