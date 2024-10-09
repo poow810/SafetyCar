@@ -31,6 +31,10 @@ h1 {
   margin-bottom: 100px;
 }
 
+h2 {
+  margin-bottom: 20px;
+}
+
 /* 모달의 백그라운드 */
 .modal-backdrop {
   position: fixed;
@@ -46,10 +50,13 @@ h1 {
 
 /* 모달의 컨텐츠 */
 .modal-content {
-  width: 400px;
-  height: 500px;
-  background: #ff9933;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.4);
+  justify-content: center;
+  align-items: center;
   border-radius: 8px;
   text-align: center;
 }
@@ -127,6 +134,8 @@ h1 {
   align-items: center;
   color: white;
   font-family: "Roboto Mono", monospace;
+  object-fit: cover;
+  cursor: crosshair;
 }
 
 /*------------------------------------- 영상 크기 맞춤 조절 추가 */
@@ -154,13 +163,12 @@ h1 {
 .simulatorOverlay {
   width: 400px;
   height: 400px;
-  background-color: rgba(34, 34, 34, 0.7);
+  background-color: rgba(34, 34, 34, 0);
   border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 25%;
