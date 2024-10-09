@@ -74,13 +74,7 @@ const Step4 = () => {
     <>
       <h1>STEP4. 이미지 합성을 위한 대응점 선택</h1>
       <div className="container">
-        <div className="nav-container">
-          <ul>
-            <li>홈</li>
-            <li>좌표 셋팅</li>
-            <li>사건 기록</li>
-          </ul>
-        </div>
+ 
 
         <div className="right-container">
           <div className="image-container">
