@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "../styles/Mainpage.css"; // CSS 파일을 import
 import MapComponent from "../components/map";
 import axios from "axios";
+import NavibarComponent from "../components/navibar";
 
 const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 const API_URL = process.env.REACT_APP_API_URL;
-const PYTHON_URL = process.env.REACT_APP_PYTHON_URL; // PYTHON_URL 정의
 const ws = new WebSocket(WEBSOCKET_URL);
 // console.log("SOCKET CONNECTED");
 
@@ -22,8 +22,6 @@ function Monitor() {
   const [simulatorImage, setSimulatorImage] = useState(null); // 시뮬레이터 이미지 상태 추가
   const [points, setPoints] = useState([]); // 좌표 상태 추가
   const [showModal, setShowModal] = useState(false); // 모달 창 표시 여부
-  const imageRef1 = useRef(null); // 첫 번째 이미지 참조
-  const imageRef2 = useRef(null); // 두 번째 이미지 참조
 
   ws.onmessage = async function (msg) {
     let newArr = [...frameSrcArr];
@@ -130,6 +128,10 @@ function Monitor() {
       <h1>SafetyCar 상황실</h1>
 
       <div className="container">
+        <div className="container" style={{ display: 'flex' }}>
+          {/* 네비바 추가 */}
+          <NavibarComponent />
+        </div>
         {/* 모니터 섹션 */}
         <div className="monitorSection">
           {/* 첫 번째 모니터: CCTV 1 */}
@@ -142,12 +144,7 @@ function Monitor() {
               onMouseLeave={handleMouseLeave}
             >
               <div className="monitorScreen">
-                <img
-                  src={frameSrcArr[0]}
-                  alt="CCTV 0"
-                  ref={imageRef1} // ref 추가
-                  onClick={(e) => handleImageClick(e, imageRef1, 1)} // onClick 추가
-                />
+                <img src={frameSrcArr[0]} alt="CCTV 0" />
               </div>
               <div className="monitorStand"></div>
             </motion.div>
@@ -163,12 +160,7 @@ function Monitor() {
               onMouseLeave={handleMouseLeave}
             >
               <div className="monitorScreen">
-                <img
-                  src={frameSrcArr[1]}
-                  alt="CCTV 1"
-                  ref={imageRef2} // ref 추가
-                  onClick={(e) => handleImageClick(e, imageRef2, 2)} // onClick 추가
-                />
+                <img src={frameSrcArr[1]} alt="CCTV 1" />
               </div>
               <div className="monitorStand"></div>
             </motion.div>
@@ -228,12 +220,9 @@ function Monitor() {
           <div className="modal-backdrop">
             <div className="modal-content">
               <h2>신고 확인</h2>
-              <p>"확인" 버튼을 누르면 119 신고 센터에 접수됩니다.</p>
               <p>신고를 진행하시겠습니까?</p>
-              <button onClick={handleSendSMS} style={{ marginTop: "40px" }}>
-                확인
-              </button>
-              <button onClick={handleCloseModal}>X</button>
+              <button onClick={handleSendSMS}>확인</button>
+              <button onClick={handleCloseModal}>취소</button>
             </div>
           </div>
         )}
