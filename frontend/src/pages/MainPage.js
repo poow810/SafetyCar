@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../styles/Mainpage.css"; // CSS 파일을 import
 import MapComponent from "../components/map";
 import axios from "axios";
@@ -21,6 +21,25 @@ function Monitor() {
   const [frameSrcArr, setFrameSrcArr] = useState([null, null, null, null]);
   const [simulatorImage, setSimulatorImage] = useState(null); // 시뮬레이터 이미지 상태 추가
   const [points, setPoints] = useState([]); // 좌표 상태 추가
+  const imageRef1 = useRef(null); // 첫 번째 이미지 참조
+  const imageRef2 = useRef(null); // 두 번째 이미지 참조
+  ws.onmessage = async function (msg) {
+    let newArr = [...frameSrcArr];
+    const int8Array = new Int8Array(await msg.data.slice(0, 1).arrayBuffer());
+    const idx = int8Array[0];
+    newArr[idx] = URL.createObjectURL(msg.data.slice(1));
+    setFrameSrcArr(newArr);
+  };
+
+  // 이미지 저장 함수 (Blob -> Base64로 변환 후 Local Storage에 저장)
+  const saveFrameToLocalStorage = (blob, cameraIndex) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob); // Blob을 Base64로 변환
+    reader.onloadend = function () {
+      const base64Data = reader.result;
+      localStorage.setItem(`savedImageCamera${cameraIndex}`, base64Data); // 카메라 인덱스에 맞게 저장
+    };
+  };
 
   ws.onmessage = async function (msg) {
     let newArr = [...frameSrcArr];
@@ -28,6 +47,16 @@ function Monitor() {
     const idx = int8Array[0];
     newArr[idx] = URL.createObjectURL(msg.data.slice(1));
     setFrameSrcArr(newArr);
+    const blob = new Blob([msg.data.slice(1)], { type: "image/jpeg" });
+    const blobUrl = URL.createObjectURL(blob);
+    newArr[idx] = blobUrl;
+
+    // 각 카메라 프레임을 Local Storage에 저장
+    if (idx === 0) {
+      saveFrameToLocalStorage(blob, 0); // 카메라 0번의 프레임을 저장
+    } else if (idx === 1) {
+      saveFrameToLocalStorage(blob, 1); // 카메라 1번의 프레임을 저장
+    }
   };
 
   const handleMouseEnter = (index) => {
@@ -119,7 +148,12 @@ function Monitor() {
               onMouseLeave={handleMouseLeave}
             >
               <div className="monitorScreen">
-                <img src={frameSrcArr[0]} alt="CCTV 0" />
+                <img
+                  src={frameSrcArr[0]}
+                  alt="CCTV 0"
+                  ref={imageRef1} // ref 추가
+                  onClick={(e) => handleImageClick(e, imageRef1, 1)} // onClick 추가
+                />
               </div>
               <div className="monitorStand"></div>
             </motion.div>
@@ -135,7 +169,12 @@ function Monitor() {
               onMouseLeave={handleMouseLeave}
             >
               <div className="monitorScreen">
-                <img src={frameSrcArr[1]} alt="CCTV 1" />
+                <img
+                  src={frameSrcArr[1]}
+                  alt="CCTV 1"
+                  ref={imageRef2} // ref 추가
+                  onClick={(e) => handleImageClick(e, imageRef2, 2)} // onClick 추가
+                />
               </div>
               <div className="monitorStand"></div>
             </motion.div>

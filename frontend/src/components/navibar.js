@@ -12,13 +12,9 @@ const Navbar = () => {
     axios
       .post(`${API_URL}/sms/send?space=${space}`)
       .then((response) => {
-        console.log(response.data.message);
+        console.log(response.data);
         console.log("신고 성공");
-        if (response.data.message) {
-          console.log(response.data);
-          console.log("신고가 접수 완료");
-          alert("신고가 성공적으로 접수되었습니다.");
-        }
+        alert("신고가 성공적으로 접수되었습니다.");
       })
       .catch((error) => {
         console.error("신고 접수 중 에러 발생", error);
