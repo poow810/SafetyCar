@@ -9,7 +9,7 @@ const MapComponent = ({ onImageLoad, onPointReceive }) => {
 
   const createImage = async () => {
     try {
-      const response = await fetch(`${LOCAL_URL}/get-map`, {
+      const response = await fetch(`${PYTHON_URL}/get-map`, {
         method: 'GET',
       });
 
@@ -27,14 +27,14 @@ const MapComponent = ({ onImageLoad, onPointReceive }) => {
 
   const fetchCoordinates = async () => {
     try {
-      const response = await fetch(`${LOCAL_URL}/get-coordinate`, {
+      const response = await fetch(`${PYTHON_URL}/get-coordinate`, {
         method: 'GET',
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log(data)
-        onPointReceive({ x: data.x, y: data.y }); // 좌표를 상위 컴포넌트에 전달
+        onPointReceive({ x: data[0], y: data[1] }); // 좌표를 상위 컴포넌트에 전달
       } else {
         console.error('좌표 요청 실패');
       }
