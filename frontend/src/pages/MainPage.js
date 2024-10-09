@@ -6,14 +6,13 @@ import axios from "axios";
 import NavibarComponent from "../components/navibar";
 
 const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
-const API_URL = process.env.REACT_APP_API_URL;
 const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
 const ws = new WebSocket(WEBSOCKET_URL);
 // console.log("SOCKET CONNECTED");
 
 const handlePopstate = () => {
   if (ws) {
-    ws.disconnect();
+    ws.close();
   }
 };
 
@@ -22,7 +21,6 @@ function Monitor() {
   const [frameSrcArr, setFrameSrcArr] = useState([null, null, null, null]);
   const [simulatorImage, setSimulatorImage] = useState(null); // 시뮬레이터 이미지 상태 추가
   const [points, setPoints] = useState([]); // 좌표 상태 추가
-  const [showModal, setShowModal] = useState(false); // 모달 창 표시 여부
 
   ws.onmessage = async function (msg) {
     let newArr = [...frameSrcArr];
@@ -97,30 +95,6 @@ function Monitor() {
     setPoints([{ x: newX, y: newY }]);
   };
 
-  const handleSendSMS = () => {
-    const space = "삼성화재 유성캠퍼스(SSAFY 교육동)";
-
-    axios
-      .post(`${API_URL}/sms/send?space=${space}`)
-      .then((response) => {
-        if (response.data.message) {
-          console.log("신고가 접수 완료");
-          alert("신고가 성공적으로 접수되었습니다.");
-        }
-      })
-      .catch((error) => {
-        console.error("신고 접수 중 에러 발생", error);
-        alert("신고에 실패했습니다. 다시 시도해주세요.");
-      });
-  };
-
-  const handleOpenModal = () => {
-    setShowModal(true); // 모달 창 열기
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false); // 모달 창 닫기
-  };
   window.addEventListener("popstate", handlePopstate);
 
   return (
@@ -129,7 +103,7 @@ function Monitor() {
       <h1>SafetyCar 상황실</h1>
 
       <div className="container">
-        <div className="container" style={{ display: 'flex' }}>
+        <div className="container" style={{ display: "flex" }}>
           {/* 네비바 추가 */}
           <NavibarComponent />
         </div>
@@ -212,21 +186,7 @@ function Monitor() {
             </div>
           )}
         </div>
-        <div>
-          <button onClick={handleOpenModal}>119 신고</button>
-        </div>
-
-        {/* 모달 창 */}
-        {showModal && (
-          <div className="modal-backdrop">
-            <div className="modal-content">
-              <h2>신고 확인</h2>
-              <p>신고를 진행하시겠습니까?</p>
-              <button onClick={handleSendSMS}>확인</button>
-              <button onClick={handleCloseModal}>취소</button>
-            </div>
-          </div>
-        )}
+        <div></div>
       </div>
     </>
   );

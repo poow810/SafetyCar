@@ -28,41 +28,12 @@ h1 {
   color: white;
   text-align: center;
   font-weight: bolder;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
+  margin-top: 20px;
 }
 
 h2 {
   margin-bottom: 20px;
-}
-
-/* 모달의 백그라운드 */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 모달의 컨텐츠 */
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  width: 500px;
-  height: 400px;
-  background: rgba(255, 255, 255, 0.4);
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.modal-content button {
-  margin: 10px;
 }
 
 /* 모니터 섹션 스타일 */
