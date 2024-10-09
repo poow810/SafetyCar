@@ -6,8 +6,8 @@ import axios from "axios";
 const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
 
 const Step5 = () => {
-  const videoDisplayRef1 = useRef(null);
-  const videoDisplayRef2 = useRef(null);
+  const imageDisplayRef1 = useRef(null);
+  const imageDisplayRef2 = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { mergedImageSrc } = location.state || {}; // 이전 단계에서 받은 합성 이미지
@@ -44,14 +44,14 @@ const Step5 = () => {
     loadImages();
   }, [mergedImageSrc, navigate]);
 
-  // 비디오 클릭 시 좌표 전송 및 변환된 좌표 출력
-  const handleVideoClick = (e, videoRef, imgId) => {
-    const video = videoRef.current;
-    const rect = video.getBoundingClientRect();
+  // 이미지 클릭 시 좌표 전송 및 변환된 좌표 출력
+  const handleImageClick = (e, imageRef, imgId) => {
+    const image = imageRef.current;
+    const rect = image.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    const scaleX = video.videoWidth / rect.width;
-    const scaleY = video.videoHeight / rect.height;
+    const scaleX = image.naturalWidth / rect.width;
+    const scaleY = image.naturalHeight / rect.height;
     const adjustedX = x * scaleX;
     const adjustedY = y * scaleY;
 
@@ -80,23 +80,22 @@ const Step5 = () => {
       });
   };
 
-  // -------------------roomId 서버에서 받아서 자동 입력되도록 수정 예정------------------------
   // 변환 행렬을 서버에 저장하는 함수
   const handleSaveTransformations = () => {
     if (!cameraId1 || !cameraId2) {
       alert("두 카메라 번호를 모두 입력해주세요.");
       return;
     }
-    const video1 = videoDisplayRef1.current;
-    const rect1 = video1.getBoundingClientRect();
-    const computedScaleX1 = video1.videoWidth / rect1.width;
-    const computedScaleY1 = video1.videoHeight / rect1.height;
+    const image1 = imageDisplayRef1.current;
+    const rect1 = image1.getBoundingClientRect();
+    const computedScaleX1 = image1.naturalWidth / rect1.width;
+    const computedScaleY1 = image1.naturalHeight / rect1.height;
     const roomId = 1;
 
-    const video2 = videoDisplayRef2.current;
-    const rect2 = video2.getBoundingClientRect();
-    const computedScaleX2 = video2.videoWidth / rect2.width;
-    const computedScaleY2 = video2.videoHeight / rect2.height;
+    const image2 = imageDisplayRef2.current;
+    const rect2 = image2.getBoundingClientRect();
+    const computedScaleX2 = image2.naturalWidth / rect2.width;
+    const computedScaleY2 = image2.naturalHeight / rect2.height;
 
     const formData = new FormData();
     formData.append("room_id", roomId);
@@ -136,43 +135,29 @@ const Step5 = () => {
   return (
     <>
       <h2>5. 영상에서 바닥 좌표 확인 및 변환 행렬 저장</h2>
-      <p>비디오를 클릭하여 바닥 좌표를 확인하세요.</p>
+      <p>이미지를 클릭하여 바닥 좌표를 확인하세요.</p>
       <div className="container">
         <div className="right-container">
           <div className="image-container">
             <div className="image-box">
               <h3>영상 1</h3>
-              {/* <video
-            ref={videoDisplayRef1}
-            src="../../assets/cctv1.mp4"
-            controls
-            style={{ maxWidth: "100%", cursor: "crosshair" }}
-            onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
-          /> */}
               <img
                 src={camera0Image}
                 alt="Camera 1"
-                ref={videoDisplayRef1}
+                ref={imageDisplayRef1}
                 style={{ maxWidth: "100%", cursor: "crosshair" }}
-                onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
+                onClick={(e) => handleImageClick(e, imageDisplayRef1, 1)}
               />
             </div>
 
             <div className="image-box">
               <h3>영상 2</h3>
-              {/* <video
-            ref={videoDisplayRef2}
-            src="../../assets/cctv2.mp4"
-            controls
-            style={{ maxWidth: "100%", cursor: "crosshair" }}
-            onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
-          /> */}
               <img
                 src={camera1Image}
-                alt="Camera 1"
-                ref={videoDisplayRef2}
+                alt="Camera 2"
+                ref={imageDisplayRef2}
                 style={{ maxWidth: "100%", cursor: "crosshair" }}
-                onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
+                onClick={(e) => handleImageClick(e, imageDisplayRef2, 2)}
               />
             </div>
 

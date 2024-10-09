@@ -11,7 +11,7 @@ import StepPage2 from "./pages/coordinate/StepPage2";
 import StepPage3 from "./pages/coordinate/StepPage3";
 import StepPage4 from "./pages/coordinate/StepPage4";
 import StepPage5 from "./pages/coordinate/StepPage5";
-
+import TmpPage from "./pages/tmpImagePage";
 // import "./styles/global.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -65,6 +65,7 @@ function App() {
           <Route path="/step3" element={<StepPage3 />} />
           <Route path="/step4" element={<StepPage4 />} />
           <Route path="/step5" element={<StepPage5 />} />
+          <Route path="/image" element={<TmpPage />} />
         </Routes>
       </Router>
     </div>
