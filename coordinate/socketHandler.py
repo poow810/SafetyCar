@@ -1,6 +1,7 @@
 import socketio
-from coordinate import coordinate
 
+global safetycar
+safetycar = []
 
 sio = socketio.AsyncServer(async_mode='asgi', path='/socket')
 socket_app = socketio.ASGIApp(sio)
@@ -15,10 +16,12 @@ async def disconnect(sid) :
 
 @sio.event(namespace='/socketio')
 async def send_pose(sid, data) :
-    print(data)
-    global coordinate
-    coordinate = data
+    # print(data)
+    global safetycar
+    safetycar = data
 
+def get_pose() :
+    return safetycar
 
 
 # 여기부터는 아마 이럴 거 같다!

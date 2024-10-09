@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import base64
 import json
-from socketHandler import socket_app, sio
+from socketHandler import socket_app, sio, get_pose
 from coordinate import coordinate
 from io import BytesIO
 
@@ -401,13 +401,13 @@ async def get_map():
 @app.get("/get-coordinate")
 async def get_safety_Car():
     return {
-        'safetyCar': coordinate
+        'safetyCar': get_pose
     }
 
 # SafetyCar 강제 제자리로
 @app.get("/safety_Car/halt")
 async def safetyhalt():
- await sio.emit('gridmake', namespace='/socketio')
+ await sio.emit('go_home', namespace='/socketio')
 # 근범이형!!
 
 
