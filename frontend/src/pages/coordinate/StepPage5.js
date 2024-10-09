@@ -134,13 +134,20 @@ const Step5 = () => {
 
   return (
     <>
-      <h2>5. 영상에서 바닥 좌표 확인 및 변환 행렬 저장</h2>
-      <p>이미지를 클릭하여 바닥 좌표를 확인하세요.</p>
+      <h1>5. 영상에서 바닥 좌표 확인 및 변환 행렬 저장</h1>
+      <p>비디오를 클릭하여 바닥 좌표를 확인하세요.</p>
       <div className="container">
         <div className="right-container">
           <div className="image-container">
             <div className="image-box">
-              <h3>영상 1</h3>
+
+              {/* <video
+            ref={videoDisplayRef1}
+            src="../../assets/cctv1.mp4"
+            controls
+            style={{ maxWidth: "100%", cursor: "crosshair" }}
+            onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
+          /> */}
               <img
                 src={camera0Image}
                 alt="Camera 1"
@@ -148,10 +155,18 @@ const Step5 = () => {
                 style={{ maxWidth: "100%", cursor: "crosshair" }}
                 onClick={(e) => handleImageClick(e, imageDisplayRef1, 1)}
               />
+              <p>Image1</p>
             </div>
 
             <div className="image-box">
-              <h3>영상 2</h3>
+
+              {/* <video
+            ref={videoDisplayRef2}
+            src="../../assets/cctv2.mp4"
+            controls
+            style={{ maxWidth: "100%", cursor: "crosshair" }}
+            onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
+          /> */}
               <img
                 src={camera1Image}
                 alt="Camera 2"
@@ -159,10 +174,10 @@ const Step5 = () => {
                 style={{ maxWidth: "100%", cursor: "crosshair" }}
                 onClick={(e) => handleImageClick(e, imageDisplayRef2, 2)}
               />
+              <p>Image2</p>
             </div>
 
             <div className="image-box">
-              <h3>합성된 이미지</h3>
               {mergedImageSrc && (
                 <img
                   src={mergedImageSrc}
@@ -170,34 +185,33 @@ const Step5 = () => {
                   style={{ maxWidth: "500px", height: "auto" }}
                 />
               )}
+              <p>결과 이미지</p>
             </div>
           </div>
 
-          <h3>변환 행렬 저장</h3>
           <div className="option-container">
-            <label>
-              카메라 1 번호:
-              <input
-                type="number"
-                value={cameraId1}
-                onChange={(e) => setCameraId1(e.target.value)}
-                style={{ marginLeft: "10px" }}
-              />
-            </label>
-            <label>
-              카메라 2 번호:
-              <input
-                type="number"
-                value={cameraId2}
-                onChange={(e) => setCameraId2(e.target.value)}
-                style={{ marginLeft: "10px" }}
-              />
-            </label>
-            <button
-              onClick={handleSaveTransformations}
-              style={{ marginTop: "10px" }}
-            >
-              변환 행렬 저장
+            <div className="input-box">
+              <label>
+                카메라 1 번호
+                <input
+                  type="number"
+                  value={cameraId1}
+                  onChange={(e) => setCameraId1(e.target.value)}
+                />
+              </label>
+            </div>
+            <div className="input-box">
+              <label>
+                카메라 2 번호
+                <input
+                  type="number"
+                  value={cameraId2}
+                  onChange={(e) => setCameraId2(e.target.value)}
+                />
+              </label>
+            </div>
+            <button onClick={handleSaveTransformations} className="submit-btn">
+              저장
             </button>
           </div>
         </div>

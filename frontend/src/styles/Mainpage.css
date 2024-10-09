@@ -31,6 +31,33 @@ h1 {
   margin-bottom: 100px;
 }
 
+/* 모달의 백그라운드 */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 모달의 컨텐츠 */
+.modal-content {
+  width: 400px;
+  height: 500px;
+  background: #ff9933;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.modal-content button {
+  margin: 10px;
+}
+
 /* 모니터 섹션 스타일 */
 .monitorSection {
   display: flex;
@@ -50,10 +77,6 @@ h1 {
   width: 45%;
   position: relative;
   z-index: 1;
-}
-
-.simulatorImageContainer {
-  opacity: 0.3;
 }
 
 /* 모니터 컨테이너 */
