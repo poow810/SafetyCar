@@ -21,6 +21,8 @@ public class Image {
 
     private byte[][] data = new byte[MAX_CACHE][(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
     private static int cacheIdx = 0;
+    @Setter
+    private int flag = 0;
 
     @Setter
     private boolean isOpen = false;

@@ -44,6 +44,13 @@ public class ImageManager {
 
     }
 
+    public int getFlag(byte cameraId) {
+        return images.get(cameraId).getFlag();
+    }
+    public void setFlag(byte cameraId, int flag) {
+        images.get(cameraId).setFlag(flag);
+    }
+
     public void remove(int idx) {
         images.get(idx).setOpen(false);
         recyclableCount++;
