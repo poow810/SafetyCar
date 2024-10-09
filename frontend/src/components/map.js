@@ -34,7 +34,7 @@ const MapComponent = ({ onImageLoad, onPointReceive }) => {
       if (response.ok) {
         const data = await response.json();
         console.log(data)
-        onPointReceive({ x: data.x, y: data.y }); // 좌표를 상위 컴포넌트에 전달
+        onPointReceive({ x: data[0], y: data[1] }); // 좌표를 상위 컴포넌트에 전달
       } else {
         console.error('좌표 요청 실패');
       }
