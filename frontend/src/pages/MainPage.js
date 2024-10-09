@@ -50,16 +50,16 @@ function Monitor() {
 
     const newX = (point.x / 500) * 400;
     const newY = (point.y / 500) * 400;
-    
-    setPoints([ { x: newX, y: newY } ]); 
+
+    setPoints([{ x: newX, y: newY }]); // 변환된 좌표로 업데이트
   };
 
-
-   window.addEventListener("popstate", handlePopstate);
+  window.addEventListener("popstate", handlePopstate);
 
   return (
     <>
-      <h1>안전 관제 통합 대시보드</h1>
+      {/* <h1>안전 관제 통합 대시보드</h1> */}
+      <h1>SafetyCar 상황실</h1>
 
       <div className="container">
         {/* 모니터 섹션 */}
@@ -74,9 +74,6 @@ function Monitor() {
               onMouseLeave={handleMouseLeave}
             >
               <div className="monitorScreen">
-                <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
-                  CCTV 1 화면
-                </h3>
                 <img src={frameSrcArr[0]} alt="CCTV 0" />
               </div>
               <div className="monitorStand"></div>
@@ -93,9 +90,6 @@ function Monitor() {
               onMouseLeave={handleMouseLeave}
             >
               <div className="monitorScreen">
-                <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
-                  CCTV 2 화면
-                </h3>
                 <img src={frameSrcArr[1]} alt="CCTV 1" />
               </div>
               <div className="monitorStand"></div>
@@ -105,8 +99,11 @@ function Monitor() {
 
         {/* 시뮬레이터 지도 섹션 */}
         <div className="simulatorOverlay">
-          <MapComponent onImageLoad={handleImageLoad} onPointReceive={handlePointReceive} />
-          
+          <MapComponent
+            onImageLoad={handleImageLoad}
+            onPointReceive={handlePointReceive}
+          />
+
           {/* 시뮬레이터 이미지 추가 */}
           {simulatorImage && (
             <div
@@ -116,7 +113,7 @@ function Monitor() {
               <img
                 src={simulatorImage}
                 alt="Simulator"
-                style={{ width: '100%', height: '400px', objectFit: 'contain' }} // 컨테이너에 맞춰 조정
+                style={{ width: "100%", height: "100%", objectFit: "contain" }} // 컨테이너에 맞춰 조정
               />
               {/* 좌표 표시 */}
               {points.map((point, index) => (

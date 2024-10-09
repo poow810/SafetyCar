@@ -137,89 +137,84 @@ const Step5 = () => {
     <>
       <h2>5. 영상에서 바닥 좌표 확인 및 변환 행렬 저장</h2>
       <p>비디오를 클릭하여 바닥 좌표를 확인하세요.</p>
-      {/* <div className="nav-container">
-        <ul>
-          <li>홈</li>
-          <li>좌표 셋팅</li>
-          <li>사건 기록</li>
-        </ul>
-      </div> */}
-      <div style={{ marginBottom: "20px" }}>
-        <h3>변환 행렬 저장</h3>
-
-        <div style={{ marginTop: "10px" }}>
-          <label>
-            카메라 1 번호:
-            <input
-              type="number"
-              value={cameraId1}
-              onChange={(e) => setCameraId1(e.target.value)}
-              style={{ marginLeft: "10px" }}
-            />
-          </label>
-        </div>
-        <div style={{ marginTop: "10px" }}>
-          <label>
-            카메라 2 번호:
-            <input
-              type="number"
-              value={cameraId2}
-              onChange={(e) => setCameraId2(e.target.value)}
-              style={{ marginLeft: "10px" }}
-            />
-          </label>
-        </div>
-        <button
-          onClick={handleSaveTransformations}
-          style={{ marginTop: "10px" }}
-        >
-          변환 행렬 저장
-        </button>
-      </div>
-      <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
-        <div>
-          <h3>영상 1</h3>
-          {/* <video
+      <div className="container">
+        <div className="right-container">
+          <div className="image-container">
+            <div className="image-box">
+              <h3>영상 1</h3>
+              {/* <video
             ref={videoDisplayRef1}
             src="../../assets/cctv1.mp4"
             controls
             style={{ maxWidth: "100%", cursor: "crosshair" }}
             onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
           /> */}
-          <img
-            src={camera0Image}
-            alt="Camera 1"
-            ref={videoDisplayRef1}
-            style={{ maxWidth: "100%", cursor: "crosshair" }}
-            onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
-          />
-        </div>
-        <div>
-          <h3>영상 2</h3>
-          {/* <video
+              <img
+                src={camera0Image}
+                alt="Camera 1"
+                ref={videoDisplayRef1}
+                style={{ maxWidth: "100%", cursor: "crosshair" }}
+                onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
+              />
+            </div>
+
+            <div className="image-box">
+              <h3>영상 2</h3>
+              {/* <video
             ref={videoDisplayRef2}
             src="../../assets/cctv2.mp4"
             controls
             style={{ maxWidth: "100%", cursor: "crosshair" }}
             onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
           /> */}
-          <img
-            src={camera1Image}
-            alt="Camera 1"
-            ref={videoDisplayRef2}
-            style={{ maxWidth: "100%", cursor: "crosshair" }}
-            onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
-          />
-        </div>
-        <div>
-          <h3>합성된 이미지</h3>
-          {mergedImageSrc && (
-            <img
-              src={mergedImageSrc}
-              alt="합성된 이미지"
-              style={{ maxWidth: "500px", height: "auto" }}
-            />
-          )}
+              <img
+                src={camera1Image}
+                alt="Camera 1"
+                ref={videoDisplayRef2}
+                style={{ maxWidth: "100%", cursor: "crosshair" }}
+                onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
+              />
+            </div>
+
+            <div className="image-box">
+              <h3>합성된 이미지</h3>
+              {mergedImageSrc && (
+                <img
+                  src={mergedImageSrc}
+                  alt="합성된 이미지"
+                  style={{ maxWidth: "500px", height: "auto" }}
+                />
+              )}
+            </div>
+          </div>
+
+          <h3>변환 행렬 저장</h3>
+          <div className="option-container">
+            <label>
+              카메라 1 번호:
+              <input
+                type="number"
+                value={cameraId1}
+                onChange={(e) => setCameraId1(e.target.value)}
+                style={{ marginLeft: "10px" }}
+              />
+            </label>
+            <label>
+              카메라 2 번호:
+              <input
+                type="number"
+                value={cameraId2}
+                onChange={(e) => setCameraId2(e.target.value)}
+                style={{ marginLeft: "10px" }}
+              />
+            </label>
+            <button
+              onClick={handleSaveTransformations}
+              style={{ marginTop: "10px" }}
+            >
+              변환 행렬 저장
+            </button>
+          </div>
         </div>
       </div>
     </>

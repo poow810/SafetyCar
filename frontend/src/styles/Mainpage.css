@@ -1,27 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  /* overflow: hidden; 가로/세로 스크롤 제거 */
+}
+
 /* 기본 컨테이너 스타일 */
 .container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  height: 100vh;
-  padding: 0 2%;
+  /* height: 80%; */
+  /* padding: 0 2%; */
   box-sizing: border-box;
 }
 
 h1 {
   color: white;
   text-align: center;
+  font-weight: bolder;
+  margin-bottom: 100px;
 }
+
 /* 모니터 섹션 스타일 */
 .monitorSection {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  /* gap: 10px; */
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   flex: 0.5;
-  margin-bottom: 50px;
+  /* padding-bottom: 50px; */
 }
 
 /* 시뮬레이터 섹션 스타일 */
@@ -32,6 +50,10 @@ h1 {
   width: 45%;
   position: relative;
   z-index: 1;
+}
+
+.simulatorImageContainer {
+  opacity: 0.3;
 }
 
 /* 모니터 컨테이너 */
@@ -108,18 +130,17 @@ h1 {
 /* 시뮬레이터 오버레이 스타일 */
 .simulatorOverlay {
   width: 400px;
-  height: 500px;
+  height: 400px;
   background-color: rgba(34, 34, 34, 0.7);
   border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 24px;
   border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   position: fixed;
-  top: 20%;
+  top: 25%;
   right: 2%;
   z-index: 1;
 }
@@ -137,11 +158,12 @@ h1 {
     flex: none;
     width: 100%;
     justify-content: center;
+    margin-bottom: 100px;
   }
 
   .simulatorSection {
     width: 100%;
-    height: 400px;
+    height: 600px;
     margin-top: 20px;
   }
 }

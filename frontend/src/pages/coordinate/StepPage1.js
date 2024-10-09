@@ -113,108 +113,99 @@ const Step1 = () => {
   return (
     <>
       <h1>STEP1. 바닥 모서리 검출</h1>
-      <div className="container">
-        <div className="nav-container">
-          <ul>
-            <li>홈</li>
-            <li>좌표 셋팅</li>
-            <li>사건 기록</li>
-          </ul>
+      <div className="right-container">
+        <div className="image-container">
+          <div className="image-box">
+            {camera0Image ? (
+              <img
+                src={camera0Image}
+                alt="Camera 0"
+                ref={imageRef1}
+                style={{
+                  cursor: floorPoints1.length < 4 ? "crosshair" : "default",
+                  maxWidth: "100%",
+                  height: "auto",
+                }}
+                onClick={(e) =>
+                  handleImageClick(e, imageRef1, setFloorPoints1, 4)
+                }
+              />
+            ) : (
+              <p>No image saved for Camera 0</p>
+            )}
+            <p>
+              Image1 <span> {floorPoints1.length}/4</span>
+            </p>
+          </div>
+
+          <div className="image-box">
+            {camera1Image ? (
+              <img
+                src={camera1Image}
+                alt="Camera 1"
+                ref={imageRef2}
+                style={{
+                  cursor: floorPoints2.length < 4 ? "crosshair" : "default",
+                  maxWidth: "100%",
+                  height: "auto",
+                }}
+                onClick={(e) =>
+                  handleImageClick(e, imageRef2, setFloorPoints2, 4)
+                }
+              />
+            ) : (
+              <p>No image saved for Camera 1</p>
+            )}
+
+            <p>
+              Image2 <span> {floorPoints2.length}/4</span>
+            </p>
+          </div>
         </div>
 
-        <div className="right-container">
-          <div className="image-container">
-            <div className="image-box">
-              {camera0Image ? (
-                <img
-                  src={camera0Image}
-                  alt="Camera 0"
-                  ref={imageRef1}
-                  style={{
-                    cursor: floorPoints1.length < 4 ? "crosshair" : "default",
-                    maxWidth: "100%",
-                    height: "auto",
-                  }}
-                  onClick={(e) =>
-                    handleImageClick(e, imageRef1, setFloorPoints1, 4)
-                  }
-                />
-              ) : (
-                <p>No image saved for Camera 0</p>
-              )}
-              <p>
-                Image1 <span> {floorPoints1.length}/4</span>
-              </p>
-            </div>
-
-            <div className="image-box">
-              {camera1Image ? (
-                <img
-                  src={camera1Image}
-                  alt="Camera 1"
-                  ref={imageRef2}
-                  style={{
-                    cursor: floorPoints2.length < 4 ? "crosshair" : "default",
-                    maxWidth: "100%",
-                    height: "auto",
-                  }}
-                  onClick={(e) =>
-                    handleImageClick(e, imageRef2, setFloorPoints2, 4)
-                  }
-                />
-              ) : (
-                <p>No image saved for Camera 1</p>
-              )}
-
-              <p>
-                Image2 <span> {floorPoints2.length}/4</span>
-              </p>
-            </div>
+        <div className="option-container">
+          <div className="input-box">
+            <label>
+              Floor Width
+              <input
+                type="number"
+                value={floorWidth}
+                onChange={(e) => setFloorWidth(e.target.value)}
+              />
+            </label>
           </div>
 
-          <div className="option-container">
-            <div className="input-box">
-              <label>
-                Floor Width
-                <input
-                  type="number"
-                  value={floorWidth}
-                  onChange={(e) => setFloorWidth(e.target.value)}
-                />
-              </label>
-            </div>
-
-            <div className="input-box">
-              <label>
-                Floor Height
-                <input
-                  type="number"
-                  value={floorHeight}
-                  onChange={(e) => setFloorHeight(e.target.value)}
-                />
-              </label>
-            </div>
-            {/* (roomId) BE 수정 완료되면 전송할 데이터 */}
-            <div className="input-box">
-              <label>
-                roomId
-                <input
-                  type="text"
-                  // value={roomId}
-                  // onChange={(e) => setRoomId(e.target.value)}
-                />
-              </label>
-            </div>
-            <button
-              onClick={handleUploadImages}
-              className="submit-btn"
-              disabled={floorPoints1.length < 4 || floorPoints2.length < 4}
-            >
-              다음
-            </button>
+          <div className="input-box">
+            <label>
+              Floor Height
+              <input
+                type="number"
+                value={floorHeight}
+                onChange={(e) => setFloorHeight(e.target.value)}
+              />
+            </label>
           </div>
+          {/* (roomId) BE 수정 완료되면 전송할 데이터 */}
+          <div className="input-box">
+            <label>
+              roomId
+              <input
+                type="text"
+                // value={roomId}
+                // onChange={(e) => setRoomId(e.target.value)}
+              />
+            </label>
+          </div>
+          <button
+            onClick={handleUploadImages}
+            className="submit-btn"
+            disabled={floorPoints1.length < 4 || floorPoints2.length < 4}
+          >
+            다음
+          </button>
         </div>
       </div>
+      {/* </div> */}
     </>
   );
 };
