@@ -41,7 +41,13 @@ function Monitor() {
 
   // MapComponent에서 좌표를 받는 함수
   const handlePointReceive = (point) => {
-    // 500x500 기준에서 400x400 기준으로 변환
+
+    console.log(point)
+    if (!point || point.length === 0) {
+      setPoints([]); 
+      return; 
+    }
+
     const newX = (point.x / 500) * 400;
     const newY = (point.y / 500) * 400;
 
