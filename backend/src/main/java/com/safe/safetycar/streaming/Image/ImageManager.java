@@ -6,11 +6,15 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
+/**
+ * 이미지 관리를 위한 클래스
+ */
 @Service
 public class ImageManager {
 
-    private LogManager logManager = new LogManager(ImageManager.class);
+    //각 카메라에게 할당될 이미지 저장 공간
     private static ArrayList<Image> images = new ArrayList<>();
+    //공간 재사용을 위한 카운터
     private static int recyclableCount = 0;
 
     public void write(ByteArrayInputStream bis, byte cameraId, byte segNum) {
@@ -54,6 +58,9 @@ public class ImageManager {
     public void remove(int idx) {
         images.get(idx).setOpen(false);
         recyclableCount++;
+    }
+    public int getSize() {
+        return images.size();
     }
 
     public void clear(byte cameraId) {

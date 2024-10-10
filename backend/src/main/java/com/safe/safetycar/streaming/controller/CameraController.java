@@ -1,6 +1,7 @@
 package com.safe.safetycar.streaming.controller;
 
 import com.safe.safetycar.log.LogManager;
+import com.safe.safetycar.response_template.BaseResponseTemplate;
 import com.safe.safetycar.streaming.request.AuthRequest;
 import com.safe.safetycar.streaming.response.AuthResponse;
 import com.safe.safetycar.streaming.response.DisconnectResponse;
@@ -30,10 +31,8 @@ public class CameraController {
             ip = request.getHeader(headerType);
             if(ip != null) break;
         }
-
-        // 적용
         if (ip == null) ip = request.getRemoteAddr();
-//        System.out.println("Real Remote(Client) IP Address: " + ip);
+
         logManager.sendLog("Real Remote(Client) IP Address: " + ip, LogManager.LOG_TYPE.INFO);
         return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }
@@ -55,16 +54,19 @@ public class CameraController {
         }
         if (ip == null) ip = request.getRemoteAddr();
         logManager.sendLog("CCTV Connected : " + ip, LogManager.LOG_TYPE.INFO);
-    
-//        if(!cameraService.addCamera(ip)) {
-//            logManager.sendLog("Already Connected", LogManager.LOG_TYPE.INFO);
-//            return new ResponseEntity<>(new AuthResponse(0, "Already Connected", 222), HttpStatus.OK);
-//        }
+
         byte cameraId = cameraService.addCamera(ip);
 
         return new ResponseEntity<>(new AuthResponse(cameraId, "Success", 200), HttpStatus.OK);
     }
 
+    /**
+     * 요청 아이피의 카메라 연결을 해제한다.
+     * @param request
+     * @param cameraId      요청 카메라 아이디
+     * @param authRequest
+     * @return 성공시 200, 실패 시 400을 반환한다.
+     */
     @PostMapping("/disconnect/{cameraId}")
     public ResponseEntity<DisconnectResponse> removeWhitelist(HttpServletRequest request, @PathVariable String cameraId, @RequestBody AuthRequest authRequest) {
         String ip = null;
@@ -78,6 +80,15 @@ public class CameraController {
         return cameraService.removeCamera(ip) ?
             new ResponseEntity<>(new DisconnectResponse("Disconnected", 200), HttpStatus.OK)
                 : new ResponseEntity<>(new DisconnectResponse("Already Disconnected", 400), HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * 연결된 카메라 갯수 표시
+     * @return 현재 연결된 카메라 수
+     */
+    @GetMapping("/connect/size")
+    public ResponseEntity<BaseResponseTemplate> getSize() {
+        return new ResponseEntity<>(new BaseResponseTemplate("Connected Device : " + cameraService.getSize(), 200), HttpStatus.OK);
     }
 
 }

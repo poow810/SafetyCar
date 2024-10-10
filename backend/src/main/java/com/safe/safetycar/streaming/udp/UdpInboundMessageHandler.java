@@ -28,24 +28,21 @@ public class UdpInboundMessageHandler {
 
     private final static LogManager logManager = new LogManager(UdpInboundMessageHandler.class);
 
-    //미리 공간을 열어놓기 640*480 크기의 jpg를 테스트해본결과 약 60000 바이트가 나올때가 있고 20000 바이트가 될때가 있다.
-    //최악의 경우를 가정해서 넉넉하게 공간을 만들어놓기
-//    final static short IMG_SEG_SIZE = 1469;
-//    final static short MAX_CAMERA_NUM = 8;
-//    final static short MAX_SEG_NUM = 150;
-//    final static short HEADER_SIZE = 1;     //카메라 정보를 담을 커스텀 헤더 크기
-//
-//    public static byte[][] camera_data_assembled = new byte[MAX_CAMERA_NUM][(MAX_SEG_NUM * IMG_SEG_SIZE) + HEADER_SIZE];
-
     public UdpInboundMessageHandler() {
         logManager.setInterval(LogManager.LOG_TYPE.INFO, 200, "image received");
     }
 
     //headerMap 내용 example
     //{ip_packetAddress=/127.0.0.1:58011, ip_address=127.0.0.1, id=6626e9b4-fac2-e7d2-d2a0-afd7ce5fa366, ip_port=58011, ip_hostname=127.0.0.1, timestamp=1727833051957}
+
+    /**
+     * UDP 메세지를 수신 받는다.
+     * @param message
+     * @param headerMap
+     * @throws IOException
+     */
     @ServiceActivator(inputChannel = "inboundChannel")
     public void handleMessage(Message message, @Headers Map<String, Object> headerMap) throws IOException {
-//        System.out.println(headerMap.toString());
         if(!udpFilter.accept(message)) {
             logManager.sendLog("ACCESS DENIED", LogManager.LOG_TYPE.WARN);
             return;
@@ -58,6 +55,13 @@ public class UdpInboundMessageHandler {
         //2. 음수로 인식되는 범위라면 부호 비트를 반전하기
         //3. char 자료형을 사용하기
         // 가장 간단한 1번을 사용하기로 하였다.
+        
+        //endflag 동작 원리 - SYNC 맞추기
+        //송신측에서 프레임을 세그먼트로 나누어서 보낼 때 endflag 255 또는 0을 전송한다.
+        //새로운 프레임을 전송할 때 이전에 보낸 endflag를 반전시켜서 전송하며 이를 반복한다.
+        //수신측에서는 이전 프레임의 플레그와 비교해서 반전이 일어났다면 이전 프레임이 모두 수신되었다고 판단하고 클라이언트로 전송을 한다.
+        //수신과 송신이 비동기적으로 나타나므로 수신용 byte[]와 송신용 byte[]로 나누어 관리하여 전송하여 무결성을 높인다.
+        //자세한 로직은 ImageManager, Image 클래스를 참고
         int endflag = bis.read();
         byte cameraId = (byte)bis.read();
         byte segNum = (byte)bis.read();
@@ -66,13 +70,11 @@ public class UdpInboundMessageHandler {
             logManager.sendLog("segNum is greater than MAX_SEG_NUM", LogManager.LOG_TYPE.ERROR);
             return;
         }
-//        bis.read(camera_data_assembled[cameraId], (segNum * IMG_SEG_SIZE) + HEADER_SIZE, IMG_SEG_SIZE);
-
 
         if(endflag != imageManager.getFlag(cameraId)){
             imageManager.setFlag(cameraId, endflag);
 //            imageManager.read(cameraId).setNextCacheIdx();
-            logManager.sendInterval();
+            logManager.sendInterval();  //수신되고 있음을 주기적으로 표시 (매 프레임마다 출력하지 않기)
             wsm.sendFrame(cameraId);
         }
         imageManager.write(bis, cameraId, segNum);

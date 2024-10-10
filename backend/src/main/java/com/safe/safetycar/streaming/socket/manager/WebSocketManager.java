@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/socket")
 @Service
 public class WebSocketManager {
-//    private final static Logger LOGGER = LoggerFactory.getLogger(UdpInboundMessageHandler.class);
     private final static LogManager LOGGER = new LogManager(WebSocketManager.class);
     private static Set<Session> CLIENTS = ConcurrentHashMap.newKeySet();
 //    private static Set<Session> CLIENTS = Collections.synchronizedSet(new HashSet<>());
@@ -54,9 +53,12 @@ public class WebSocketManager {
 
     }
 
+    /**
+     * 연결된 소켓 클라이언트에게 영상 정보 전송
+     * @param cameraId      전송할 카메라 아이디
+     * @throws IOException
+     */
     public void sendFrame(byte cameraId) throws IOException {
-//        LOGGER.info("sending Frame");
-
         for(Session client : CLIENTS) {
             try {
                 if(!client.isOpen()) {
@@ -64,10 +66,7 @@ public class WebSocketManager {
                     continue;
                 }
                 synchronized (client) {
-//                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(UdpInboundMessageHandler.camera_data_assembled[cameraId]));
-//                    client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getPrevData()));
                     client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getCurrentData()));
-//                    sendFrame2Client(client, cameraId);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -75,14 +74,6 @@ public class WebSocketManager {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-//    @Async
-    public void sendFrame2Client(Session client, byte cameraId) throws IOException {
-        client.getBasicRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getPrevData()));
-//        client.getAsyncRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
-//        ConcurrentWebSocketSessionDecorator c = new ConcurrentWebSocketSessionDecorator(client);
-//        client.getAsyncRemote().sendBinary(ByteBuffer.wrap(imageManager.read(cameraId).getData()));
     }
 
     public int getClientSize() {
