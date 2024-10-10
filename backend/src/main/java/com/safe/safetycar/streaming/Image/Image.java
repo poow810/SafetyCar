@@ -15,7 +15,7 @@ public class Image {
     public static short INFO_SIZE = 4;
 
     public static int IMG_SEG_SIZE = MTU - (UDP_HEADER_SIZE + INFO_SIZE);
-    public static short MAX_SEG_NUM = 25;
+    public static short MAX_SEG_NUM = 150;
     public static short HEADER_SIZE = 1;     //카메라 정보를 담을 커스텀 헤더 크기
     private static final int MAX_CACHE = 2;
 

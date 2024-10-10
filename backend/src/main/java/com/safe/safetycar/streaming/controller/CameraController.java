@@ -22,7 +22,6 @@ public class CameraController {
     private CameraService cameraService;
 
     private String[] headerTypes = {"X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR"};
-    private static HashSet<String> whiteList = new HashSet<>();
 
     @GetMapping ("/headertest")
     public ResponseEntity test(HttpServletRequest request) {
