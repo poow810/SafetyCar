@@ -76,7 +76,10 @@ h1 {
 
 .image-container {
   display: flex;
-  justify-content: space-between;
+  
+ 
+
+  justify-content: space-around;
   background-color: rgba(46, 46, 58, 0.5);
   border-radius: 10px;
   height: 75%; /* 화면의 70%를 이미지 영역으로 설정 */
@@ -86,11 +89,11 @@ h1 {
 .image-box {
   /* flex: 1; */
   text-align: center;
-  position: relative; /* 추가 */
-  width: 100%; /* 추가 */
-  height: auto; /* 또는 고정 높이 설정 */
+  /* overflow: hidden; 이미지가 박스를 벗어나지 않도록 설정 */
+  margin-right: 10px; /* 이미지 사이 간격 설정 */
+
   padding: 0; /* 추가 */
-  margin: 0; /* 추가 */
+  margin: 0;  /* 추가 */
 }
 
 .image-box:last-child {
@@ -99,16 +102,16 @@ h1 {
 
 .image-box img {
   max-height: 360px;
-  position: relative; /* 추가 */
-  width: 100%;
-  height: auto;
-  object-fit: cover; /* 또는 'fill' */
-
+  width: 100%; /* 가로 너비를 100%로 설정 */
+  height: auto; /* 높이는 자동으로 설정하여 비율을 유지 */
+  object-fit: contain; /* 이미지 비율을 유지하며 컨테이너에 맞게 조정 */
   border-radius: 10px;
+  /* border: 1px solid #ccc; */
   padding: 0; /* 추가 */
-  margin: 0; /* 추가 */
+  margin: 0;  /* 추가 */
   border: none; /* 추가 */
   border-radius: 0; /* 추가 */
+
 }
 
 p {
@@ -187,19 +190,114 @@ input::placeholder {
   font-style: normal;
 }
 
+
 .submit-btn {
-  width: 130px;
-  height: 110px;
-  padding: 20px;
-  background-color: #e57a3e;
-  border: none;
-  border-radius: 5px;
+  box-sizing: border-box;
+  appearance: none;
+  background-color: transparent;
+  border: 2px solid #e02e2e; /* BUTTON 1 색상: 빨간색 */
+  border-radius: 0.6em;
+  color: #e02e2e;
   cursor: pointer;
-  color: white;
-  font-size: 40px;
-  margin-left: 30px;
+  display: flex;
+  align-self: center;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 30px;
+  padding: 2.2em 2.8em;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+  
 }
 
 .submit-btn:hover {
-  background-color: #ff7700;
+  box-shadow: 0 0 40px 40px #e02e2e inset; /* hover 시 내부 그림자 효과 */
+  color: white; /* hover 시 텍스트 색상 변경 */
+}
+
+.submit-btn:focus {
+  outline: none;
+}
+
+
+
+.previous-btn {
+  box-sizing: border-box;
+  appearance: none;
+  background-color: transparent;
+  border: 2px solid #2e61e0; /* BUTTON 1 색상: 빨간색 */
+  border-radius: 0.6em;
+  color: #2e61e0;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 30px;
+  padding: 2.2em 2.8em;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+  
+}
+
+.previous-btn:hover {
+  box-shadow: 0 0 40px 40px #2e61e0 inset; /* hover 시 내부 그림자 효과 */
+  color: white; /* hover 시 텍스트 색상 변경 */
+}
+
+.previous-btn:focus {
+  outline: none;
+}
+
+
+.choice-btn {
+  background-color: #00AE68;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s, box-shadow 0.2s, margin 0.2s;
+  box-shadow: 0px 5px 0px 0px #007144;
+}
+
+.choice-btn:hover {
+  background-color: #21825B;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  box-shadow: 0px 0px 0px 0px #007144;
+}
+
+
+.choice-one-btn {
+  background-color: #FFAA40;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s, box-shadow 0.2s, margin 0.2s;
+  box-shadow: 0px 5px 0px 0px #da943f;
+}
+
+.choice-one-btn:hover {
+  background-color: #FF8E00;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  box-shadow: 0px 0px 0px 0px #007144;
+}
+/* 선택되지 않은 이미지 레이블을 주황색으로 표시 */
+.selected {
+  color: #ff3300; /* 주황색 */
+  font-weight: bold;
 }

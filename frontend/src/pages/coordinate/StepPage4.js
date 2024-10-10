@@ -69,7 +69,9 @@ const Step4 = () => {
         alert("대응점 업로드 중 오류가 발생했습니다.");
       });
   };
-
+  const handlePrevious = () => {
+    navigate("/step3"); // HomePage로 이동
+  };
   return (
     <>
       <h1>STEP4. 대응점 선택</h1>
@@ -114,6 +116,8 @@ const Step4 = () => {
               </p>
             </div>
           </div>
+
+
 
           <div className="option-container">
             <button
