@@ -1,12 +1,16 @@
-#include "WebSocketSender.h"
+ï»¿#include "WebSocketSender.h"
 
 WebSocketSender::WebSocketSender()
-{
-	//WebSocket ¶óÀÌºê·¯¸® ¼³Á¤ÇÏ±â 2.2 ¹öÀü
+{	
+	// https í†µì‹ ìœ¼ë¡œ ì•„ì´í”¼ ë“±ë¡í•˜ê¸°
+	set_connection();
+
+
+	//WebSocket ë¼ì´ë¸ŒëŸ¬ë¦¬ ì„¤ì •í•˜ê¸° 2.2 ë²„ì „
 	WSAStartup(MAKEWORD(2, 2), &wsadata);
-	//Åë½Å Çü½Ä ¼³Á¤, AF_INET = IP v4, SOCK_DGRAM = UDP, 0 = ÀÚµ¿ ¼³Á¤
+	//í†µì‹  í˜•ì‹ ì„¤ì •, AF_INET = IP v4, SOCK_DGRAM = UDP, 0 = ìë™ ì„¤ì •
 	m_clientSock = socket(AF_INET, SOCK_DGRAM, 0);
-	//ÃÊ±âÈ­
+	//ì´ˆê¸°í™”
 	ZeroMemory(&m_ClientAddr, sizeof(m_ClientAddr));
 	m_ClientAddr.sin_family = AF_INET;
 	m_ClientAddr.sin_addr.S_un.S_addr = inet_addr(SERVER_IP);
@@ -29,16 +33,20 @@ WebSocketSender::WebSocketSender()
 	// TEST END
 	m_ClientAddr.sin_port = htons(PORT);
 
+	//flag = false;
+	cache_idx = 0;
+	frame_flag = false;
 	connected = true;
-	set_cameraId();
+	//set_cameraId();
 	std::cout << "UDP WebSocket Connected. \n";
 	
 }
 
 WebSocketSender::~WebSocketSender()
 {
+	disconnection();
 	connected = false;
-	//¼ÒÄÏ ¸Ş¸ğ¸® Á¤¸®
+	//ì†Œì¼“ ë©”ëª¨ë¦¬ ì •ë¦¬
 	freeaddrinfo(host_domainAddr);
 	WSACleanup();
 }
@@ -56,19 +64,26 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 	BYTE num = 0;
 	BYTE buffer[IMG_SEG_SIZE + (sizeof(BYTE) * INFO_SIZE)] = {};
 
-	//Àü¼ÛÇÒ¶§ µ¥ÀÌÅÍ ¸Ç ¾Õ 3¹ÙÀÌÆ®¿¡ ÆĞÅ¶ Á¤º¸¸¦ ÇÔ²² Àü¼Û
-	//°¢ ¹ÙÀÌÆ®´Â ¸¶Áö¸· ÆĞÅ¶¿©ºÎ, Ä«¸Ş¶ó¾ÆÀÌµğ, ÀÌ¹ÌÁö ¹øÈ£¸¦ ÀÇ¹ÌÇÑ´Ù.
+	//ì „ì†¡í• ë•Œ ë°ì´í„° ë§¨ ì• 3ë°”ì´íŠ¸ì— íŒ¨í‚· ì •ë³´ë¥¼ í•¨ê»˜ ì „ì†¡
+	//ê° ë°”ì´íŠ¸ëŠ” ë§ˆì§€ë§‰ íŒ¨í‚·ì—¬ë¶€, ì¹´ë©”ë¼ì•„ì´ë””, ì´ë¯¸ì§€ ë²ˆí˜¸ë¥¼ ì˜ë¯¸í•œë‹¤.
 	while (total_bytes_sent < img_packet_size) {
 		chunk_size = min(IMG_SEG_SIZE, img_packet_size - total_bytes_sent);
 		
-		memset(buffer, 0, sizeof(buffer));	//0À¸·Î ÃÊ±âÈ­
-		buffer[0] = total_bytes_sent + chunk_size < img_packet_size ? 0 : 255;	//¸¶Áö¸· ÆĞÅ¶ÀÎÁö °Ë»ç
+		memset(buffer, 0, sizeof(buffer));	//0ìœ¼ë¡œ ì´ˆê¸°í™”
+		//buffer[0] = total_bytes_sent + chunk_size < img_packet_size ? 0 : 255;	//ë§ˆì§€ë§‰ íŒ¨í‚·ì¸ì§€ ê²€ì‚¬
+
+		// 0 - ìƒˆë¡œìš´ í”„ë ˆì„ì¸ì§€ ì—¬ë¶€ë¥¼ í‘œì‹œí•˜ëŠ” ë°”ì´íŠ¸ (ìŠ¤ìœ„ì¹˜ ì²˜ëŸ¼ ë™ì‘í•œë‹¤. ON/OFF)
+		// 1 - ì¹´ë©”ë¼ ì•„ì´ë””ë¥¼ í‘œì‹œí•œë‹¤.
+		// 2 - MTUë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì´ë¯¸ì§€ë¥¼ ë‚˜ëˆ„ì–´ ì „ì†¡í•˜ëŠ”ë° í•´ë‹¹ ì´ë¯¸ì§€ê°€ ëª‡ ë²ˆì§¸ ì„¸ê·¸ë¨¼íŠ¸ì¸ì§€ í‘œì‹œí•œë‹¤.
+		// 3 - cache_idx ì´ë¯¸ì§€ ìºì‹œë¥¼ ìœ„í•œ ë°”ì´íŠ¸ (ì‚¬ìš©ë˜ì§€ ì•ŠìŒ)
+		buffer[0] = frame_flag ? 255 : 0;
 		buffer[1] = camera_id;
 		buffer[2] = num++;
+		buffer[3] = cache_idx;
 		memcpy(buffer + (sizeof(BYTE) * INFO_SIZE), bytes.data() + total_bytes_sent, chunk_size);
 		sent_bytes = sendto(m_clientSock, reinterpret_cast<char*>(buffer), chunk_size + (sizeof(BYTE) * INFO_SIZE), 0, (SOCKADDR*)&m_ClientAddr, sizeof(m_ClientAddr));
 
-		//º¸³½ µ¥ÀÌÅÍÀÇ ¾çÀÌ -1ÀÎ °æ¿ì´Â ¿À·ùÀÎ °æ¿ì
+		//ë³´ë‚¸ ë°ì´í„°ì˜ ì–‘ì´ -1ì¸ ê²½ìš°ëŠ” ì˜¤ë¥˜ì¸ ê²½ìš°
 		if (sent_bytes == SOCKET_ERROR) {
 			//check when error occured
 			//https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-sendto
@@ -80,7 +95,11 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 		total_bytes_sent += chunk_size;
 	}
 
-	std::cout << "Packet sent : " << total_bytes_sent << "\n" << "Seg sent : " << (short)num << "\n";
+	std::cout << "Packet sent : " << total_bytes_sent << " \n" << "Seg sent : " << (short)num << " \n";
+	//flag != flag;
+	cache_idx = (cache_idx + 1) % MAX_CACHE;
+	frame_flag = !frame_flag;
+
 	//std::cout << "(%) : " << (float)total_bytes_sent / (float)IMG_FULL_SIZE << "\n";
 }
 
@@ -97,4 +116,202 @@ void WebSocketSender::set_cameraId()
 	std::cout << "Please, Enter Camera ID : ";
 	std::cin >> id;
 	camera_id = (BYTE)id;
+}
+
+void WebSocketSender::set_connection()
+{
+	SSL_CTX* ctx;
+	SSL* ssl;
+
+	// OpenSSL ì´ˆê¸°í™”
+	SSL_library_init();
+	OpenSSL_add_all_algorithms();
+	SSL_load_error_strings();
+	ctx = SSL_CTX_new(TLS_client_method());
+
+
+
+	std::string ipAddress = SERVER_IP;
+	//std::string ipAddress = SERVER_DOMAIN;
+	int port = 443;
+	//int port = 8080;
+
+	// initialise winsock
+	WSADATA data;
+	WORD ver = MAKEWORD(2, 2);
+	int wsResult = WSAStartup(ver, &data);
+	if (wsResult != 0) {
+		std::cerr << "Can't start winsock, Err #" << wsResult << std::endl;
+		return;
+	}
+
+	// create socket
+	SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+	if (clientSocket == INVALID_SOCKET) {
+		std::cerr << "Can't create socket, Err #" << WSAGetLastError() << std::endl;
+		WSACleanup();
+		return;
+	}
+
+	// hint structure
+	sockaddr_in hint;
+	hint.sin_family = AF_INET;
+	hint.sin_port = htons(port);
+	inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
+
+	// connect
+	int connResult = connect(clientSocket, (sockaddr*)&hint, sizeof(hint));
+	if (connResult == SOCKET_ERROR) {
+		std::cerr << "Can't connect to server, Err #" << WSAGetLastError << std::endl;
+		closesocket(clientSocket);
+		WSACleanup();
+		return;
+	}
+
+
+
+	// SSL ì—°ê²° ì„¤ì •
+	ssl = SSL_new(ctx);
+	SSL_set_fd(ssl, clientSocket);
+	SSL_connect(ssl);
+	std::string body = "{\"Access_Token\":\"1234\"}"; // JSON ë°ì´í„°
+	size_t body_length = strlen(body.c_str());
+	std::string request = "POST /api/connect HTTP/1.1\r\nHost: j11b209.p.ssafy.io\r\nConnection: close\r\nContent-Type: application/json\r\nContent-Length: " + std::to_string(body_length) + "\r\n\r\n" + body;
+	
+	SSL_write(ssl, request.c_str(), strlen(request.c_str()));
+
+	// ì‘ë‹µ ë°›ê¸°
+	char buf[1024];
+	int bytes;
+	while ((bytes = SSL_read(ssl, buf, sizeof(buf))) > 0) {
+		buf[bytes] = 0;
+		printf("%s", buf);
+	}
+
+	std::string response = buf;
+	size_t idx = response.find("camera_id");
+	bool camera_id_not_found = true;
+	if (idx != std::string::npos) {
+		//ìˆ«ì ì°¾ê¸°, 0 ~ 9ê°€ í¬í•¨ëœ ê³³ì„ ì°¾ëŠ”ë‹¤.
+		idx = response.find_first_of("0123456789", idx);
+		if (idx != std::string::npos) {
+			size_t last;
+			for (last = idx; last < response.length() && response[last] != ' '; last++);
+			camera_id = std::stoi(response.substr(idx, last));
+			camera_id_not_found = false;
+		}
+
+	}
+
+	//ì¹´ë©”ë¼ ì•„ì´ë””ë¥¼ ëª» ë°›ì•˜ì„ ê²½ìš° ìˆ˜ë™ìœ¼ë¡œ ì…ë ¥
+	if (camera_id_not_found) {
+		std::cerr << "Camera ID not found in response. \n";
+		set_cameraId();
+	}
+
+	/*
+	// do while loop to send and receive data
+	char buff[4096];
+
+	char cmd[] = "GET /test HTTP/1.0\r\nHost: j11b209.p.ssafy.io\r\n\r\n";
+
+	int sendResult = send(clientSocket, cmd, sizeof(cmd), 0);
+
+	if (sendResult != SOCKET_ERROR) {
+		// wait for response
+		ZeroMemory(buff, 4096);
+		int bytesReceived = recv(clientSocket, buff, 4096, 0);
+
+		// echo response to console
+		if (bytesReceived > 0) {
+			std::cout << std::string(buff, 0, bytesReceived) << std::endl;
+		}
+	}*/
+
+	// ì—°ê²° ì¢…ë£Œ
+	SSL_shutdown(ssl);
+	SSL_free(ssl);
+	SSL_CTX_free(ctx);
+
+	closesocket(clientSocket);
+	WSACleanup();
+	return;
+}
+
+void WebSocketSender::disconnection()
+{
+	SSL_CTX* ctx;
+	SSL* ssl;
+
+	// OpenSSL ì´ˆê¸°í™”
+	SSL_library_init();
+	OpenSSL_add_all_algorithms();
+	SSL_load_error_strings();
+	ctx = SSL_CTX_new(TLS_client_method());
+
+
+
+	std::string ipAddress = SERVER_IP;
+	//std::string ipAddress = SERVER_DOMAIN;
+	int port = 443;
+	//int port = 8080;
+
+	// initialise winsock
+	WSADATA data;
+	WORD ver = MAKEWORD(2, 2);
+	int wsResult = WSAStartup(ver, &data);
+	if (wsResult != 0) {
+		std::cerr << "Can't start winsock, Err #" << wsResult << std::endl;
+		return;
+	}
+
+	// create socket
+	SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+	if (clientSocket == INVALID_SOCKET) {
+		std::cerr << "Can't create socket, Err #" << WSAGetLastError() << std::endl;
+		WSACleanup();
+		return;
+	}
+
+	// hint structure
+	sockaddr_in hint;
+	hint.sin_family = AF_INET;
+	hint.sin_port = htons(port);
+	inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
+
+	// connect
+	int connResult = connect(clientSocket, (sockaddr*)&hint, sizeof(hint));
+	if (connResult == SOCKET_ERROR) {
+		std::cerr << "Can't connect to server, Err #" << WSAGetLastError << std::endl;
+		closesocket(clientSocket);
+		WSACleanup();
+		return;
+	}
+
+	// SSL ì—°ê²° ì„¤ì •
+	ssl = SSL_new(ctx);
+	SSL_set_fd(ssl, clientSocket);
+	SSL_connect(ssl);
+	std::string body = "{\"Access_Token\":\"1234\"}"; // JSON ë°ì´í„°
+	size_t body_length = strlen(body.c_str());
+	std::string request = "POST /api/disconnect/" + std::to_string(camera_id) + " HTTP/1.1\r\nHost: j11b209.p.ssafy.io\r\nConnection: close\r\nContent-Type: application/json\r\nContent-Length: " + std::to_string(body_length) + "\r\n\r\n" + body;
+
+	SSL_write(ssl, request.c_str(), strlen(request.c_str()));
+
+	// ì‘ë‹µ ë°›ê¸°
+	char buf[1024];
+	int bytes;
+	while ((bytes = SSL_read(ssl, buf, sizeof(buf))) > 0) {
+		buf[bytes] = 0;
+		printf("%s", buf);
+	}
+
+	// ì—°ê²° ì¢…ë£Œ
+	SSL_shutdown(ssl);
+	SSL_free(ssl);
+	SSL_CTX_free(ctx);
+
+	closesocket(clientSocket);
+	WSACleanup();
+	return;
 }

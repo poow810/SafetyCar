@@ -12,6 +12,6 @@ import org.springframework.stereotype.Component;
 @Setter
 public class UserConfig {
 
-    private String username;
+//    private String username;
     private String password;
 }

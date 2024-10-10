@@ -18,7 +18,9 @@ int main(int argc, char** argv)
     //wss.connectwebsocket();
     //wss.connectudp();
     
-    //return 0;
+
+    /*wss.test();
+    return 0;*/
     std::string projectBasePath = ""; // Set your ultralytics base path
 
     bool runOnGPU = true;
