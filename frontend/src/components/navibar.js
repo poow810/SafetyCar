@@ -68,7 +68,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="nav-item" onClick={() => navigate("/")}>
-        <img src="/assets/navi/Icon.png" alt="Home" className="nav-icon" />{" "}
+        <img src="/assets/navi/Icon.png" alt="Home" className="nav-icon" />
         {/* Home 아이콘 */}
       </div>
       <div className="nav-item" onClick={() => navigate("/step1")}>
@@ -80,7 +80,7 @@ const Navbar = () => {
         {/* Settings 아이콘 */}
       </div>
       <div className="nav-item" onClick={handleOpenModal}>
-        <img src="/assets/navi/Mail.png" alt="Mail" className="nav-icon" />{" "}
+        <img src="/assets/navi/Mail.png" alt="Mail" className="nav-icon" />
         {/* Mail 아이콘 */}
       </div>
       <div className="nav-item" onClick={handleOpenRotateModal}>

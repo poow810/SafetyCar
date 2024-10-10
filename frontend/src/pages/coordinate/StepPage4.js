@@ -72,58 +72,56 @@ const Step4 = () => {
 
   return (
     <>
-      <h1>STEP4. 대응점 선택</h1>
-      <div className="container">
-        <div className="right-container">
-          <div className="image-container">
-            <div className="image-box">
-              <img
-                src={image1Src}
-                alt="대응점 선택 이미지 1"
-                ref={imageRef1}
-                style={{
-                  cursor: alignPoints1.length < 4 ? "crosshair" : "default",
-                  maxWidth: "100%",
-                  height: "auto",
-                }}
-                onClick={(e) =>
-                  handleImageClick(e, imageRef1, setAlignPoints1, 4)
-                }
-              />
-              <p>
-                Image1 <span> {alignPoints1.length}/4</span>
-              </p>
-            </div>
-
-            <div className="image-box">
-              <img
-                src={image2Src}
-                alt="대응점 선택 이미지 2"
-                ref={imageRef2}
-                style={{
-                  cursor: alignPoints2.length < 4 ? "crosshair" : "default",
-                  maxWidth: "100%",
-                  height: "auto",
-                }}
-                onClick={(e) =>
-                  handleImageClick(e, imageRef2, setAlignPoints2, 4)
-                }
-              />
-              <p>
-                Image2 <span> {alignPoints2.length}/4</span>
-              </p>
-            </div>
+      <div className="right-container">
+        <h3>STEP4. 대응점 선택</h3>
+        <div className="image-container">
+          <div className="image-box">
+            <img
+              src={image1Src}
+              alt="대응점 선택 이미지 1"
+              ref={imageRef1}
+              style={{
+                cursor: alignPoints1.length < 4 ? "crosshair" : "default",
+                maxWidth: "100%",
+                height: "auto",
+              }}
+              onClick={(e) =>
+                handleImageClick(e, imageRef1, setAlignPoints1, 4)
+              }
+            />
+            <p>
+              Image1 <span> {alignPoints1.length}/4</span>
+            </p>
           </div>
 
-          <div className="option-container">
-            <button
-              onClick={handleUploadAlignPoints}
-              className="submit-btn"
-              disabled={alignPoints1.length < 4 || alignPoints2.length < 4}
-            >
-              다음
-            </button>
+          <div className="image-box">
+            <img
+              src={image2Src}
+              alt="대응점 선택 이미지 2"
+              ref={imageRef2}
+              style={{
+                cursor: alignPoints2.length < 4 ? "crosshair" : "default",
+                maxWidth: "100%",
+                height: "auto",
+              }}
+              onClick={(e) =>
+                handleImageClick(e, imageRef2, setAlignPoints2, 4)
+              }
+            />
+            <p>
+              Image2 <span> {alignPoints2.length}/4</span>
+            </p>
           </div>
+        </div>
+
+        <div className="option-container">
+          <button
+            onClick={handleUploadAlignPoints}
+            className="submit-btn"
+            disabled={alignPoints1.length < 4 || alignPoints2.length < 4}
+          >
+            다음
+          </button>
         </div>
       </div>
     </>

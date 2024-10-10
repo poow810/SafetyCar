@@ -113,8 +113,8 @@ const Step1 = () => {
 
   return (
     <>
-      <h1>STEP1. 바닥 모서리 검출</h1>
       <div className="right-container">
+        <p>STEP1. 바닥 모서리 검출</p>
         <div className="image-container">
           <div className="image-box">
             {camera0Image ? (
