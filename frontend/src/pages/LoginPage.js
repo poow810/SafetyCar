@@ -1,4 +1,3 @@
-import "../styles/global.css";
 import "../styles/LoginPage.css";
 import LoginForm from "../components/Loginform";
 

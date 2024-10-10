@@ -4,7 +4,7 @@ import InputForm from "./Input";
 import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
-  const [id, setId] = useState("");
+  const [id] = useState("admin@domain.com"); // 관리자 계정 자동 입력
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // useNavigate 훅 사용
 
@@ -36,14 +36,6 @@ function LoginForm() {
 
   return (
     <div style={{ maxWidth: "300px", margin: "0 auto" }}>
-      <div style={{ marginBottom: "20px" }}>
-        <InputForm
-          type="text"
-          value={id}
-          label="ID"
-          onChange={(e) => setId(e.target.value)}
-        />
-      </div>
       <div style={{ marginBottom: "20px" }}>
         <InputForm
           type="password"
