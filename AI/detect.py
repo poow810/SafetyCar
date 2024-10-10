@@ -391,7 +391,7 @@ async def pose_estimation(keypoints, results, check_data, tracking_data, annotat
 
                         elapsed_time = current_time - tracking_data[tracking_id]['start_time']  # 항상 업데이트
                         if elapsed_time >= 5:
-                            status_type = 0  
+                            status_type = 0  # Falling 상태
                             # 객체 발 밑 좌표
                             send_x, send_y = (x1 + x2) / 2, y2
                             start_x, start_y, end_x, end_y = x1, y1, x2, y2
@@ -400,15 +400,12 @@ async def pose_estimation(keypoints, results, check_data, tracking_data, annotat
                                 print(send_x, send_y)
                                 tracking_data[tracking_id]['sent'] = True
                         else:
-                            status_type = 1  
+                            status_type = 1  # Falling (not confirmed)
                     else:
                         # 쓰러지지 않은 경우에는 상태를 초기화하지 않고 유지
                         elapsed_time = current_time - tracking_data[tracking_id]['start_time']
-                        if tracking_data[tracking_id]['is_still_falling']:
-                            if elapsed_time < 5:
-                                status_type = 1  # Falling (not confirmed)
-                            else:
-                                status_type = 0 # Falling
+                        if tracking_data[tracking_id]['is_still_falling'] and elapsed_time < 5:
+                            status_type = 1  # Falling (not confirmed)
                         else:
                             status_type = 2  # Standing
                             tracking_data[tracking_id]['is_still_falling'] = False  # 상태 초기화
@@ -434,7 +431,7 @@ async def process_video(udp_sender, camera_id):
     model = YOLO("model/yolov8s-pose.pt").to('cuda')
 
     # 동영상 파일 열기
-    video_path = "check.mp4"
+    video_path = "falling2.mp4"
     cap = cv2.VideoCapture(0)
 
     # 객체 상태 추적
@@ -499,4 +496,4 @@ if __name__ == "__main__":
         asyncio.run(process_video(udp_sender, result['camera_id']))
     finally:
         udp_sender.close()
-    # asyncio.run(process_video())
+    asyncio.run(process_video())
