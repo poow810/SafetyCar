@@ -113,6 +113,7 @@ const Step3 = () => {
             </p>
           </div>
         </div>
+
         <div className="option-container">
           <button
             onClick={handleUploadTilePoints}

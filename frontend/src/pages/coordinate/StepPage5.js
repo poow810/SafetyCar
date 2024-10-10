@@ -14,8 +14,8 @@ const Step5 = () => {
   const [transformedCoordinates, setTransformedCoordinates] = useState(null);
   // 방 번호 및 카메라 ID 상태
   const [roomId, setRoomId] = useState("");
-  const [cameraId1, setCameraId1] = useState("");
-  const [cameraId2, setCameraId2] = useState("");
+  const [cameraId1, setCameraId1] = useState("0");
+  const [cameraId2, setCameraId2] = useState("1");
   // 이미지가 없을 경우 Step4로 리디렉션
 
   const [camera0Image, setCamera0Image] = useState(null);
@@ -62,7 +62,7 @@ const Step5 = () => {
     formData.append("img_id", imgId);
 
     axios
-      .post(`${PYTHON_URL}/get_floor_coordinates/`, formData)
+      .post(`${PYTHON_URL}/check_coordinates/`, formData)
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
@@ -132,6 +132,10 @@ const Step5 = () => {
       });
   };
 
+  const handlePrevious = () => {
+    navigate("/"); // HomePage로 이동
+  };
+
   return (
     <>
       <div className="right-container">
@@ -139,13 +143,6 @@ const Step5 = () => {
         <p>이미지를 클릭하여 바닥 좌표를 확인하세요.</p>
         <div className="image-container">
           <div className="image-box">
-            {/* <video
-            ref={videoDisplayRef1}
-            src="../../assets/cctv1.mp4"
-            controls
-            style={{ maxWidth: "100%", cursor: "crosshair" }}
-            onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
-          /> */}
             <img
               src={camera0Image}
               alt="Camera 1"
@@ -157,13 +154,6 @@ const Step5 = () => {
           </div>
 
           <div className="image-box">
-            {/* <video
-            ref={videoDisplayRef2}
-            src="../../assets/cctv2.mp4"
-            controls
-            style={{ maxWidth: "100%", cursor: "crosshair" }}
-            onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
-          /> */}
             <img
               src={camera1Image}
               alt="Camera 2"
