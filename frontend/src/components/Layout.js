@@ -40,7 +40,7 @@ const Layout = () => {
               onClick={() => navigate("/")}
             />
           </div>
-          <h1>SafetyCar 안전 관제 센터</h1>
+          <h1>안전 관제 센터</h1>
           <div className="current-time">
             <p>현재 시각</p>
             <div>{currentTime}</div>
