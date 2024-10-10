@@ -48,6 +48,9 @@ dependencies {
     compileOnly 'jakarta.servlet:jakarta.servlet-api'
     // https://mvnrepository.com/artifact/jakarta.websocket/jakarta.websocket-client-api
     compileOnly 'jakarta.websocket:jakarta.websocket-client-api'
+
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {
