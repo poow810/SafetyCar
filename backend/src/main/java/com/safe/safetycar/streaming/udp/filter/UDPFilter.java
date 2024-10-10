@@ -13,12 +13,9 @@ public class UDPFilter implements MessageSelector {
     @Autowired
     private CameraService cameraService;
 
-    private LogManager logManager = new LogManager(UDPFilter.class);
 
     @Override
     public boolean accept(Message<?> message) {
-//        logManager.sendLog(message.toString(), LogManager.LOG_TYPE.INFO);
-
         return cameraService.checkWhite((String)message.getHeaders().get("ip_address"));
     }
 }

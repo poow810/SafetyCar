@@ -20,6 +20,11 @@ public class CameraService {
     @Autowired
     private ImageManager imageManager;
 
+    /**
+     * 주어진 아이피가 연결된 목록에 존재하는지 여부
+     * @param ip
+     * @return 해당 아이피가 연결되어 있다면 true, 그렇지 않다면 false
+     */
     public boolean checkWhite(String ip) {
 //        logManager.sendLog("try : "+ ip, LogManager.LOG_TYPE.WARN);
 //        logManager.sendLog(Arrays.toString(whiteList.toArray()), LogManager.LOG_TYPE.INFO);
@@ -40,6 +45,10 @@ public class CameraService {
         logManager.sendLog(whiteList.toString(), LogManager.LOG_TYPE.INFO);
 
         return whiteList.get(ip);
+    }
+
+    public int getSize() {
+        return whiteList.size();
     }
 
     public boolean removeCamera(String ip) {
