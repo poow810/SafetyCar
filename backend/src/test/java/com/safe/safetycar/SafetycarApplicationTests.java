@@ -8,6 +8,7 @@ class SafetycarApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }

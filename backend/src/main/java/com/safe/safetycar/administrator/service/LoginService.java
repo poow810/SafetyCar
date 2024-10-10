@@ -10,7 +10,7 @@ public class LoginService {
 
     private final UserConfig userConfig;
 
-    public boolean login(String username, String password) {
-        return userConfig.getUsername().equals(username) && userConfig.getPassword().equals(password);
+    public boolean login(String password) {
+        return userConfig.getPassword().equals(password);
     }
 }

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 @Getter
 public class UserConfig {
 
-    private String username;
+//    private String username;
     private String password;
 }
