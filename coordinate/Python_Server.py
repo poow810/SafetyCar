@@ -561,33 +561,33 @@ async def upload_align_points(
         'merged_image': image_str
     }
 
-# # 5. 클라이언트로부터 클릭 좌표를 받아서 바닥의 가상 좌표를 반환하는 엔드포인트
-# @app.post("/get_floor_coordinates/")
-# async def get_floor_coordinates(
-#     x: float = Form(...),
-#     y: float = Form(...),
-#     img_id: int = Form(...)
-# ):
-#     H_total = state['H1_total'] if img_id == 1 else state['H2_total']
-#     x_floor, y_floor = map_point_to_floor_coordinates(x, y, H_total)
-#
-#     # 합성된 이미지에서의 좌표를 최종 바닥 크기에 맞게 스케일링
-#
-#     floor_width = state['floor_width']
-#     floor_height = state['floor_height']
-#
-#     # 좌표를 바닥 크기에 맞게 제한
-#     x_floor = max(0, min(floor_width, x_floor))
-#     y_floor = max(0, min(floor_height, y_floor))
-#
-#     # numpy.float32 타입을 Python의 float 타입으로 변환
-#     x_floor = float(x_floor)
-#     y_floor = float(y_floor)
-#     await sio.emit('gridmake', data=[x_floor, y_floor], namespace='/socketio')
-#     return {
-#         'x_floor': x_floor,
-#         'y_floor': y_floor
-#     }
+# 5. 클라이언트로부터 클릭 좌표를 받아서 바닥의 가상 좌표를 반환하는 엔드포인트
+@app.post("/get_floor_coordinates/")
+async def get_floor_coordinates(
+    x: float = Form(...),
+    y: float = Form(...),
+    img_id: int = Form(...)
+):
+    H_total = state['H1_total'] if img_id == 1 else state['H2_total']
+    x_floor, y_floor = map_point_to_floor_coordinates(x, y, H_total)
+
+    # 합성된 이미지에서의 좌표를 최종 바닥 크기에 맞게 스케일링
+
+    floor_width = state['floor_width']
+    floor_height = state['floor_height']
+
+    # 좌표를 바닥 크기에 맞게 제한
+    x_floor = max(0, min(floor_width, x_floor))
+    y_floor = max(0, min(floor_height, y_floor))
+
+    # numpy.float32 타입을 Python의 float 타입으로 변환
+    x_floor = float(x_floor)
+    y_floor = float(y_floor)
+    await sio.emit('gridmake', data=[x_floor, y_floor], namespace='/socketio')
+    return {
+        'x_floor': x_floor,
+        'y_floor': y_floor
+    }
 # 시뮬에 보내지 않음
 @app.post("/check_coordinates/")
 async def check_coordinates(
@@ -595,8 +595,6 @@ async def check_coordinates(
     y: float = Form(...),
     img_id: int = Form(...)
 ):
-
-
     H_total = state['H1_total'] if img_id == 1 else state['H2_total']
     x_floor, y_floor = map_point_to_floor_coordinates(x, y, H_total)
 
@@ -617,73 +615,6 @@ async def check_coordinates(
         'x_floor': x_floor,
         'y_floor': y_floor
     }
-
-
-# 5. 클라이언트로부터 클릭 좌표를 받아서 바닥의 가상 좌표를 반환하는 엔드포인트
-@app.post("/get_floor_coordinates/")
-async def get_floor_coordinates(
-    x: float = Form(...),
-    y: float = Form(...),
-    img_id: str = Form(...)
-):
-    camera_id = img_id  # img_id와 camera_id는 동일한 값으로 간주
-
-    # camera_id에 따라 변환 행렬과 관련 데이터를 가져옴
-    if camera_id in transformations:
-        transformation_data = transformations[camera_id]
-        H_total = np.array(transformation_data['H_total'], dtype=np.float32)
-        floor_width = float(transformation_data['floor_width'])
-        floor_height = float(transformation_data['floor_height'])
-    else:
-        return {'error': f'카메라 {camera_id}에 대한 변환 행렬이 존재하지 않습니다.'}
-
-    x_floor, y_floor = map_point_to_floor_coordinates(x, y, H_total)
-
-    # 좌표를 바닥 크기에 맞게 제한
-    x_floor = max(0, min(floor_width, x_floor))
-    y_floor = max(0, min(floor_height, y_floor))
-
-    # numpy.float32 타입을 Python의 float 타입으로 변환
-    x_floor = float(x_floor)
-    y_floor = float(y_floor)
-
-    await sio.emit('gridmake', data=[x_floor, y_floor], namespace='/socketio')
-    return {
-        'x_floor': x_floor,
-        'y_floor': y_floor
-    }
-# # 시뮬레이터로 보내지 않는 엔드포인트
-# @app.post("/check_coordinates/")
-# async def check_coordinates(
-#     x: float = Form(...),
-#     y: float = Form(...),
-#     img_id: str = Form(...)
-# ):
-#     camera_id = img_id  # img_id와 camera_id는 동일한 값으로 간주
-#
-#     # camera_id에 따라 변환 행렬과 관련 데이터를 가져옴
-#     if camera_id in transformations:
-#         transformation_data = transformations[camera_id]
-#         H_total = np.array(transformation_data['H_total'], dtype=np.float32)
-#         floor_width = float(transformation_data['floor_width'])
-#         floor_height = float(transformation_data['floor_height'])
-#     else:
-#         return {'error': f'카메라 {camera_id}에 대한 변환 행렬이 존재하지 않습니다.'}
-#
-#     x_floor, y_floor = map_point_to_floor_coordinates(x, y, H_total)
-#
-#     # 좌표를 바닥 크기에 맞게 제한
-#     x_floor = max(0, min(floor_width, x_floor))
-#     y_floor = max(0, min(floor_height, y_floor))
-#
-#     # numpy.float32 타입을 Python의 float 타입으로 변환
-#     x_floor = float(x_floor)
-#     y_floor = float(y_floor)
-#
-#     return {
-#         'x_floor': x_floor,
-#         'y_floor': y_floor
-#     }
 
 @app.post("/save_transformations/")
 async def save_transformations(
