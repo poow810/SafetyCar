@@ -1,10 +1,13 @@
 import cv2
-from ultralytics import YOLO
+import check_skeleton
 import time
 import asyncio
+
+from collections import defaultdict, deque
+from ultralytics import YOLO
 from main import send_coordinate, authentication, disconnect
 from udp import UdpSender
-import check_skeleton
+
 
 # 보행자의 쓰러짐을 y좌표를 통한 기울기 값으로 판단합니다
 def is_aligned_nose(nose_y, left_ankle_y, right_ankle_y, left_knee_y, right_knee_y, slope_threshold=40):
@@ -291,8 +294,49 @@ def is_falling_func(width, height, keypoint_data, is_falling, bounding_box):
 
     return False
 
-async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
-    
+
+def check_row(keypoint_data, slope_threshold=50):
+    keypoints = extract_keypoint(keypoint_data)
+
+    # 키포인트 좌표 추출
+    nose_x = keypoints['nose']['x'] if 'nose' in keypoints else None
+    left_ankle_x = keypoints['left_ankle']['x'] if 'left_ankle' in keypoints else None
+    left_knee_x = keypoints['left_knee']['x'] if 'left_knee' in keypoints else None
+    right_ankle_x = keypoints['right_ankle']['x'] if 'right_ankle' in keypoints else None
+    right_knee_x = keypoints['right_knee']['x'] if 'right_knee' in keypoints else None
+
+    # 하체 좌표 리스트 생성
+    lower_body_x = []
+    if left_ankle_x is not None:
+        lower_body_x.append(left_ankle_x)
+    if left_knee_x is not None:
+        lower_body_x.append(left_knee_x)
+    if right_ankle_x is not None:
+        lower_body_x.append(right_ankle_x)
+    if right_knee_x is not None:
+        lower_body_x.append(right_knee_x)
+
+    # 하체 좌표가 있을 경우 판단
+    if len(lower_body_x) >= 2:
+        # x좌표의 평균 계산
+        average_x = sum(lower_body_x) / len(lower_body_x)
+        
+        # 각 좌표와 평균 사이의 차이를 계산
+        x_diffs = [abs(x - average_x) for x in lower_body_x]
+
+        # 모든 차이가 임계값 내에 있는지 확인
+        threshold_met = all(diff < slope_threshold for diff in x_diffs)
+    elif len(lower_body_x) == 1:
+        # 하나의 좌표만 있을 경우
+        threshold_met = True  
+    else:
+        threshold_met = False
+
+    return threshold_met
+
+
+
+async def pose_estimation(keypoints, results, check_data, tracking_data, annotated_frame):
     send_x, send_y = None, None
     start_x, start_y, end_x, end_y = None, None, None, None
 
@@ -310,60 +354,92 @@ async def pose_estimation(keypoints, results, tracking_data, annotated_frame):
             if keypoints is not None and len(keypoints) > i:
                 keypoint_data = keypoints[i].data
 
-                if keypoint_data.size(1) == 17:
+                if keypoint_data.size(1) <= 17:
                     # 각 키포인트의 좌표 추출
-                    is_falling = False
-                    is_falling = is_falling_func(width, height, keypoint_data, is_falling, box.xyxy[0])
-
+                    is_falling = is_falling_func(width, height, keypoint_data, False, box.xyxy[0])
                     current_time = time.time()
-
                     status_type = 2
 
+                    # 높이 기반 쓰러짐 판단 로직
+                    if tracking_id not in tracking_data:
+                        tracking_data[tracking_id] = {
+                            'start_time': current_time,
+                            'sent': False,
+                            'height_history': [],
+                            'is_still_falling': False
+                        }
+
+                    # 현재 높이 저장
+                    tracking_data[tracking_id]['height_history'].append(height)
+
+                    # 이전 높이와 비교하여 쓰러짐 판단
+                    if len(tracking_data[tracking_id]['height_history']) > 4:
+                        height_three_seconds_ago = tracking_data[tracking_id]['height_history'][-4]  # 3초 전의 높이
+                        if height_three_seconds_ago - height > 100:  # 높이 차이 비교
+                            is_falling = check_row(keypoint_data)
+
+                    # 오래된 높이 기록 삭제 (최대 10개 유지)
+                    if len(tracking_data[tracking_id]['height_history']) > 10:
+                        tracking_data[tracking_id]['height_history'].pop(0)
+
+                    # 쓰러짐 상태 판단
                     if is_falling:
-                        if tracking_id not in tracking_data:
-                            tracking_data[tracking_id] = {'start_time': current_time, 'sent': False}
+                        # 쓰러진 상태로 판단되면
+                        if not tracking_data[tracking_id]['is_still_falling']:
+                            tracking_data[tracking_id]['start_time'] = current_time  # 쓰러진 시간 업데이트
+                            tracking_data[tracking_id]['is_still_falling'] = True  # 쓰러진 상태 플래그 설정
+
+                        elapsed_time = current_time - tracking_data[tracking_id]['start_time']  # 항상 업데이트
+                        if elapsed_time >= 5:
+                            status_type = 0  
+                            # 객체 발 밑 좌표
+                            send_x, send_y = (x1 + x2) / 2, y2
+                            start_x, start_y, end_x, end_y = x1, y1, x2, y2
+                            if not tracking_data[tracking_id]['sent']:
+                                await send_coordinate(float(send_x), float(send_y), 0)
+                                print(send_x, send_y)
+                                tracking_data[tracking_id]['sent'] = True
                         else:
-                            elapsed_time = current_time - tracking_data[tracking_id]['start_time']
-                            if elapsed_time >= 5:
-                                status_type = 0
-
-                                # 객체 발 밑 좌표
-                                send_x, send_y = (x1 + x2) / 2, y2
-                                start_x, start_y, end_x, end_y = x1, y1, x2, y2
-                                if not tracking_data[tracking_id]['sent']:
-                                    await send_coordinate(float(send_x), float(send_y), 0)
-                                    print(send_x, send_y)
-                                    tracking_data[tracking_id]['sent'] = True
-                            else:
-                                status_type = 1
-
+                            status_type = 1  
                     else:
-                        tracking_data.pop(tracking_id, None)
-                        status_type = 2
+                        # 쓰러지지 않은 경우에는 상태를 초기화하지 않고 유지
+                        elapsed_time = current_time - tracking_data[tracking_id]['start_time']
+                        if tracking_data[tracking_id]['is_still_falling']:
+                            if elapsed_time < 5:
+                                status_type = 1  # Falling (not confirmed)
+                            else:
+                                status_type = 0 # Falling
+                        else:
+                            status_type = 2  # Standing
+                            tracking_data[tracking_id]['is_still_falling'] = False  # 상태 초기화
 
                     status_list = [{'text': 'Falling', 'color': (0, 0, 255)},
                                    {'text': 'Falling (not confirmed)', 'color': (0, 255, 255)},
-                                   {'text': 'standing', 'color': (255, 0, 0)}]
+                                   {'text': 'Standing', 'color': (255, 0, 0)}]
+                    
                     status = status_list[status_type]
 
-                    # 쓰러진 상태일 때만 현재 상태를 이미지에 표시
+                    # 현재 상태를 이미지에 표시
                     cv2.putText(annotated_frame, status['text'], (int(x1), int(y1) - 10),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, status['color'], 2)
+
     lst = []
     if start_x is not None:
         lst.append((int(start_x), int(start_y), int(end_x), int(end_y)))
+    
     return (annotated_frame, lst)
-            
+
 
 async def process_video(udp_sender, camera_id):
     model = YOLO("model/yolov8s-pose.pt").to('cuda')
 
     # 동영상 파일 열기
-    video_path = "falling2.mp4"
+    video_path = "check.mp4"
     cap = cv2.VideoCapture(0)
 
     # 객체 상태 추적
     tracking_data = {}
+    check_data = {}
 
     # 프레임 건너뛰기 설정
     frame_skip = 2  # 2프레임마다 처리
@@ -387,7 +463,7 @@ async def process_video(udp_sender, camera_id):
         # 스켈레톤 데이터 추출
         keypoints = results[0].keypoints
 
-        annotated_frame, bounding_box = await pose_estimation(keypoints, results, tracking_data, annotated_frame)
+        annotated_frame, bounding_box = await pose_estimation(keypoints, results, check_data, tracking_data, annotated_frame)
         
 
         if bounding_box:
@@ -423,3 +499,4 @@ if __name__ == "__main__":
         asyncio.run(process_video(udp_sender, result['camera_id']))
     finally:
         udp_sender.close()
+    # asyncio.run(process_video())
