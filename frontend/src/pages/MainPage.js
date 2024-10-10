@@ -1,14 +1,15 @@
+// Monitor.js
 import { motion } from "framer-motion";
-import React, { useState, useRef } from "react";
-import "../styles/Mainpage.css"; // CSS 파일을 import
+import React, { useState, useRef, useEffect } from "react";
+import "../styles/Mainpage.css"; // CSS 파일 import
 import MapComponent from "../components/map";
 import axios from "axios";
 import NavibarComponent from "../components/navibar";
+import Modal from "../components/modal";
 
 const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
 const ws = new WebSocket(WEBSOCKET_URL);
-// console.log("SOCKET CONNECTED");
 
 const handlePopstate = () => {
   if (ws) {
@@ -19,27 +20,34 @@ const handlePopstate = () => {
 function Monitor() {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [frameSrcArr, setFrameSrcArr] = useState([null, null, null, null]);
-  const [simulatorImage, setSimulatorImage] = useState(null); // 시뮬레이터 이미지 상태 추가
-  const [points, setPoints] = useState([]); // 좌표 상태 추가
-  const imageRef1 = useRef(null); // 첫 번째 이미지 참조
-  const imageRef2 = useRef(null); // 두 번째 이미지 참조
-  ws.onmessage = async function (msg) {
-    let newArr = [...frameSrcArr];
-    const int8Array = new Int8Array(await msg.data.slice(0, 1).arrayBuffer());
-    const idx = int8Array[0];
-    newArr[idx] = URL.createObjectURL(msg.data.slice(1));
-    setFrameSrcArr(newArr);
-  };
+  const [simulatorImage, setSimulatorImage] = useState(null);
+  const [points, setPoints] = useState([]);
+  const imageRef1 = useRef(null);
+  const imageRef2 = useRef(null);
 
-  // 이미지 저장 함수 (Blob -> Base64로 변환 후 Local Storage에 저장)
-  const saveFrameToLocalStorage = (blob, cameraIndex) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob); // Blob을 Base64로 변환
-    reader.onloadend = function () {
-      const base64Data = reader.result;
-      localStorage.setItem(`savedImageCamera${cameraIndex}`, base64Data); // 카메라 인덱스에 맞게 저장
+  // 모달 관련 상태 추가
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImageRef, setSelectedImageRef] = useState(null);
+  const [selectedImgId, setSelectedImgId] = useState(null);
+  const [clickEvent, setClickEvent] = useState(null);
+
+  // 현재 시간 상태 추가
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString("ko-KR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+      setCurrentTime(formattedTime);
     };
-  };
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   ws.onmessage = async function (msg) {
     let newArr = [...frameSrcArr];
@@ -53,10 +61,20 @@ function Monitor() {
 
     // 각 카메라 프레임을 Local Storage에 저장
     if (idx === 0) {
-      saveFrameToLocalStorage(blob, 0); // 카메라 0번의 프레임을 저장
+      saveFrameToLocalStorage(blob, 0);
     } else if (idx === 1) {
-      saveFrameToLocalStorage(blob, 1); // 카메라 1번의 프레임을 저장
+      saveFrameToLocalStorage(blob, 1);
     }
+  };
+
+  // 이미지 저장 함수
+  const saveFrameToLocalStorage = (blob, cameraIndex) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+      const base64Data = reader.result;
+      localStorage.setItem(`savedImageCamera${cameraIndex}`, base64Data);
+    };
   };
 
   const handleMouseEnter = (index) => {
@@ -71,37 +89,55 @@ function Monitor() {
     setSimulatorImage(url);
   };
 
+  // 이미지 클릭 시 모달을 열고 정보 저장
   const handleImageClick = (e, imageRef, imgId) => {
-    const image = imageRef.current;
-    const rect = image.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const scaleX = image.naturalWidth / rect.width;
-    const scaleY = image.naturalHeight / rect.height;
-    const adjustedX = x * scaleX;
-    const adjustedY = y * scaleY;
+    setSelectedImageRef(imageRef);
+    setSelectedImgId(imgId);
+    // 이벤트 객체의 필요한 정보만 저장
+    setClickEvent({
+      clientX: e.clientX,
+      clientY: e.clientY,
+    });
+    setIsModalOpen(true);
+  };
 
-    // 서버로 좌표 전송
-    const formData = new FormData();
-    formData.append("x", adjustedX);
-    formData.append("y", adjustedY);
-    formData.append("img_id", imgId);
+  // 모달에서 확인 버튼 클릭 시 실행
+  const handleImageClickConfirm = () => {
+    if (selectedImageRef && selectedImgId && clickEvent) {
+      const image = selectedImageRef.current;
+      const rect = image.getBoundingClientRect();
+      const x = clickEvent.clientX - rect.left;
+      const y = clickEvent.clientY - rect.top;
+      const scaleX = image.naturalWidth / rect.width;
+      const scaleY = image.naturalHeight / rect.height;
+      const adjustedX = x * scaleX;
+      const adjustedY = y * scaleY;
 
-    axios
-      .post(`${PYTHON_URL}/get_floor_coordinates/`, formData)
-      .then((response) => {
-        if (response.data.error) {
-          alert(response.data.error);
-        } else {
-          const x_floor = response.data.x_floor;
-          const y_floor = response.data.y_floor;
-          alert(`바닥 좌표: (${x_floor.toFixed(2)}, ${y_floor.toFixed(2)})`);
-        }
-      })
-      .catch((error) => {
-        console.error("바닥 좌표 요청 에러:", error);
-        alert("바닥 좌표 요청 중 오류가 발생했습니다.");
-      });
+      // 서버로 좌표 전송
+      const formData = new FormData();
+      formData.append("x", adjustedX);
+      formData.append("y", adjustedY);
+      formData.append("img_id", selectedImgId);
+
+      axios
+        .post(`${PYTHON_URL}/get_floor_coordinates/`, formData)
+        .then((response) => {
+          if (response.data.error) {
+            alert(response.data.error);
+          } else {
+            const x_floor = response.data.x_floor;
+            const y_floor = response.data.y_floor;
+            alert(`바닥 좌표: (${x_floor.toFixed(2)}, ${y_floor.toFixed(2)})`);
+          }
+        })
+        .catch((error) => {
+          console.error("바닥 좌표 요청 에러:", error);
+          alert("바닥 좌표 요청 중 오류가 발생했습니다.");
+        })
+        .finally(() => {
+          setIsModalOpen(false);
+        });
+    }
   };
 
   // MapComponent에서 좌표를 받는 함수
@@ -128,9 +164,19 @@ function Monitor() {
 
   return (
     <>
-      {/* <h1>안전 관제 통합 대시보드</h1> */}
-      <h1>SafetyCar 상황실</h1>
+      {/* 헤더 컨테이너 */}
+      <div className="header-container">
+        <div className="logo">
+          <img src="/assets/SafetyCar-logo.png" alt="Safety Car Logo" />
+        </div>
+        <h1>SafetyCar 상황실</h1>
+        <div className="current-time">
+          <p>현재 시각</p>
+          <div>{currentTime}</div>
+        </div>
+      </div>
 
+      {/* 메인 컨테이너 */}
       <div className="container">
         <div className="container" style={{ display: "flex" }}>
           {/* 네비바 추가 */}
@@ -151,8 +197,8 @@ function Monitor() {
                 <img
                   src={frameSrcArr[0]}
                   alt="CCTV 0"
-                  ref={imageRef1} // ref 추가
-                  onClick={(e) => handleImageClick(e, imageRef1, 1)} // onClick 추가
+                  ref={imageRef1}
+                  onClick={(e) => handleImageClick(e, imageRef1, 1)}
                 />
               </div>
               <div className="monitorStand"></div>
@@ -172,8 +218,8 @@ function Monitor() {
                 <img
                   src={frameSrcArr[1]}
                   alt="CCTV 1"
-                  ref={imageRef2} // ref 추가
-                  onClick={(e) => handleImageClick(e, imageRef2, 2)} // onClick 추가
+                  ref={imageRef2}
+                  onClick={(e) => handleImageClick(e, imageRef2, 2)}
                 />
               </div>
               <div className="monitorStand"></div>
@@ -203,7 +249,7 @@ function Monitor() {
                   objectFit: "contain",
                   borderRadius: "20px",
                   opacity: "0.3",
-                }} // 컨테이너에 맞춰 조정
+                }}
               />
               {/* 좌표 표시 */}
               {points.length > 0 &&
@@ -218,15 +264,25 @@ function Monitor() {
                       height: "10px",
                       borderRadius: "50%",
                       backgroundColor: "red",
-                      transform: "translate(-50%, -50%)", // 중앙 정렬
+                      transform: "translate(-50%, -50%)",
                     }}
                   />
                 ))}
             </div>
           )}
         </div>
-        <div></div>
       </div>
+
+      {/* 모달 컴포넌트 추가 */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="강제 출동"
+        content="클릭한 위치로 SafetyCar를 출동시키겠습니까?"
+      >
+        <button onClick={handleImageClickConfirm}>확인</button>
+        <button onClick={() => setIsModalOpen(false)}>취소</button>
+      </Modal>
     </>
   );
 }
