@@ -111,10 +111,7 @@ const Step1 = () => {
     return new Blob([u8arr], { type: mime });
   };
 
-  const handlePrevious = () => {
-    navigate("/"); // HomePage로 이동
-  };
-  
+
   return (
     <>
       <div className="right-container">
@@ -191,8 +188,8 @@ const Step1 = () => {
             </label>
           </div>
           {/* (roomId) BE 수정 완료되면 전송할 데이터 */}
-          <div className="input-box">
-            <label>
+          <div className="input-box" style={{display:"flex", flexDirection:"column"}}>
+            <label style={{marginRight:"50px"}}>
               roomId
               <input
                 type="text"
@@ -201,12 +198,6 @@ const Step1 = () => {
               />
             </label>
           </div>
-          <button
-              onClick={handlePrevious}
-              className="previous-btn"
-            >
-              이전
-            </button>
           <button
             onClick={handleUploadImages}
             className="submit-btn"
