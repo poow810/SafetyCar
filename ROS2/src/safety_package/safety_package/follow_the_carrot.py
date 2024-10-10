@@ -1,8 +1,8 @@
 import rclpy
 from rclpy.node import Node
-from safety_package.qos import qos_service, qos_sensor
+from safety_package.qos import qos_sensor, qos_service
 
-from geometry_msgs.msg import Twist, Point, Point32
+from geometry_msgs.msg import Twist, Point, Point32, PoseStamped
 from ssafy_msgs.msg import TurtlebotStatus
 from squaternion import Quaternion
 from nav_msgs.msg import Odometry, Path
@@ -15,12 +15,13 @@ class followTheCarrot(Node):
 
     def __init__(self):
         super().__init__('path_tracking')
-        self.cmd_publisher = self.create_publisher(Twist, 'cmd_vel', qos_sensor)
-        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, qos_sensor)
-        self.turtlebot_status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.status_callback, qos_sensor)
+        self.cmd_publisher = self.create_publisher(Twist, 'cmd_vel', qos_service)
+        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, qos_service)
+        self.turtlebot_status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.status_callback, qos_service)
         self.path_sub = self.create_subscription(Path, '/local_path', self.path_callback, qos_service)
-        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, qos_sensor)
-        
+        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, qos_service)
+        self.goal_pub= self.create_publisher(PoseStamped, 'goal', qos_service)
+
         time_period = 0.05
         self.timer = self.create_timer(time_period, self.timer_callback)
 
@@ -29,13 +30,16 @@ class followTheCarrot(Node):
         self.is_status = False
         self.is_lidar = False
         self.collision = False
-        self.is_start = False
+        self.is_back = False
 
         self.odom_msg = Odometry()
         self.path_msg = Path()
         self.cmd_msg = Twist()
         self.status_msg = TurtlebotStatus()
         self.lidar_msg = LaserScan()
+        self.goal_msg = PoseStamped()
+
+        self.goal_msg.header.frame_id="map"
         self.robot_yaw = 0.0
 
         self.lfd = 0.1
@@ -48,7 +52,7 @@ class followTheCarrot(Node):
         if self.is_status and self.is_odom == True and self.is_path == True and self.is_lidar == True :
 
             if len(self.path_msg.poses) > 1 :
-
+                self.is_back = False
                 self.is_look_forward_point = False
 
                 robot_pose_x = self.odom_msg.pose.pose.position.x
@@ -87,51 +91,50 @@ class followTheCarrot(Node):
                     local_forward_point = det_trans_matrix.dot(global_forward_point)
                     theta = -atan2(local_forward_point[1], local_forward_point[0])
 
-                    if self.is_start :
-                        
-                        if -0.15 < theta < 0.15 :
-                            self.cmd_msg.angular.z = 0.02
-                            self.is_start = False
+                    if len(self.path_msg.poses) > 20 :
+                        self.cmd_msg.linear.x = 0.5
+                        # self.cmd_msg.angular.z = 2.0
+                        self.cmd_msg.angular.z = theta*2/self.omega_max
+                        #11.7
+                    elif len(self.path_msg.poses) > 10 :
+                        self.cmd_msg.linear.x = 0.3
+                        # self.cmd_msg.angular.z = 2.0
+                        self.cmd_msg.angular.z = theta/self.omega_max
+                    
+                    elif len(self.path_msg.poses) > 3:
+                        self.cmd_msg.linear.x = 0.2
+                        # self.cmd_msg.angular.z = 2.0
+                        self.cmd_msg.angular.z = theta/self.omega_max
 
+                    elif len(self.path_msg.poses) == 2:
+                        self.is_back = True
+                        self.current_time = rclpy.clock.Clock().now()
+
+                    # 충돌
+                    if self.forward_dis <= 0.20 or self.left_dis <= 0.20 or self.right_dis <= 0.20:
+                        self.cmd_msg.linear.x = -0.5
+
+                        if self.turn :
+                            self.cmd_msg.angular.z = 0.05
                         else :
-                            self.cmd_msg.angular.z = 0.2
-
-                        
-                    else :
-                        if len(self.path_msg.poses) > 20 :
-                            self.cmd_msg.linear.x = 0.5
-                            # self.cmd_msg.angular.z = 2.0
-                            self.cmd_msg.angular.z = theta*2/self.omega_max
-                            #11.7
-                        elif len(self.path_msg.poses) > 10 :
-                            self.cmd_msg.linear.x = 0.3
-                            # self.cmd_msg.angular.z = 2.0
-                            self.cmd_msg.angular.z = theta/self.omega_max
-                        
-                        else :
-                            self.cmd_msg.linear.x = 0.2
-                            # self.cmd_msg.angular.z = 2.0
-                            self.cmd_msg.angular.z = theta/self.omega_max
-
-                        if self.forward_dis <= 0.05:
-                            self.cmd_msg.linear.x = -0.5
-                            self.cmd_msg.angular.z = 0.0
-                        elif self.left_dis <= 0.1:
-                            self.cmd_msg.linear.x = -0.5
-                            self.cmd_msg.angular.z = -120.0
-                        elif self.right_dis <= 0.1:
-                            self.cmd_msg.linear.x = -0.5
-                            self.cmd_msg.angular.z = -60.0
-
+                            self.cmd_msg.angular.z = -0.05
 
 
             else :
                 print("no found forward point")
-                self.is_start = True
                 self.cmd_msg.linear.x = 0.0
                 self.cmd_msg.angular.z = 0.0
 
         self.cmd_publisher.publish(self.cmd_msg)
+
+        if self.is_back :
+            if (rclpy.clock.Clock().now().nanoseconds - self.current_time.nanoseconds) / 1e9  < 3 :
+                return
+            else :
+                self.is_back = False
+                self.goal_msg.pose.position.x = -50.0
+                self.goal_msg.pose.position.y = -50.0
+                self.goal_pub.publish(self.goal_msg)
 
     def odom_callback(self, msg) :
         self.is_odom = True
@@ -191,6 +194,7 @@ class followTheCarrot(Node):
             backward_dis = sum(backward) / len(backward)
             self.left_dis = sum(left) / len(left)
             self.right_dis = sum(right) / len(right)
+            self.turn = True if self.left_dis > self.right_dis else False
 
             # 근접 감지
             if self.forward_dis < 0.05:
@@ -210,6 +214,9 @@ class followTheCarrot(Node):
                 print('우측 근접')
             else:
                 self.is_right_approach = False
+
+            self.is_lidar = True
+
 
 
 def main(args=None):

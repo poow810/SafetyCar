@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from safety_package.qos import qos_sensor
+from safety_package.qos import qos_service
 
 from ssafy_msgs.msg import TurtlebotStatus
 from squaternion import Quaternion
@@ -13,8 +13,8 @@ class odom(Node):
 
     def __init__(self):
         super().__init__('odom')
-        self.turtlebot_status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.turtlebot_callback, qos_sensor)
-        self.odom_publisher = self.create_publisher(Odometry, 'odom', qos_sensor)
+        self.turtlebot_status_sub = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.turtlebot_callback, qos_service)
+        self.odom_publisher = self.create_publisher(Odometry, 'odom', qos_service)
         
         self.broadcaster = tf2_ros.StaticTransformBroadcaster(self)
         self.odom_msg = Odometry()

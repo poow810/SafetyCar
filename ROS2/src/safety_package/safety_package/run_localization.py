@@ -1,7 +1,7 @@
 
 import rclpy
 from rclpy.node import Node
-from safety_package.qos import qos_sensor
+from safety_package.qos import qos_sensor, qos_service
 
 import ros2pkg
 from geometry_msgs.msg import Twist,PoseStamped,Pose,TransformStamped,PoseWithCovarianceStamped
@@ -39,8 +39,8 @@ params_map = {
     "MAP_RESOLUTION": 0.05,
     "OCCUPANCY_UP": 0.02,
     "OCCUPANCY_DOWN": 0.01,
-    "MAP_CENTER": (-8.0, -4.0),
-    "MAP_SIZE": (17.5, 17.5),
+    "MAP_CENTER": (-47.0, -58.0),
+    "MAP_SIZE": (25.0, 25.0),
     "MAPVIS_RESIZE_SCALE": 2.0
 }
 
@@ -164,7 +164,7 @@ class Localization:
         pkg_path =os.getcwd()
         back_folder='..'
         folder_name='map'
-        file_name='map.txt'
+        file_name='map2.txt'
         full_path=os.path.join(pkg_path,back_folder,folder_name,file_name)
         f=open(full_path,'r')
 
@@ -179,7 +179,7 @@ class Localization:
    
         
         np_map_data=np.array(map_data)
-        self.map=np.reshape(np_map_data,(350, 350))
+        self.map=np.reshape(np_map_data,(500, 500))
         self.map=((100-self.map)*255.0/100.0).astype(np.uint8)
 
         
@@ -289,7 +289,7 @@ class Localization:
             cv2.circle(map_bgr_with_particle, center, 2, (255,0,255), -1)
 
         map_bgr_with_particle = cv2.resize(map_bgr_with_particle, dsize=(0, 0), fx=self.map_vis_resize_scale, fy=self.map_vis_resize_scale)
-        cv2.imshow('Sample Map', cv2.flip(map_bgr_with_particle, 0))
+        cv2.imshow('Sample Map', cv2.flip(map_bgr_with_particle, 1))
         cv2.waitKey(1)
 
     def _prediction(self, diff_pose):
@@ -517,14 +517,14 @@ class Localizer(Node):
         # 로직 3. 노드에 필요한 publisher, subscriber, transform broadcaster 생성
         super().__init__('Localizer')
         self.subscription = self.create_subscription(LaserScan,
-        '/scan',self.scan_callback,qos_sensor)
+        '/scan',self.scan_callback,qos_service)
         self.init_pose_sub = self.create_subscription(PoseWithCovarianceStamped,
-        '/initialpose',self.init_pose_callback,1)
+        '/initialpose',self.init_pose_callback,qos_service)
         self.imu_sub = self.create_subscription(Imu,
-        '/imu',self.imu_callback,qos_sensor)
+        '/imu',self.imu_callback,qos_service)
         self.turtle_sub = self.create_subscription(TurtlebotStatus,
-        '/turtlebot_status',self.turtlebot_status_callback,qos_sensor)
-        self.odom_publisher = self.create_publisher(Odometry, 'odom', qos_sensor)
+        '/turtlebot_status',self.turtlebot_status_callback,qos_service)
+        self.odom_publisher = self.create_publisher(Odometry, 'odom', qos_service)
         self.broadcaster = tf2_ros.StaticTransformBroadcaster(self)
         
         self.odom_msg=Odometry()
@@ -534,7 +534,7 @@ class Localizer(Node):
         self.x=0.0
         self.y=0.0
         self.heading=0.0
-        self.prev_amcl_pose=np.array([[-9.4],[-7.7],[0.0]])
+        self.prev_amcl_pose=np.array([[-50.0],[-50.0],[0.0]])
 
         self.amcl_pose=None
 

@@ -32,7 +32,7 @@ class a_star(Node):
         super().__init__('a_Star')
         # 로직 1. publisher, subscriber 만들기
         self.map_sub = self.create_subscription(OccupancyGrid,'/map',self.map_callback, qos_service)
-        self.odom_sub = self.create_subscription(Odometry,'/odom',self.odom_callback, qos_sensor)
+        self.odom_sub = self.create_subscription(Odometry,'/odom',self.odom_callback, qos_service)
         self.goal_sub = self.create_subscription(PoseStamped,'/goal',self.goal_callback, qos_service)
         self.a_star_pub= self.create_publisher(Path, 'global_path', qos_service)
 

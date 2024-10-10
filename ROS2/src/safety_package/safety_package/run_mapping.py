@@ -105,10 +105,10 @@ class Mapping:
 
         self.show_pose_and_points(pose, laser_global)        
 
-    def __del__(self):
+    # def __del__(self):
         # 로직 12. 종료 시 map 저장
         ## Ros2의 노드가 종료될 때 만들어진 맵을 저장하도록 def __del__과 save_map이 정의되어 있습니다
-        self.save_map(())
+        # self.save_map(())
 
 
     def save_map(self):
@@ -137,7 +137,7 @@ class Mapping:
         cv2.circle(map_bgr, center, 2, (0,0,255), -1)
 
         map_bgr = cv2.resize(map_bgr, dsize=(0, 0), fx=self.map_vis_resize_scale, fy=self.map_vis_resize_scale)
-        cv2.imshow('Sample Map', cv2.flip(map_bgr, 0))
+        cv2.imshow('Sample Map', cv2.flip(map_bgr, 1))
         cv2.waitKey(1)
 
 
@@ -150,7 +150,7 @@ class Mapper(Node):
         
         # 로직 1 : publisher, subscriber, msg 생성
         self.subscription = self.create_subscription(LaserScan,
-        '/scan',self.scan_callback,qos_sensor)
+        '/scan',self.scan_callback,qos_service)
         self.map_pub = self.create_publisher(OccupancyGrid, 'map', qos_service)
         
         self.map_msg=OccupancyGrid()
@@ -232,14 +232,14 @@ def save_map(node,file_path):
 def main(args=None):    
     rclpy.init(args=args)
     
-    try :    
-        run_mapping = Mapper()
-        rclpy.spin(run_mapping)
-        run_mapping.destroy_node()
-        rclpy.shutdown()
+    # try :    
+    run_mapping = Mapper()
+    rclpy.spin(run_mapping)
+    run_mapping.destroy_node()
+    rclpy.shutdown()
 
-    except :
-        save_map(run_mapping,'map2.txt')
+    # except :
+    #     save_map(run_mapping,'map2.txt')
 
 
 if __name__ == '__main__':
