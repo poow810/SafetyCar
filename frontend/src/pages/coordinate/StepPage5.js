@@ -136,96 +136,70 @@ const Step5 = () => {
     navigate("/"); // HomePage로 이동
   };
 
-
-
   return (
     <>
-      <h1>STEP5. 변환 행렬 저장</h1>
-      <p className="right-container">바닥을 클릭하여 바닥 좌표를 확인하세요.</p>
-      <div className="container">
-        <div className="right-container">
-          <div className="image-container">
-            <div className="image-box">
-              {/* <video
-            ref={videoDisplayRef1}
-            src="../../assets/cctv1.mp4"
-            controls
-            style={{ maxWidth: "100%", cursor: "crosshair" }}
-            onClick={(e) => handleVideoClick(e, videoDisplayRef1, 1)}
-          /> */}
-              <img
-                src={camera0Image}
-                alt="Camera 1"
-                ref={imageDisplayRef1}
-                style={{ maxWidth: "100%", cursor: "crosshair" }}
-                onClick={(e) => handleImageClick(e, imageDisplayRef1, 1)}
-              />
-              <p>Image1</p>
-            </div>
-
-            <div className="image-box">
-              {/* <video
-            ref={videoDisplayRef2}
-            src="../../assets/cctv2.mp4"
-            controls
-            style={{ maxWidth: "100%", cursor: "crosshair" }}
-            onClick={(e) => handleVideoClick(e, videoDisplayRef2, 2)}
-          /> */}
-              <img
-                src={camera1Image}
-                alt="Camera 2"
-                ref={imageDisplayRef2}
-                style={{ maxWidth: "100%", cursor: "crosshair" }}
-                onClick={(e) => handleImageClick(e, imageDisplayRef2, 2)}
-              />
-              <p>Image2</p>
-            </div>
-
-            <div className="image-box">
-              {mergedImageSrc && (
-                <img
-                  src={mergedImageSrc}
-                  alt="합성된 이미지"
-                  style={{ maxWidth: "500px", height: "auto" }}
-                />
-              )}
-              <p>결과 이미지</p>
-            </div>
+      <div className="right-container">
+        <h3>STEP5. 변환 행렬 저장</h3>
+        <p>이미지를 클릭하여 바닥 좌표를 확인하세요.</p>
+        <div className="image-container">
+          <div className="image-box">
+            <img
+              src={camera0Image}
+              alt="Camera 1"
+              ref={imageDisplayRef1}
+              style={{ maxWidth: "100%", cursor: "crosshair" }}
+              onClick={(e) => handleImageClick(e, imageDisplayRef1, 1)}
+            />
+            <p>Image1</p>
           </div>
 
-          <div className="option-container">
-            <div className="input-box">
-              <label>
-                카메라 1 번호
-                <input
-                  type="number"
-                  value={cameraId1}
-                  onChange={(e) => setCameraId1(e.target.value)}
-                />
-              </label>
-            </div>
-            <div className="input-box">
-              <label>
-                카메라 2 번호
-                <input
-                  type="number"
-                  value={cameraId2}
-                  onChange={(e) => setCameraId2(e.target.value)}
-                />
-              </label>
-            </div>
-            <button onClick={handleSaveTransformations} className="submit-btn">
-              저장
-            </button>
+          <div className="image-box">
+            <img
+              src={camera1Image}
+              alt="Camera 2"
+              ref={imageDisplayRef2}
+              style={{ maxWidth: "100%", cursor: "crosshair" }}
+              onClick={(e) => handleImageClick(e, imageDisplayRef2, 2)}
+            />
+            <p>Image2</p>
           </div>
 
-          <button
-              onClick={handlePrevious}
-              className="previous-btn"
-            >
-              메인
-            </button>
+          <div className="image-box">
+            {mergedImageSrc && (
+              <img
+                src={mergedImageSrc}
+                alt="합성된 이미지"
+                style={{ maxWidth: "500px", height: "auto" }}
+              />
+            )}
+            <p>결과 이미지</p>
+          </div>
+        </div>
 
+        <div className="option-container">
+          <div className="input-box">
+            <label>
+              카메라 1 번호
+              <input
+                type="number"
+                value={cameraId1}
+                onChange={(e) => setCameraId1(e.target.value)}
+              />
+            </label>
+          </div>
+          <div className="input-box">
+            <label>
+              카메라 2 번호
+              <input
+                type="number"
+                value={cameraId2}
+                onChange={(e) => setCameraId2(e.target.value)}
+              />
+            </label>
+          </div>
+          <button onClick={handleSaveTransformations} className="submit-btn">
+            저장
+          </button>
         </div>
       </div>
     </>

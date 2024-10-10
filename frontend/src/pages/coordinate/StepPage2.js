@@ -16,7 +16,6 @@ const Step2 = () => {
   const [image2Src, setImage2Src] = useState(initialImage2Src || "");
   const [selectedImage, setSelectedImage] = useState(1); // 기본값: 이미지 1
 
-
   const handlePrevious = () => {
     navigate("/step1"); // HomePage로 이동
   };
@@ -51,99 +50,94 @@ const Step2 = () => {
 
   return (
     <div>
-      <h1>STEP2. 이미지 회전/반전</h1>
-      <div className="container">
-        <div className="right-container">
-          <div className="image-container">
-            <div className="image-box">
-              {image1Src ? (
-                <img
-                  src={image1Src}
-                  alt="변환된 이미지 1"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                />
-              ) : (
-                <p>이미지 1을 불러오는 중...</p>
-              )}
-              {/* 선택 상태에 따라 클래스 적용 */}
-              <p className={selectedImage === 1 ? "selected" : ""}>
-                Image1
-              </p>
-            </div>
-
-            <div className="image-box">
-              {image2Src ? (
-                <img
-                  src={image2Src}
-                  alt="변환된 이미지 2"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                />
-              ) : (
-                <p>이미지 2를 불러오는 중...</p>
-              )}
-              {/* 선택 상태에 따라 클래스 적용 */}
-              <p className={selectedImage === 2 ? "selected" : ""}>
-                Image2
-              </p>
-            </div>
+      <div className="right-container">
+        <h3>STEP2. 이미지 회전/반전</h3>
+        <div className="image-container">
+          <div className="image-box">
+            {image1Src ? (
+              <img
+                src={image1Src}
+                alt="변환된 이미지 1"
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            ) : (
+              <p>이미지 1을 불러오는 중...</p>
+            )}
+            <p>Image1</p>
           </div>
 
-          <div className="option-container">
-            <p>선택된 이미지: 이미지 {selectedImage}</p>
-            {/* 이미지 선택 버튼에 선택 상태에 따라 클래스 적용 */}
-            <button
-              onClick={() => handleSelectImage(1)}
-              className={`choice-one-btn ${
-                selectedImage === 1 ? "selected" : ""
-              }`}
-              aria-pressed={selectedImage === 1}
-            >
-              이미지 1 선택
-            </button>
-            <button
-              onClick={() => handleSelectImage(2)}
-              style={{ marginLeft: "10px" }}
-              className={`choice-one-btn ${
-                selectedImage === 2 ? "selected" : ""
-              }`}
-              aria-pressed={selectedImage === 2}
-            >
-              이미지 2 선택
-            </button>
-
-            <button onClick={() => handleAdjustImages("r")} className="choice-btn">
-              90도 시계 방향 회전
-            </button>
-            <button
-              onClick={() => handleAdjustImages("e")}
-              style={{ marginLeft: "10px" }}
-              className="choice-btn"
-            >
-              90도 반시계 방향 회전
-            </button>
-            <button
-              onClick={() => handleAdjustImages("h")}
-              style={{ marginLeft: "10px" }}
-              className="choice-btn"
-            >
-              좌우 반전
-            </button>
-            <button
-              onClick={() => handleAdjustImages("v")}
-              style={{ marginLeft: "10px" }}
-              className="choice-btn"
-            >
-              상하 반전
-            </button>
-
-            <button
-              onClick={() => handleAdjustImages("n")} // 다음 단계로 이동하는 버튼에 조정된 이미지 넘기기
-              className="submit-btn"
-              style={{ marginLeft: "10px" }}
-            >
-              다음
-            </button>
+          <div className="image-box">
+            {image2Src ? (
+              <img
+                src={image2Src}
+                alt="변환된 이미지 2"
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            ) : (
+              <p>이미지 2를 불러오는 중...</p>
+            )}
+            <p>Image2</p>
           </div>
+        </div>
+
+        <div className="option-container">
+          <p>선택된 이미지: 이미지 {selectedImage}</p>
+          {/* 이미지 선택 버튼에 선택 상태에 따라 클래스 적용 */}
+          <button
+            onClick={() => handleSelectImage(1)}
+            className={`choice-one-btn ${
+              selectedImage === 1 ? "selected" : ""
+            }`}
+            aria-pressed={selectedImage === 1}
+          >
+            이미지 1 선택
+          </button>
+          <button
+            onClick={() => handleSelectImage(2)}
+            style={{ marginLeft: "10px" }}
+            className={`choice-one-btn ${
+              selectedImage === 2 ? "selected" : ""
+            }`}
+            aria-pressed={selectedImage === 2}
+          >
+            이미지 2 선택
+          </button>
+
+          <button
+            onClick={() => handleAdjustImages("r")}
+            className="choice-btn"
+          >
+            90도 시계 방향 회전
+          </button>
+          <button
+            onClick={() => handleAdjustImages("e")}
+            style={{ marginLeft: "10px" }}
+            className="choice-btn"
+          >
+            90도 반시계 방향 회전
+          </button>
+          <button
+            onClick={() => handleAdjustImages("h")}
+            style={{ marginLeft: "10px" }}
+            className="choice-btn"
+          >
+            좌우 반전
+          </button>
+          <button
+            onClick={() => handleAdjustImages("v")}
+            style={{ marginLeft: "10px" }}
+            className="choice-btn"
+          >
+            상하 반전
+          </button>
+
+          <button
+            onClick={() => handleAdjustImages("n")} // 다음 단계로 이동하는 버튼에 조정된 이미지 넘기기
+            className="submit-btn"
+            style={{ marginLeft: "10px" }}
+          >
+            다음
+          </button>
         </div>
       </div>
     </div>

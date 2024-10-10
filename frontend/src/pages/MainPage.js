@@ -1,21 +1,14 @@
 // Monitor.js
 import { motion } from "framer-motion";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import "../styles/Mainpage.css"; // CSS 파일 import
 import MapComponent from "../components/map";
 import axios from "axios";
-import NavibarComponent from "../components/navibar";
 import Modal from "../components/modal";
 
 const WEBSOCKET_URL = process.env.REACT_APP_WEBSOCKET_URL;
 const PYTHON_URL = process.env.REACT_APP_PYTHON_URL;
 const ws = new WebSocket(WEBSOCKET_URL);
-
-const handlePopstate = () => {
-  if (ws) {
-    ws.close();
-  }
-};
 
 function Monitor() {
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -30,24 +23,6 @@ function Monitor() {
   const [selectedImageRef, setSelectedImageRef] = useState(null);
   const [selectedImgId, setSelectedImgId] = useState(null);
   const [clickEvent, setClickEvent] = useState(null);
-
-  // 현재 시간 상태 추가
-  const [currentTime, setCurrentTime] = useState("");
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const formattedTime = now.toLocaleTimeString("ko-KR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      });
-      setCurrentTime(formattedTime);
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   ws.onmessage = async function (msg) {
     let newArr = [...frameSrcArr];
@@ -160,117 +135,96 @@ function Monitor() {
     setPoints([{ x: newX, y: newY }]);
   };
 
-  window.addEventListener("popstate", handlePopstate);
-
   return (
     <>
-      {/* 헤더 컨테이너 */}
-      <div className="header-container">
-        <div className="logo">
-          <img src="/assets/SafetyCar-logo.png" alt="Safety Car Logo" />
+      <div className="container" style={{ display: "flex" }}></div>
+      <div className="monitorSection">
+        {/* 첫 번째 모니터: CCTV 1 */}
+        <div className="monitorContainer">
+          <motion.div
+            className={`monitorFrameLeft ${
+              expandedIndex === 0 ? "monitorFrameHovered" : ""
+            }`}
+            onMouseEnter={() => handleMouseEnter(0)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="monitorScreen">
+              <img
+                src={frameSrcArr[0]}
+                alt="CCTV 0"
+                ref={imageRef1}
+                onClick={(e) => handleImageClick(e, imageRef1, 1)}
+              />
+            </div>
+            <div className="monitorStand"></div>
+          </motion.div>
         </div>
-        <h1>SafetyCar 상황실</h1>
-        <div className="current-time">
-          <p>현재 시각</p>
-          <div>{currentTime}</div>
+
+        {/* 두 번째 모니터: CCTV 2 */}
+        <div className="monitorContainer">
+          <motion.div
+            className={`monitorFrameRight ${
+              expandedIndex === 1 ? "monitorFrameHovered" : ""
+            }`}
+            onMouseEnter={() => handleMouseEnter(1)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="monitorScreen">
+              <img
+                src={frameSrcArr[1]}
+                alt="CCTV 1"
+                ref={imageRef2}
+                onClick={(e) => handleImageClick(e, imageRef2, 2)}
+              />
+            </div>
+            <div className="monitorStand"></div>
+          </motion.div>
         </div>
       </div>
 
-      {/* 메인 컨테이너 */}
-      <div className="container">
-        <div className="container" style={{ display: "flex" }}>
-          {/* 네비바 추가 */}
-          <NavibarComponent />
-        </div>
-        {/* 모니터 섹션 */}
-        <div className="monitorSection">
-          {/* 첫 번째 모니터: CCTV 1 */}
-          <div className="monitorContainer">
-            <motion.div
-              className={`monitorFrameLeft ${
-                expandedIndex === 0 ? "monitorFrameHovered" : ""
-              }`}
-              onMouseEnter={() => handleMouseEnter(0)}
-              onMouseLeave={handleMouseLeave}
-            >
-              <div className="monitorScreen">
-                <img
-                  src={frameSrcArr[0]}
-                  alt="CCTV 0"
-                  ref={imageRef1}
-                  onClick={(e) => handleImageClick(e, imageRef1, 1)}
+      {/* 시뮬레이터 지도 섹션 */}
+      <div className="simulatorOverlay">
+        <MapComponent
+          onImageLoad={handleImageLoad}
+          onPointReceive={handlePointReceive}
+        />
+
+        {/* 시뮬레이터 이미지 추가 */}
+        {simulatorImage && (
+          <div
+            className="simulatorImageContainer"
+            style={{ position: "relative" }}
+          >
+            <img
+              src={simulatorImage}
+              alt="Simulator"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                borderRadius: "20px",
+                opacity: "0.3",
+              }}
+            />
+            {/* 좌표 표시 */}
+            {points.length > 0 &&
+              points.map((point, index) => (
+                <div
+                  key={index}
+                  style={{
+                    position: "absolute",
+                    left: point.x,
+                    top: point.y,
+                    width: "10px",
+                    height: "10px",
+                    borderRadius: "50%",
+                    backgroundColor: "red",
+                    transform: "translate(-50%, -50%)",
+                  }}
                 />
-              </div>
-              <div className="monitorStand"></div>
-            </motion.div>
+              ))}
           </div>
-
-          {/* 두 번째 모니터: CCTV 2 */}
-          <div className="monitorContainer">
-            <motion.div
-              className={`monitorFrameRight ${
-                expandedIndex === 1 ? "monitorFrameHovered" : ""
-              }`}
-              onMouseEnter={() => handleMouseEnter(1)}
-              onMouseLeave={handleMouseLeave}
-            >
-              <div className="monitorScreen">
-                <img
-                  src={frameSrcArr[1]}
-                  alt="CCTV 1"
-                  ref={imageRef2}
-                  onClick={(e) => handleImageClick(e, imageRef2, 2)}
-                />
-              </div>
-              <div className="monitorStand"></div>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* 시뮬레이터 지도 섹션 */}
-        <div className="simulatorOverlay">
-          <MapComponent
-            onImageLoad={handleImageLoad}
-            onPointReceive={handlePointReceive}
-          />
-
-          {/* 시뮬레이터 이미지 추가 */}
-          {simulatorImage && (
-            <div
-              className="simulatorImageContainer"
-              style={{ position: "relative" }}
-            >
-              <img
-                src={simulatorImage}
-                alt="Simulator"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                  borderRadius: "20px",
-                  opacity: "0.3",
-                }}
-              />
-              {/* 좌표 표시 */}
-              {points.length > 0 &&
-                points.map((point, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      position: "absolute",
-                      left: point.x,
-                      top: point.y,
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      backgroundColor: "red",
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  />
-                ))}
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       {/* 모달 컴포넌트 추가 */}

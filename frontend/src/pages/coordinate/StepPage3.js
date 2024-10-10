@@ -79,60 +79,49 @@ const Step3 = () => {
       });
   };
 
-
-  const handlePrevious = () => {
-    navigate("/step2"); // HomePage로 이동
-  };
-
   return (
     <>
-      <h1>STEP3. 타일 매칭</h1>
-      <div className="container">
-        <div className="right-container">
-          <div className="image-container">
-            <div className="image-box">
-              <img
-                src={image1Src}
-                alt="타일 이미지 1"
-                ref={imageRef1}
-                style={{
-                  cursor: tilePoints1.length < 4 ? "crosshair" : "default",
-                }}
-                onClick={(e) =>
-                  handleImageClick(e, imageRef1, setTilePoints1, 4)
-                }
-              />
-              <p>
-                Image1 <span> {tilePoints1.length}/4</span>
-              </p>
-            </div>
-            <div className="image-box">
-              <img
-                src={image2Src}
-                alt="타일 이미지 2"
-                ref={imageRef2}
-                style={{
-                  cursor: tilePoints2.length < 4 ? "crosshair" : "default",
-                }}
-                onClick={(e) =>
-                  handleImageClick(e, imageRef2, setTilePoints2, 4)
-                }
-              />
-              <p>
-                Image2 <span> {tilePoints2.length}/4</span>
-              </p>
-            </div>
+      <div className="right-container">
+        <h3>STEP3. 타일 매칭</h3>
+        <div className="image-container">
+          <div className="image-box">
+            <img
+              src={image1Src}
+              alt="타일 이미지 1"
+              ref={imageRef1}
+              style={{
+                cursor: tilePoints1.length < 4 ? "crosshair" : "default",
+              }}
+              onClick={(e) => handleImageClick(e, imageRef1, setTilePoints1, 4)}
+            />
+            <p>
+              Image1 <span> {tilePoints1.length}/4</span>
+            </p>
           </div>
-          <div className="option-container">
+          <div className="image-box">
+            <img
+              src={image2Src}
+              alt="타일 이미지 2"
+              ref={imageRef2}
+              style={{
+                cursor: tilePoints2.length < 4 ? "crosshair" : "default",
+              }}
+              onClick={(e) => handleImageClick(e, imageRef2, setTilePoints2, 4)}
+            />
+            <p>
+              Image2 <span> {tilePoints2.length}/4</span>
+            </p>
+          </div>
+        </div>
 
-            <button
-              onClick={handleUploadTilePoints}
-              className="submit-btn"
-              disabled={tilePoints1.length < 4 || tilePoints2.length < 4}
-            >
-              다음
-            </button>
-          </div>
+        <div className="option-container">
+          <button
+            onClick={handleUploadTilePoints}
+            className="submit-btn"
+            disabled={tilePoints1.length < 4 || tilePoints2.length < 4}
+          >
+            다음
+          </button>
         </div>
       </div>
     </>

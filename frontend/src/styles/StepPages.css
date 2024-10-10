@@ -68,12 +68,18 @@ h1 {
   flex: 1; /* 나머지 공간을 모두 차지하도록 설정 */
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 설정 */
   margin: 0 100px;
 }
 
+.right-container p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
 .image-container {
   display: flex;
   
