@@ -81,7 +81,6 @@ const Step2 = () => {
         </div>
 
         <div className="option-container">
-          <p>선택된 이미지: 이미지 {selectedImage}</p>
           {/* 이미지 선택 버튼에 선택 상태에 따라 클래스 적용 */}
           <button
             onClick={() => handleSelectImage(1)}

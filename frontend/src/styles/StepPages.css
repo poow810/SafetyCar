@@ -251,6 +251,8 @@ input::placeholder {
 }
 
 .choice-btn {
+  width: 130px;
+  height: 100px;
   background-color: #00ae68;
   color: white;
   border: none;
@@ -269,7 +271,9 @@ input::placeholder {
 }
 
 .choice-one-btn {
-  background-color: #ffaa40;
+  width: 130px;
+  height: 100px;
+  background-color: #535353;
   color: white;
   border: none;
   padding: 16px 32px;
