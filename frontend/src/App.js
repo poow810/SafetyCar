@@ -2,18 +2,16 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/MainPage";
-// import StreamingPage from "./pages/StreamingPage";
 import StepPage1 from "./pages/coordinate/StepPage1";
 import StepPage2 from "./pages/coordinate/StepPage2";
 import StepPage3 from "./pages/coordinate/StepPage3";
 import StepPage4 from "./pages/coordinate/StepPage4";
 import StepPage5 from "./pages/coordinate/StepPage5";
 import Layout from "./components/Layout";
-// import "./styles/global.css";
 
 function App() {
   return (
-    <div className="app-background">
+    <div>
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage />} />

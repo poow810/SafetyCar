@@ -16,9 +16,6 @@ const Step2 = () => {
   const [image2Src, setImage2Src] = useState(initialImage2Src || "");
   const [selectedImage, setSelectedImage] = useState(1); // 기본값: 이미지 1
 
-  const handlePrevious = () => {
-    navigate("/step1"); // HomePage로 이동
-  };
 
   // 이미지 선택
   const handleSelectImage = (imgId) => {
@@ -84,48 +81,45 @@ const Step2 = () => {
           {/* 이미지 선택 버튼에 선택 상태에 따라 클래스 적용 */}
           <button
             onClick={() => handleSelectImage(1)}
+            style={{ marginLeft: "10px"}}
             className={`choice-one-btn ${
               selectedImage === 1 ? "selected" : ""
             }`}
             aria-pressed={selectedImage === 1}
           >
-            이미지 1 선택
+            Image 1 선택
           </button>
           <button
             onClick={() => handleSelectImage(2)}
-            style={{ marginLeft: "10px" }}
-            className={`choice-one-btn ${
+            style={{ marginLeft: "10px"}}            className={`choice-one-btn ${
               selectedImage === 2 ? "selected" : ""
             }`}
             aria-pressed={selectedImage === 2}
           >
-            이미지 2 선택
+            Image 2 선택
           </button>
 
           <button
             onClick={() => handleAdjustImages("r")}
-            className="choice-btn"
+            style={{ marginLeft: "10px"}}className="choice-btn"
           >
-            90도 시계 방향 회전
+            <p>반시계 방향</p> 회전
           </button>
           <button
             onClick={() => handleAdjustImages("e")}
-            style={{ marginLeft: "10px" }}
-            className="choice-btn"
+            style={{ marginLeft: "10px"}}            className="choice-btn"
           >
-            90도 반시계 방향 회전
+            시계 방향 회전
           </button>
           <button
             onClick={() => handleAdjustImages("h")}
-            style={{ marginLeft: "10px" }}
-            className="choice-btn"
+            style={{ marginLeft: "10px"}}            className="choice-btn"
           >
             좌우 반전
           </button>
           <button
             onClick={() => handleAdjustImages("v")}
-            style={{ marginLeft: "10px" }}
-            className="choice-btn"
+            style={{ marginLeft: "10px"}}            className="choice-btn"
           >
             상하 반전
           </button>
@@ -133,8 +127,7 @@ const Step2 = () => {
           <button
             onClick={() => handleAdjustImages("n")} // 다음 단계로 이동하는 버튼에 조정된 이미지 넘기기
             className="submit-btn"
-            style={{ marginLeft: "10px" }}
-          >
+            style={{ marginLeft: "10px"}}          >
             다음
           </button>
         </div>
