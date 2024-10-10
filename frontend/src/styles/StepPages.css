@@ -187,30 +187,18 @@ input::placeholder {
 }
 
 .submit-btn {
-  box-sizing: border-box;
-  appearance: none;
-  background-color: transparent;
-  border: 2px solid #e02e2e; /* BUTTON 1 색상: 빨간색 */
-  border-radius: 0.6em;
-  color: #e02e2e;
-  cursor: pointer;
-  display: flex;
-  align-self: center;
-  font-size: 1.2rem;
-  font-weight: 400;
-  line-height: 1;
-  margin: 30px;
-  padding: 2.2em 2.8em;
-  text-decoration: none;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
-  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+    font-size: 18px;
+    width: 130px;
+    height: 100px;
+    background-color: #ff4f23;
+    color: white;
+    border: 2px solid #3b3b47;
+      padding: 16px 24px;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 .submit-btn:hover {
-  box-shadow: 0 0 40px 40px #e02e2e inset; /* hover 시 내부 그림자 효과 */
   color: white; /* hover 시 텍스트 색상 변경 */
 }
 
@@ -218,79 +206,39 @@ input::placeholder {
   outline: none;
 }
 
-.previous-btn {
-  box-sizing: border-box;
-  appearance: none;
-  background-color: transparent;
-  border: 2px solid #2e61e0; /* BUTTON 1 색상: 빨간색 */
-  border-radius: 0.6em;
-  color: #2e61e0;
-  cursor: pointer;
-  display: flex;
-  align-self: center;
-  font-size: 1.2rem;
-  font-weight: 400;
-  line-height: 1;
-  margin: 30px;
-  padding: 2.2em 2.8em;
-  text-decoration: none;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
-  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-}
-
-.previous-btn:hover {
-  box-shadow: 0 0 40px 40px #2e61e0 inset; /* hover 시 내부 그림자 효과 */
-  color: white; /* hover 시 텍스트 색상 변경 */
-}
-
-.previous-btn:focus {
-  outline: none;
-}
-
-.choice-btn {
-  width: 130px;
-  height: 100px;
-  background-color: #00ae68;
-  color: white;
-  border: none;
-  padding: 16px 32px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s, box-shadow 0.2s, margin 0.2s;
-  box-shadow: 0px 5px 0px 0px #007144;
-}
-
 .choice-btn:hover {
-  background-color: #21825b;
-  margin-top: 15px;
-  margin-bottom: 5px;
-  box-shadow: 0px 0px 0px 0px #007144;
+  font-size: 18px;
+  border: 2px solid #acacac;
 }
-
 .choice-one-btn {
+  font-size: 18px;
   width: 130px;
   height: 100px;
-  background-color: #535353;
-  color: white;
-  border: none;
-  padding: 16px 32px;
+  background-color:rgba(0,0,0,0);
+  color: #65656c;
+  border: 2px solid #3b3b47;
+    padding: 16px 20px;
   cursor: pointer;
   border-radius: 4px;
-  transition: background-color 0.3s, box-shadow 0.2s, margin 0.2s;
-  box-shadow: 0px 5px 0px 0px #da943f;
 }
-
+.choice-btn {
+  font-size: 18px;
+  width: 130px;
+  height: 100px;
+  background-color:rgba(0,0,0,0);
+  color: white;
+  border: 2px solid #3b3b47;
+    padding: 16px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+}
 .choice-one-btn:hover {
-  background-color: #ff8e00;
-  margin-top: 15px;
-  margin-bottom: 5px;
-  box-shadow: 0px 0px 0px 0px #007144;
+  font-size: 18px;
+  border: 2px solid#ff4011
 }
 /* 선택되지 않은 이미지 레이블을 주황색으로 표시 */
 .selected {
-  color: #ff3300; /* 주황색 */
-  font-weight: bold;
+  color: #ff4011; /* 주황색 */
+  border: 2px solid  rgba(255, 63, 15, 0.5);
+
 }
