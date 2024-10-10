@@ -1,5 +1,8 @@
 ï»¿#include "WebSocketSender.h"
 
+/// <summary>
+/// udpÁ¤º¸¸¦ »ı¼ºÇÕ´Ï´Ù.
+/// </summary>
 WebSocketSender::WebSocketSender()
 {	
 	// https í†µì‹ ìœ¼ë¡œ ì•„ì´í”¼ ë“±ë¡í•˜ê¸°
@@ -42,6 +45,9 @@ WebSocketSender::WebSocketSender()
 	
 }
 
+/// <summary>
+/// ¸Ş¸ğ¸®¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+/// </summary>
 WebSocketSender::~WebSocketSender()
 {
 	disconnection();
@@ -51,6 +57,10 @@ WebSocketSender::~WebSocketSender()
 	WSACleanup();
 }
 
+/// <summary>
+/// ÀÎÀÚ·Î ¹ŞÀº ÇÁ·¹ÀÓÀ» JPEGÇü½ÄÀ¸·Î º¯È¯ÇÑ µÚ ¼­¹ö·Î Àü¼ÛÇÕ´Ï´Ù.
+/// </summary>
+/// <param name="frame">MAT (any color)</param>
 void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 {
 	if (!isconnected()) {
@@ -103,6 +113,11 @@ void WebSocketSender::sendframe_via_udp(cv::InputArray frame)
 	//std::cout << "(%) : " << (float)total_bytes_sent / (float)IMG_FULL_SIZE << "\n";
 }
 
+/// <summary>
+/// JPEG Çü½ÄÀ¸·Î º¯È¯
+/// </summary>
+/// <param name="mat">MAT</param>
+/// <returns>JPEG Binary</returns>
 std::vector<BYTE> WebSocketSender::mat2jpg(cv::InputArray mat)
 {
 	std::vector<BYTE> buff;
@@ -110,6 +125,9 @@ std::vector<BYTE> WebSocketSender::mat2jpg(cv::InputArray mat)
 	return buff;
 }
 
+/// <summary>
+/// Ä«¸Ş¶ó ¹øÈ£¸¦ ÀÔ·Â¹Ş½À´Ï´Ù.
+/// </summary>
 void WebSocketSender::set_cameraId()
 {
 	int id;
