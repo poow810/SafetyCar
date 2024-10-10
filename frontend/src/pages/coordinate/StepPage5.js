@@ -140,7 +140,7 @@ const Step5 = () => {
     <>
       <div className="right-container">
         <h3>STEP5. 변환 행렬 저장</h3>
-        <p>이미지를 클릭하여 바닥 좌표를 확인하세요.</p>
+        <p className="explain">이미지를 클릭하여 바닥 좌표를 확인하세요.</p>
         <div className="image-container">
           <div className="image-box">
             <img
