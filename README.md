@@ -80,7 +80,7 @@
             context-path: /api
     react:
         server:
-            address: https://j11b209.p.ssafy.io/
+            address: <domain-url>
 
     cctv:
         client:
@@ -89,9 +89,9 @@
             path: /save/cam/list.xml
 
     coolsms:
-        apikey: 'NCSRLFJOYQMYPRKG'
-        apisecret: 'IWBDNHHYVW7JEOICTAZTDAVF3DIOCCM6'
-        fromnumber: '01030479192'
+        apikey: '<your-key>'
+        apisecret: '<your-secret>'
+        fromnumber: '<phone-number>'
     ```
 
 ### Frontend
@@ -99,9 +99,9 @@
 
   ```
     # 기본 API URL
-    REACT_APP_API_URL = https://j11b209.p.ssafy.io/api
-    REACT_APP_WEBSOCKET_URL = wss://j11b209.p.ssafy.io/api/socket
-    REACT_APP_PYTHON_URL = https://j11b209.p.ssafy.io/pyapi 
+    REACT_APP_API_URL = <spring-server-url>
+    REACT_APP_WEBSOCKET_URL = <wss-server-url>
+    REACT_APP_PYTHON_URL = <fastAPI-server-url> 
   ```
 ---
 
